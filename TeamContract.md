@@ -58,5 +58,6 @@ By signing below, we acknowledge that we have read, discussed, and agreed to the
 
 Team Member Signatures:
 
-Aerize Conde
-Alex Kim
+- Aerize Conde
+- Alex Kim
+- Lucas Chan
