@@ -61,3 +61,4 @@ Team Member Signatures:
 - Aerize Conde
 - Alex Kim
 - Lucas Chan
+- Marko Rajicic
