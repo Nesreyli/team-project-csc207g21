@@ -44,7 +44,7 @@ This contract sets out shared expectations and commitments for how our team will
     - some examples of possible additional team norms and expectations are included in the sample team contract in case your team needs some help getting ideas for what else you want to include.
     - Equal shared tasks and helping each other when stuck
     - Communication about ideas and wants in the project
-    - Make the deadline date for certain parts of the project and the presentation 
+    - Make the deadline date for certain parts of the project and the presentation. 
 
 ---
 
