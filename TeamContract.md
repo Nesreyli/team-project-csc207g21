@@ -82,3 +82,4 @@ Team Member Signatures:
 - Alex Kim
 - Lucas Chan
 - Marko Rajicic
+- Jerry Chen
