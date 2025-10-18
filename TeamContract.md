@@ -83,3 +83,4 @@ Team Member Signatures:
 - Lucas Chan
 - Marko Rajicic
 - Jerry Chen
+- Pranav Patnaik
