@@ -4,28 +4,37 @@ import jakarta.Entities.Price;
 import jakarta.enterprise.context.RequestScoped;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 @RequestScoped
 public class OutputDataPrice {
     private String message;
-    private String symbol;
-    private BigDecimal price;
+    private Map<String, BigDecimal> prices;
 
-    public OutputDataPrice(String code, String s, BigDecimal p){
+    public OutputDataPrice(){
+    }
+
+    public OutputDataPrice(String m){
+        message = m;
+        prices = null;
+    }
+
+    //making for each asynchronous
+    public OutputDataPrice(String code, ArrayList<Price> p){
         message = code;
-        symbol = s;
-        price = p;
+        prices = new HashMap<>();
+        for(Price price: p){
+            prices.put(price.getSymbol(), price.getPrice());
+        }
     }
 
     public String getMessage() {
         return message;
     }
 
-    public String getSymbol(){
-        return symbol;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
+    public Map<String, BigDecimal> getPrices(){
+        return prices;
     }
 }

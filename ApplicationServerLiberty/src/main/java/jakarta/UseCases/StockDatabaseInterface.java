@@ -2,8 +2,10 @@ package jakarta.UseCases;
 
 import jakarta.Entities.Price;
 
-public interface StockDatabaseInterface {
-    Price checkOrder(String symbol);
+import java.util.ArrayList;
 
-    Price checkPrice(String symbol) throws RuntimeException;
+public interface StockDatabaseInterface {
+    Price checkOrder(PricesInputData symbols);
+
+    ArrayList<Price> checkPrice(PricesInputData symbols) throws RuntimeException;
 }
