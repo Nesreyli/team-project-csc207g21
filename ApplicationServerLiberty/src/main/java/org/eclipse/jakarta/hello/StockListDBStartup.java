@@ -14,8 +14,8 @@ public class StockListDBStartup {
     private static final String companyUrl;
 
     static {
-        DBurl = "jdbc:sqlite:/Users/myounghoonkim/Programming/Projects/207/team-project-csc207g21/ApplicationServerLiberty/portfolios.db";
-        companyUrl = "/Users/myounghoonkim/Programming/Projects/207/team-project-csc207g21/ApplicationServerLiberty/CompaniesMarketCap.com.csv";
+        DBurl = "";
+        companyUrl = "";
     }
 
     public static void createStocksDb(){
