@@ -10,8 +10,8 @@ import jakarta.Entities.Price;
 
 // later on implement where they can get all the price of stocks like an array by like having query seperate by #
 // query param vs path param
-@Path("stocks/")
-public class HelloWorldResource {
+@Path("/stocks")
+public class TradeResource {
     @Inject
     getPriceInteractor priceInteractor;
     //think there is a way to inject fields directly too
@@ -19,11 +19,12 @@ public class HelloWorldResource {
     @Inject
     PricesInputData priceInput;
     //symbol separated by %2C
-    @Path("price/")
+    @Path("/price")
     @GET
     @Produces({ MediaType.APPLICATION_JSON })
     public OutputDataPrice getPrice(@QueryParam("symbols") String symbols) {
-        if ((symbols == null) || symbols.trim().isEmpty()) {
+        if (symbols == null) {
+            symbols = "";
         }
         System.out.println(symbols);
         priceInput.setSymbols(symbols);
