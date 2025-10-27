@@ -1,4 +1,4 @@
-package org.eclipse.jakarta.hello;
+package Setup;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -9,16 +9,33 @@ import java.sql.*;
 
 //sql lite does not support concurrency with multiple connection pool
 //use this class only once. to start up the database.
-public class StockListDBStartup {
+public class PortfolioDBStartup {
     private static final String DBurl;
     private static final String companyUrl;
 
     static {
+        //Put url
         DBurl = "";
         companyUrl = "";
     }
+    public static void createUserTable(){
+        String sql = "CREATE TABLE IF NOT EXISTS user_record ("
+                + " user_id integer PRIMARY KEY,"
+                + " username text NOT NULL UNIQUE,"
+                + " password text NOT NULL"
+                + ");";
 
-    public static void createStocksDb(){
+        try(var conn = DriverManager.getConnection(DBurl); var stmt = conn.createStatement()){
+            stmt.execute(sql);
+            if(conn != null) {
+                System.out.println(conn.getMetaData());
+            }
+        }catch(SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static void createStocksTable(){
         String sql = "CREATE TABLE IF NOT EXISTS stocks_list ("
                 + " id INTEGER PRIMARY KEY,"
                 + " symbol text NOT NULL UNIQUE,"
@@ -53,7 +70,8 @@ public class StockListDBStartup {
 //    }
 
     public static void main(String[] args) throws IOException {
-        createStocksDb();
+        createStocksTable();
+        createUserTable();
         BufferedReader stocksData = new BufferedReader(new FileReader(companyUrl));
         String headline = stocksData.readLine();
         int line = 0;
