@@ -15,7 +15,7 @@ public class PortfolioDBStartup {
 
     static {
         //Put url
-        DBurl = "";
+        DBurl = "jdbc:sqlite:";
         companyUrl = "";
     }
     public static void createUserTable(){
@@ -31,6 +31,42 @@ public class PortfolioDBStartup {
                 System.out.println(conn.getMetaData());
             }
         }catch(SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static void createHoldingsTable(){
+        String sql = "CREATE TABLE IF NOT EXISTS holdings ("
+                + " id integer PRIMARY KEY,"
+                + " user_id integer,"
+                + " symbol text,"
+                + " holdings integer"
+                + ");";
+
+        try(var conn = DriverManager.getConnection(DBurl); var stmt = conn.createStatement()){
+            if(conn != null){
+                System.out.println(conn.getMetaData());
+            }
+            stmt.execute(sql);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    //1 USD is 100000
+    public static void createCashTable(){
+        String sql = "CREATE TABLE IF NOT EXISTS cash ("
+                + " id integer PRIMARY KEY,"
+                + " user_id integer,"
+                + " USD integer"
+                + ");";
+
+        try(var conn = DriverManager.getConnection(DBurl); var stmt = conn.createStatement()){
+            if(conn != null){
+                System.out.println(conn.getMetaData());
+            }
+            stmt.execute(sql);
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -72,6 +108,9 @@ public class PortfolioDBStartup {
     public static void main(String[] args) throws IOException {
         createStocksTable();
         createUserTable();
+        createHoldingsTable();
+        createCashTable();
+
         BufferedReader stocksData = new BufferedReader(new FileReader(companyUrl));
         String headline = stocksData.readLine();
         int line = 0;
