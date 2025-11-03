@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class getPriceInteractor {
     @Inject
     StockDatabaseInterface stockDB;
-    public OutputDataPrice executePrice(PricesInputData symbols) throws RuntimeException{
+    public OutputDataPrice executePrice(PricesInput symbols) throws RuntimeException{
         ArrayList<Price> prices;
 
         try{

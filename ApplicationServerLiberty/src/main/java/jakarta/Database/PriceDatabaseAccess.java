@@ -2,7 +2,7 @@ package jakarta.Database;
 
 
 import jakarta.Entities.Price;
-import jakarta.UseCases.PricesInputData;
+import jakarta.UseCases.PricesInput;
 import jakarta.annotation.PostConstruct;
 import jakarta.ejb.Singleton;
 import jakarta.ejb.Startup;
@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 //I just have to inject database of stock which will be stored in a map.
 // Should accessor be singleton supports concurrency. Multiple databse access.
@@ -70,7 +69,7 @@ public class PriceDatabaseAccess implements StockDatabaseInterface {
     // might have been a problem where i calling new Price which container didnt see so problem with
     // async method
     @Override
-    public ArrayList<Price> checkPrice(PricesInputData symbols) throws RuntimeException{
+    public ArrayList<Price> checkPrice(PricesInput symbols) throws RuntimeException{
 
         // dont know why changing getting map from singleton asynchronous works
         // should i create new exception
@@ -102,7 +101,7 @@ public class PriceDatabaseAccess implements StockDatabaseInterface {
     }
 
     @Override
-    public Price checkOrder(PricesInputData symbols) {
+    public Price checkOrder(PricesInput symbols) {
         return null;
     }
 }
