@@ -2,10 +2,18 @@ package jakarta.Database;
 
 
 import jakarta.Entities.Price;
-import jakarta.UseCases.PricesInputData;
+import jakarta.UseCases.PricesInput;
+import jakarta.annotation.ManagedBean;
 import jakarta.annotation.PostConstruct;
+import jakarta.annotation.Priority;
 import jakarta.ejb.Singleton;
 import jakarta.ejb.Startup;
+import jakarta.ejb.Stateless;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.Initialized;
+import jakarta.enterprise.event.Observes;
+import jakarta.enterprise.inject.Alternative;
+import jakarta.enterprise.inject.Any;
 import jakarta.inject.Inject;
 import jakarta.UseCases.StockDatabaseInterface;
 
@@ -17,15 +25,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 //I just have to inject database of stock which will be stored in a map.
 // Should accessor be singleton supports concurrency. Multiple databse access.
 // might have two seperate access for each priceDB orderDB
 // implement if stock symbol doesnt exist
 
-@Startup
-@Singleton
+@ApplicationScoped
 public class PriceDatabaseAccess implements StockDatabaseInterface {
     // might have problem with injecting request scope
 //    @Inject
@@ -38,7 +44,6 @@ public class PriceDatabaseAccess implements StockDatabaseInterface {
     // idk something with injection and concurrent hashmap
     private ConcurrentMap<String, BigDecimal> stocksPriceDB = new ConcurrentHashMap<>();
 
-    @PostConstruct
     public void init(){
         String url;
         try {
@@ -62,7 +67,7 @@ public class PriceDatabaseAccess implements StockDatabaseInterface {
                 i++;
             }
         }catch(SQLException e) {
-            System.out.println(e.getMessage());
+            throw new RuntimeException(e.getMessage());
         }
         self.fetchStockPrice(stocksPriceDB, stocks);
     }
@@ -70,7 +75,7 @@ public class PriceDatabaseAccess implements StockDatabaseInterface {
     // might have been a problem where i calling new Price which container didnt see so problem with
     // async method
     @Override
-    public ArrayList<Price> checkPrice(PricesInputData symbols) throws RuntimeException{
+    public ArrayList<Price> checkPrice(PricesInput symbols) throws RuntimeException{
 
         // dont know why changing getting map from singleton asynchronous works
         // should i create new exception
@@ -102,7 +107,7 @@ public class PriceDatabaseAccess implements StockDatabaseInterface {
     }
 
     @Override
-    public Price checkOrder(PricesInputData symbols) {
+    public Price checkOrder(PricesInput symbols) {
         return null;
     }
 }

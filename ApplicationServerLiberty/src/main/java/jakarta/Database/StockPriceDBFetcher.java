@@ -2,6 +2,7 @@ package jakarta.Database;
 
 import jakarta.ejb.Asynchronous;
 import jakarta.ejb.Singleton;
+import jakarta.enterprise.context.ApplicationScoped;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -11,7 +12,7 @@ import javax.naming.InitialContext;
 import java.util.List;
 import java.util.concurrent.ConcurrentMap;
 
-@Singleton
+@ApplicationScoped
 public class StockPriceDBFetcher {
 //    ConcurrentMap<String, BigDecimal> stocksPrice = new ConcurrentHashMap<>();
 //

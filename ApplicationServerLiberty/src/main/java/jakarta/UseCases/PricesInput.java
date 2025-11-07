@@ -3,13 +3,16 @@ package jakarta.UseCases;
 import jakarta.enterprise.context.RequestScoped;
 
 @RequestScoped
-public class PricesInputData {
+public class PricesInput {
     private String[] symbols;
 
-    public PricesInputData(){}
+    public PricesInput(){}
+
+    public PricesInput(String symbols){
+        setSymbols(symbols);
+    }
 
     public void setSymbols(String symbols) {
-        System.out.println(symbols);
         this.symbols = symbols.split(",");
     }
 

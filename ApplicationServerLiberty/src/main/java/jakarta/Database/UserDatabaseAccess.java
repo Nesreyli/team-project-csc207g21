@@ -25,8 +25,8 @@ public class UserDatabaseAccess implements UserDatabaseInterface {
     // throws exception
     // is entity really needed
     public boolean addUser(String username, String password){
-        String sql1 = "INSERT INTO user_record(username,password) VALUES(?,?)";
-        try(var conn = DriverManager.getConnection(url); var stmt = conn.prepareStatement(sql1)
+        String sql = "INSERT INTO user_record(username,password) VALUES(?,?)";
+        try(var conn = DriverManager.getConnection(url); var stmt = conn.prepareStatement(sql)
         ){
             stmt.setString(1, username);
             stmt.setString(2, password);
@@ -40,15 +40,12 @@ public class UserDatabaseAccess implements UserDatabaseInterface {
         return true;
     }
 
-    @Override
-    public void verifyUser(String username, String password) {
-    }
-
-    public int getUserID(String username){
-        String sql = "SELECT user_id,username FROM user_record WHERE username = ?";
+    public int getUserID(String username, String password){
+        String sql = "SELECT user_id,username FROM user_record WHERE username = ? AND password = ?";
         try(var conn = DriverManager.getConnection(url);
             var stmt = conn.prepareStatement(sql)){
             stmt.setString(1, username);
+            stmt.setString(2, password);
             var rs = stmt.executeQuery();
             if(conn != null) {
                 System.out.println(conn.getMetaData());
@@ -58,7 +55,7 @@ public class UserDatabaseAccess implements UserDatabaseInterface {
             }
 
         }catch(SQLException e) {
-            System.out.println(e.getMessage());
+            throw new RuntimeException(e.getMessage());
         }
         // return -1 or null or throw exception
         return -1;
