@@ -4,6 +4,7 @@ import jakarta.Entities.OrderTicket;
 import jakarta.Entities.User;
 import jakarta.UseCases.PortfolioDBInterface;
 import jakarta.UseCases.PricesInput;
+import jakarta.annotation.PostConstruct;
 import jakarta.ejb.EJB;
 import jakarta.ejb.Singleton;
 import jakarta.ejb.Startup;
@@ -36,6 +37,12 @@ public class PortfolioDatabaseAccess implements PortfolioDBInterface {
             throw new RuntimeException(e);
         }
     }
+
+    @PostConstruct
+    public void init(){
+        priceDB.init();
+    }
+
     //should put this logic in interactor
     public void newUser(int id){
         // 100000 USD. 100000 is 1 USD
@@ -57,76 +64,76 @@ public class PortfolioDatabaseAccess implements PortfolioDBInterface {
 
     @Override
     public OrderTicket buyStock(String symbol, int amount, int id) {
-        String sql = "SELECT USD FROM cash WHERE user_id = ?";
         long cash = 0;
         BigDecimal cost;
+        String sql = "SELECT USD FROM cash WHERE user_id = ?";
+        String uSymbol = uSymbol = String.valueOf(id) + "\\" + symbol;
+        long price = 0;
+        long totalPrice = 0;
+        BigDecimal usdAdjust = new BigDecimal(100000);
+
         try(var conn = DriverManager.getConnection(url);
-            var stmt = conn.prepareStatement(sql);
             ){
+            var stmt = conn.prepareStatement(sql);
             stmt.setInt(1, id);
             var result = stmt.executeQuery();
 
             if(result.next()){
                 cash = result.getLong("USD");
             }
-        }catch(SQLException e){
-            throw new RuntimeException(e.getMessage());
-        }
-        try{
             cost = priceDB.checkPrice(new PricesInput(symbol)).get(0).getPrice();
-        } catch (RuntimeException e) {
-            throw new RuntimeException(e);
-        }
-        long price = cost.movePointRight(5).setScale(0,BigDecimal.ROUND_CEILING).intValue();
-        long totalPrice = price * amount;
 
-        if(cash < totalPrice){
-            return null;
-        }
-        System.out.println(cash);
-        System.out.println(totalPrice);
-        cash -= totalPrice;
-        sql = "UPDATE cash SET USD = ?"
-                + " WHERE id = ?";
-        try(var conn = DriverManager.getConnection(url);
-            var stmt = conn.prepareStatement(sql);){
+            price = cost.movePointRight(5).setScale(0,BigDecimal.ROUND_CEILING).intValue();
+            totalPrice = price * amount;
+
+            if(cash < totalPrice){
+                return null;
+            }
+
+            result.close();
+            stmt.close();
+
+            cash -= totalPrice;
+            sql = "UPDATE cash SET USD = ?"
+                    + " WHERE id = ?";
+
+            stmt = conn.prepareStatement(sql);
             stmt.setLong(1, cash);
             stmt.setInt(2, id);
-            var result = stmt.executeUpdate();
+            stmt.executeUpdate();
+            stmt.close();
 
-        }catch(SQLException e){
-            throw new RuntimeException(e.getMessage());
-        }
-        sql = "INSERT INTO holdings(symbol,holdings) values(?,?)";
-        String sql2 = "UPDATE holdings SET holdings = holdings + ?" +
-                " WHERE symbol = ?";
+            sql = "INSERT INTO holdings(symbol,holdings) values(?,?)";
 
-        String uSymbol = String.valueOf(id) + "\\" + symbol;
-
-        try(var conn = DriverManager.getConnection(url);
-            var stmt = conn.prepareStatement(sql)){
+            stmt = conn.prepareStatement(sql);
             stmt.setString(1, uSymbol);
             stmt.setInt(2, amount);
-            System.out.println(stmt);
-
             stmt.executeUpdate();
+            stmt.close();
 
-        }catch(SQLException e){
+        } catch (SQLException e) {
+            // have to make sure this error code only happens when insert into holdings
+            //
             if(e.getErrorCode() == 19){
+                //automatically closes
+                sql = "UPDATE holdings SET holdings = holdings + ?" +
+                        " WHERE symbol = ?";
                 try(var conn = DriverManager.getConnection(url);
-                    var stmt2 = conn.prepareStatement(sql2)){
+                    var stmt2 = conn.prepareStatement(sql)){
                     stmt2.setInt(1, amount);
                     stmt2.setString(2, uSymbol);
                     stmt2.executeUpdate();
                 }catch(SQLException e2){
                     throw new RuntimeException(e2.getMessage());
                 }
-            }
-            else{
+            } else{
                 throw new RuntimeException(e.getMessage());
             }
         }
-        BigDecimal usdAdjust = new BigDecimal(100000);
+        //this exception catches if checkPrice doesnt work.
+        catch(RuntimeException e){
+            throw new RuntimeException(e.getMessage());
+        }
         return new OrderTicket('b', symbol, amount,(new BigDecimal(price)).divide(usdAdjust),
                 (new BigDecimal(totalPrice)).divide(usdAdjust));
     }

@@ -23,7 +23,12 @@ public class BuyInteractor {
         if(amount <= 0){
             return new OutputDataBuy("400");
         }
-        OrderTicket result = portfolioDB.buyStock(buyInput.getSymbol(), amount, userID);
+        OrderTicket result;
+        try{
+            result = portfolioDB.buyStock(buyInput.getSymbol(), amount, userID);
+        } catch (RuntimeException e) {
+            return new OutputDataBuy("500");
+        }
         if (result == null) {
             return new OutputDataBuy("400");
         }

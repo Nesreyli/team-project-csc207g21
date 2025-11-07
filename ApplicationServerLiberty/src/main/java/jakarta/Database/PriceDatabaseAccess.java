@@ -31,7 +31,6 @@ import java.util.concurrent.ConcurrentMap;
 // might have two seperate access for each priceDB orderDB
 // implement if stock symbol doesnt exist
 
-@Startup
 @ApplicationScoped
 public class PriceDatabaseAccess implements StockDatabaseInterface {
     // might have problem with injecting request scope
@@ -45,7 +44,6 @@ public class PriceDatabaseAccess implements StockDatabaseInterface {
     // idk something with injection and concurrent hashmap
     private ConcurrentMap<String, BigDecimal> stocksPriceDB = new ConcurrentHashMap<>();
 
-    @PostConstruct
     public void init(){
         String url;
         try {
@@ -69,7 +67,7 @@ public class PriceDatabaseAccess implements StockDatabaseInterface {
                 i++;
             }
         }catch(SQLException e) {
-            System.out.println(e.getMessage());
+            throw new RuntimeException(e.getMessage());
         }
         self.fetchStockPrice(stocksPriceDB, stocks);
     }

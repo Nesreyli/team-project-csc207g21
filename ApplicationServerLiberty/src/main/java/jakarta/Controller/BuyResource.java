@@ -31,7 +31,6 @@ public class BuyResource {
 
 
         var a = buyInteractor.executeMarketBuy(marketBuyInput);
-        System.out.println(a.getTotalPrice());
         return a;
     }
 }
