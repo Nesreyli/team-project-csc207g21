@@ -8,8 +8,11 @@ public class PricesInput {
 
     public PricesInput(){}
 
+    public PricesInput(String symbols){
+        setSymbols(symbols);
+    }
+
     public void setSymbols(String symbols) {
-        System.out.println(symbols);
         this.symbols = symbols.split(",");
     }
 
