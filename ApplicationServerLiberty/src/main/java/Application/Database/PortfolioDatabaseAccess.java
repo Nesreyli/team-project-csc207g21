@@ -1,23 +1,17 @@
 package jakarta.Database;
 
 import jakarta.Entities.OrderTicket;
-import jakarta.Entities.User;
 import jakarta.UseCases.PortfolioDBInterface;
-import jakarta.UseCases.PricesInput;
+import jakarta.UseCases.Price.PricesInput;
 import jakarta.annotation.PostConstruct;
-import jakarta.ejb.EJB;
 import jakarta.ejb.Singleton;
 import jakarta.ejb.Startup;
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.enterprise.inject.Any;
 import jakarta.inject.Inject;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 @Startup

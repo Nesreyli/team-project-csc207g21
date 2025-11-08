@@ -1,4 +1,4 @@
-package jakarta.UseCases;
+package jakarta.UseCases.User;
 
 import jakarta.enterprise.context.RequestScoped;
 

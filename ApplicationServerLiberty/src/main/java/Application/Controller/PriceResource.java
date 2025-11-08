@@ -1,8 +1,8 @@
 package jakarta.Controller;
 
-import jakarta.UseCases.OutputDataPrice;
-import jakarta.UseCases.PricesInput;
-import jakarta.UseCases.getPriceInteractor;
+import jakarta.UseCases.Price.OutputDataPrice;
+import jakarta.UseCases.Price.PricesInput;
+import jakarta.UseCases.Price.getPriceInteractor;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;

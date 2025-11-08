@@ -1,5 +1,6 @@
-package jakarta.UseCases;
+package jakarta.UseCases.User;
 
+import jakarta.UseCases.PortfolioDBInterface;
 import jakarta.ejb.Singleton;
 import jakarta.inject.Inject;
 

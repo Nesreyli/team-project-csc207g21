@@ -1,7 +1,8 @@
-package jakarta.UseCases;
+package jakarta.UseCases.Buy;
 
-import jakarta.Database.UserDatabaseAccess;
 import jakarta.Entities.OrderTicket;
+import jakarta.UseCases.PortfolioDBInterface;
+import jakarta.UseCases.User.UserDatabaseInterface;
 import jakarta.ejb.Singleton;
 import jakarta.inject.Inject;
 

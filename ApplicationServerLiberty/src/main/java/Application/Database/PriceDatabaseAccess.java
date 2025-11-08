@@ -2,20 +2,10 @@ package jakarta.Database;
 
 
 import jakarta.Entities.Price;
-import jakarta.UseCases.PricesInput;
-import jakarta.annotation.ManagedBean;
-import jakarta.annotation.PostConstruct;
-import jakarta.annotation.Priority;
-import jakarta.ejb.Singleton;
-import jakarta.ejb.Startup;
-import jakarta.ejb.Stateless;
+import jakarta.UseCases.Price.PricesInput;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.enterprise.context.Initialized;
-import jakarta.enterprise.event.Observes;
-import jakarta.enterprise.inject.Alternative;
-import jakarta.enterprise.inject.Any;
 import jakarta.inject.Inject;
-import jakarta.UseCases.StockDatabaseInterface;
+import jakarta.UseCases.Price.StockDatabaseInterface;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;

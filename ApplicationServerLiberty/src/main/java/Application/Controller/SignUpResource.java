@@ -1,7 +1,7 @@
 package jakarta.Controller;
 
-import jakarta.UseCases.OutputDataSignup;
-import jakarta.UseCases.SignUpInteractor;
+import jakarta.UseCases.User.OutputDataSignup;
+import jakarta.UseCases.User.SignUpInteractor;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;

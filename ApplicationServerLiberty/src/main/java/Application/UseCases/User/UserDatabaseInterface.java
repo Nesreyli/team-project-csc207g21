@@ -1,4 +1,4 @@
-package jakarta.UseCases;
+package jakarta.UseCases.User;
 
 public interface UserDatabaseInterface {
     boolean addUser(String username, String password);
