@@ -1,11 +1,12 @@
-package jakarta.Database;
+package Application.Database;
 
-import jakarta.Entities.OrderTicket;
-import jakarta.UseCases.PortfolioDBInterface;
-import jakarta.UseCases.Price.PricesInput;
+import Application.Entities.OrderTicket;
+import Application.UseCases.PortfolioDBInterface;
+import Application.UseCases.Price.PricesInput;
 import jakarta.annotation.PostConstruct;
 import jakarta.ejb.Singleton;
 import jakarta.ejb.Startup;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
 import javax.naming.InitialContext;
@@ -61,7 +62,7 @@ public class PortfolioDatabaseAccess implements PortfolioDBInterface {
         long cash = 0;
         BigDecimal cost;
         String sql = "SELECT USD FROM cash WHERE user_id = ?";
-        String uSymbol = uSymbol = String.valueOf(id) + "\\" + symbol;
+        String uSymbol = String.valueOf(id) + "\\" + symbol;
         long price = 0;
         long totalPrice = 0;
         BigDecimal usdAdjust = new BigDecimal(100000);
@@ -131,4 +132,65 @@ public class PortfolioDatabaseAccess implements PortfolioDBInterface {
         return new OrderTicket('b', symbol, amount,(new BigDecimal(price)).divide(usdAdjust),
                 (new BigDecimal(totalPrice)).divide(usdAdjust));
     }
+
+    @Override
+    public OrderTicket sellStock(String symbol, int amount, int id) {
+        BigDecimal cost;
+        String sql = "SELECT holdings FROM holdings WHERE symbol = ?";
+        String uSymbol = String.valueOf(id) + "\\" + symbol;
+        int holdAmount = 0;
+        long price = 0;
+        long totalPrice = 0;
+        BigDecimal usdAdjust = new BigDecimal(100000);
+
+        try(var conn = DriverManager.getConnection(url)){
+            var stmt = conn.prepareStatement(sql);
+            stmt.setString(1, uSymbol);
+            var result = stmt.executeQuery();
+
+            //symbol is unique so only need to do it once
+            if(result.next()){
+                holdAmount = result.getInt("holdings");
+            }
+            if(holdAmount < amount){
+                return null;
+            }
+
+            cost = priceDB.checkPrice(new PricesInput(symbol)).get(0).getPrice();
+            price = cost.movePointRight(5).setScale(0,BigDecimal.ROUND_CEILING).intValue();
+            totalPrice = price * amount;
+
+            result.close();
+            stmt.close();
+            holdAmount -= amount;
+
+            sql = "UPDATE cash SET USD = USD + ?"
+                    + " WHERE id = ?";
+
+            stmt = conn.prepareStatement(sql);
+            stmt.setLong(1, totalPrice);
+            stmt.setInt(2, id);
+            stmt.executeUpdate();
+            stmt.close();
+
+            sql = "UPDATE holdings SET holdings = ?"
+                    + " WHERE symbol = ?";
+
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, holdAmount);
+            stmt.setString(2, uSymbol);
+            stmt.executeUpdate();
+            stmt.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+        catch(RuntimeException e){
+            throw new RuntimeException(e.getMessage());
+        }
+        return new OrderTicket('s', symbol, amount,(new BigDecimal(price)).divide(usdAdjust),
+                (new BigDecimal(totalPrice)).divide(usdAdjust));
+    }
 }
+
+

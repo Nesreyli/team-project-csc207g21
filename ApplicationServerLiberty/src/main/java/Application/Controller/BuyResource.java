@@ -1,8 +1,8 @@
-package jakarta.Controller;
+package Application.Controller;
 
-import jakarta.UseCases.Buy.BuyInteractor;
-import jakarta.UseCases.Buy.MarketBuyInput;
-import jakarta.UseCases.Buy.OutputDataBuy;
+import Application.UseCases.Buy.BuyInteractor;
+import Application.UseCases.Buy.MarketBuyInput;
+import Application.UseCases.Buy.OutputDataBuy;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -29,7 +29,6 @@ public class BuyResource {
         marketBuyInput.setPassword(password);
 
 
-        var a = buyInteractor.executeMarketBuy(marketBuyInput);
-        return a;
+        return buyInteractor.executeMarketBuy(marketBuyInput);
     }
 }

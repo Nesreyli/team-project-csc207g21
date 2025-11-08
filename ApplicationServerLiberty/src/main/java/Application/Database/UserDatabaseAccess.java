@@ -1,6 +1,6 @@
-package jakarta.Database;
+package Application.Database;
 
-import jakarta.UseCases.User.UserDatabaseInterface;
+import Application.UseCases.User.UserDatabaseInterface;
 import jakarta.ejb.Singleton;
 import jakarta.ejb.Startup;
 

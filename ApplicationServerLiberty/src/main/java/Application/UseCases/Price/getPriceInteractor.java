@@ -1,8 +1,8 @@
-package jakarta.UseCases.Price;
+package Application.UseCases.Price;
 
 import jakarta.ejb.Singleton;
 import jakarta.inject.Inject;
-import jakarta.Entities.Price;
+import Application.Entities.Price;
 
 import java.util.ArrayList;
 
@@ -11,9 +11,9 @@ import java.util.ArrayList;
 public class getPriceInteractor {
     @Inject
     StockDatabaseInterface stockDB;
+
     public OutputDataPrice executePrice(PricesInput symbols) throws RuntimeException{
         ArrayList<Price> prices;
-
         try{
             prices = stockDB.checkPrice(symbols);
         } catch (RuntimeException e) {

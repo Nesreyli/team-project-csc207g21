@@ -1,4 +1,4 @@
-package jakarta.Entities;
+package Application.Entities;
 
 import jakarta.enterprise.context.RequestScoped;
 

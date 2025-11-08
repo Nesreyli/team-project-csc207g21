@@ -1,8 +1,8 @@
-package jakarta.Controller;
+package Application.Controller;
 
-import jakarta.UseCases.Price.OutputDataPrice;
-import jakarta.UseCases.Price.PricesInput;
-import jakarta.UseCases.Price.getPriceInteractor;
+import Application.UseCases.Price.OutputDataPrice;
+import Application.UseCases.Price.PricesInput;
+import Application.UseCases.Price.getPriceInteractor;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -26,7 +26,6 @@ public class PriceResource {
         if (symbols == null) {
             symbols = "";
         }
-        System.out.println(symbols);
         priceInput.setSymbols(symbols);
         // interact through interface
         return priceInteractor.executePrice(priceInput);

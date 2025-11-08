@@ -1,4 +1,4 @@
-package jakarta.Entities;
+package Application.Entities;
 
 public class User {
     private String username;

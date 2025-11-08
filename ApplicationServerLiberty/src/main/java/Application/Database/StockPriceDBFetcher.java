@@ -1,4 +1,4 @@
-package jakarta.Database;
+package Application.Database;
 
 import jakarta.ejb.Asynchronous;
 import jakarta.ejb.Singleton;
@@ -12,7 +12,7 @@ import javax.naming.InitialContext;
 import java.util.List;
 import java.util.concurrent.ConcurrentMap;
 
-@ApplicationScoped
+@Singleton
 public class StockPriceDBFetcher {
 //    ConcurrentMap<String, BigDecimal> stocksPrice = new ConcurrentHashMap<>();
 //

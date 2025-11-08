@@ -1,11 +1,12 @@
-package jakarta.Database;
+package Application.Database;
 
 
-import jakarta.Entities.Price;
-import jakarta.UseCases.Price.PricesInput;
+import Application.Entities.Price;
+import Application.UseCases.Price.PricesInput;
+import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.UseCases.Price.StockDatabaseInterface;
+import Application.UseCases.Price.StockDatabaseInterface;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -88,10 +89,6 @@ public class PriceDatabaseAccess implements StockDatabaseInterface {
             stockPrice.setPrice(stocksPriceDB.get(s[i]));
 
             prices.add(i, stockPrice);
-            // there could be problem here with hashmap not being concurrent. as db updates it.
-            //not thread safe
-//        stockPrice.setPrice(stocksPriceDB.stocksPrice.get(symbol));
-//        System.out.println(stocksPriceDB.stocksPrice.get(symbol));
         }
         return prices;
     }

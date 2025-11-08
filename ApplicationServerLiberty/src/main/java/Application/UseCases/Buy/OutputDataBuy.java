@@ -1,4 +1,4 @@
-package jakarta.UseCases.Buy;
+package Application.UseCases.Buy;
 
 import jakarta.enterprise.context.RequestScoped;
 
@@ -9,15 +9,15 @@ public class OutputDataBuy {
     private String message;
     private Character order;
     private String symbol;
-    private int amount;
+    private Integer amount;
     private BigDecimal price;
     private BigDecimal totalPrice;
 
     public OutputDataBuy(){}
     public OutputDataBuy(String m){
-        this(m,null,null, 0,null,null);
+        this(m,null,null, null,null,null);
     }
-    public OutputDataBuy(String m, Character o, String s, int n,
+    public OutputDataBuy(String m, Character o, String s, Integer n,
                          BigDecimal p, BigDecimal tp){
         message = m;
         order = o;
@@ -39,7 +39,7 @@ public class OutputDataBuy {
         return symbol;
     }
 
-    public int getAmount() {
+    public Integer getAmount() {
         return amount;
     }
 

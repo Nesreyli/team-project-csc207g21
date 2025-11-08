@@ -1,4 +1,4 @@
-package jakarta.UseCases.User;
+package Application.UseCases.User;
 
 import jakarta.enterprise.context.RequestScoped;
 
@@ -6,6 +6,7 @@ import jakarta.enterprise.context.RequestScoped;
 public class OutputDataSignup {
     String message;
     String username;
+    public OutputDataSignup(){}
 
     public OutputDataSignup(String m, String name){
         message = m;

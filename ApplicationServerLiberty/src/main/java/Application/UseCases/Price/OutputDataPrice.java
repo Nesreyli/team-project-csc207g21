@@ -1,6 +1,6 @@
-package jakarta.UseCases.Price;
+package Application.UseCases.Price;
 
-import jakarta.Entities.Price;
+import Application.Entities.Price;
 import jakarta.enterprise.context.RequestScoped;
 
 import java.math.BigDecimal;
