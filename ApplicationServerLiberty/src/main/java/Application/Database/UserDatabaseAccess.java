@@ -40,7 +40,7 @@ public class UserDatabaseAccess implements UserDatabaseInterface {
         return true;
     }
 
-    public int getUserID(String username, String password){
+    public Integer getUserID(String username, String password){
         String sql = "SELECT user_id,username FROM user_record WHERE username = ? AND password = ?";
         try(var conn = DriverManager.getConnection(url);
             var stmt = conn.prepareStatement(sql)){
@@ -53,11 +53,12 @@ public class UserDatabaseAccess implements UserDatabaseInterface {
             if(rs.next()){
                 return rs.getInt("user_id");
             }
-
+            else{
+                return null;
+            }
         }catch(SQLException e) {
             throw new RuntimeException(e.getMessage());
         }
         // return -1 or null or throw exception
-        return -1;
     }
 }

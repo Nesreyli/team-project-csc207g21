@@ -1,5 +1,6 @@
 package Application.UseCases.User;
 
+import Application.UseCases.Buy.OutputDataBuy;
 import Application.UseCases.PortfolioDBInterface;
 import jakarta.ejb.Singleton;
 import jakarta.inject.Inject;
@@ -25,5 +26,16 @@ public class SignUpInteractor {
             }
         }
         return new OutputDataSignup("400", null);
+    }
+
+    public OutputDataSignup executeLogin(String username, String password) {
+        try{
+            if(usersDB.getUserID(username, password) == null){
+                return new OutputDataSignup("400", null);
+            }
+        } catch (RuntimeException e) {
+            return new OutputDataSignup("400", null);
+        }
+        return new OutputDataSignup("200", username);
     }
 }

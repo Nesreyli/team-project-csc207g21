@@ -7,7 +7,7 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 
 @Path("/user")
-public class SignUpResource {
+public class UserResource {
 
     @Inject
     SignUpInteractor signUp;
@@ -28,8 +28,22 @@ public class SignUpResource {
         if(password2 == null){
             password2 = "";
         }
-        System.out.println(username + password + password2);
         return signUp.executeSignup(username, password, password2);
+
+    }
+
+    @Path("/login")
+    @GET
+    @Produces({MediaType.APPLICATION_JSON})
+    public OutputDataSignup userSignUp(@DefaultValue("") @QueryParam("username") String username,
+                                       @DefaultValue("") @QueryParam("password") String password){
+        if(username == null){
+            username = "";
+        }
+        if(password == null) {
+            password = "";
+        }
+        return signUp.executeLogin(username, password);
 
     }
 }
