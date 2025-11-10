@@ -1,7 +1,6 @@
 package Application.UseCases.User;
 
-import Application.UseCases.Buy.OutputDataBuy;
-import Application.UseCases.PortfolioDBInterface;
+import Application.UseCases.Portfolio.PortfolioDBInterface;
 import jakarta.ejb.Singleton;
 import jakarta.inject.Inject;
 
