@@ -98,11 +98,12 @@ public class PortfolioDatabaseAccess implements PortfolioDBInterface {
             stmt.executeUpdate();
             stmt.close();
 
-            sql = "INSERT INTO holdings(symbol,holdings) values(?,?)";
+            sql = "INSERT INTO holdings(user_id,symbol,holdings) values(?,?,?)";
 
             stmt = conn.prepareStatement(sql);
-            stmt.setString(1, uSymbol);
-            stmt.setInt(2, amount);
+            stmt.setInt(1, id);
+            stmt.setString(2, uSymbol);
+            stmt.setInt(3, amount);
             stmt.executeUpdate();
             stmt.close();
 
