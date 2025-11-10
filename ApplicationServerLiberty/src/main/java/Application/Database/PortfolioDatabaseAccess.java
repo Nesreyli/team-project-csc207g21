@@ -1,19 +1,22 @@
 package Application.Database;
 
 import Application.Entities.OrderTicket;
-import Application.UseCases.PortfolioDBInterface;
+import Application.Entities.Portfolio;
+import Application.UseCases.Portfolio.PortfolioDBInterface;
 import Application.UseCases.Price.PricesInput;
 import jakarta.annotation.PostConstruct;
 import jakarta.ejb.Singleton;
 import jakarta.ejb.Startup;
-import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import java.math.BigDecimal;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 @Startup
 @Singleton
@@ -98,11 +101,12 @@ public class PortfolioDatabaseAccess implements PortfolioDBInterface {
             stmt.executeUpdate();
             stmt.close();
 
-            sql = "INSERT INTO holdings(symbol,holdings) values(?,?)";
+            sql = "INSERT INTO holdings(user_id,symbol,holdings) values(?,?,?)";
 
             stmt = conn.prepareStatement(sql);
-            stmt.setString(1, uSymbol);
-            stmt.setInt(2, amount);
+            stmt.setInt(1, id);
+            stmt.setString(2, uSymbol);
+            stmt.setInt(3, amount);
             stmt.executeUpdate();
             stmt.close();
 
@@ -190,6 +194,44 @@ public class PortfolioDatabaseAccess implements PortfolioDBInterface {
         }
         return new OrderTicket('s', symbol, amount,(new BigDecimal(price)).divide(usdAdjust),
                 (new BigDecimal(totalPrice)).divide(usdAdjust));
+    }
+
+    public Portfolio getPortfolio(int user_id){
+        String sql = "SELECT usd FROM cash WHERE user_id = ?";
+        BigDecimal usdAdjust = new BigDecimal(100000);
+        long cash = 0;
+        long value = 0;
+        Map<String, Integer> holdings = new HashMap<>();
+
+        try(var conn = DriverManager.getConnection(url)){
+            var stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, user_id);
+            ResultSet result = stmt.executeQuery();
+            if(result.next()){
+                cash = result.getLong("USD");
+                value += cash;
+            }
+            result.close();
+            stmt.close();
+
+            sql = "SELECT symbol,holdings FROM holdings WHERE user_id = ?";
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, user_id);
+            result = stmt.executeQuery();
+            while(result.next()){
+                String symbol = result.getString(1).split("\\\\")[1];
+                int amount = result.getInt(2);
+
+                BigDecimal cost = priceDB.checkPrice(new PricesInput(symbol)).get(0).getPrice();
+                long price = cost.movePointRight(5).setScale(0,BigDecimal.ROUND_CEILING).intValue();
+                value += price * amount;
+
+                holdings.put(symbol, amount);
+            }
+        }catch(SQLException e){
+            throw new RuntimeException(e.getMessage());
+        }
+        return new Portfolio(cash, holdings, value);
     }
 }
 

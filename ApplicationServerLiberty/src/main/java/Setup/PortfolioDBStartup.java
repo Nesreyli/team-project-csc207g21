@@ -15,8 +15,8 @@ public class PortfolioDBStartup {
 
     static {
         //Put url
-        DBurl = "";
-        companyUrl = "";
+        DBurl = "jdbc:sqlite:/Users/myounghoonkim/Programming/Projects/207/team-project-csc207g21/ApplicationServerLiberty/portfolios.db";
+        companyUrl = "/Users/myounghoonkim/Programming/Projects/207/team-project-csc207g21/ApplicationServerLiberty/CompaniesMarketCap.com.csv";
     }
     public static void createUserTable(){
         String sql = "CREATE TABLE IF NOT EXISTS user_record ("
@@ -39,6 +39,7 @@ public class PortfolioDBStartup {
         String sql = "CREATE TABLE IF NOT EXISTS holdings ("
                 + " id integer PRIMARY KEY,"
                 // have user id and symbol as 1\AAPL. user 1's AAPL
+                + " user_id integer,"
                 + " symbol text UNIQUE,"
                 + " holdings integer"
                 + ");";

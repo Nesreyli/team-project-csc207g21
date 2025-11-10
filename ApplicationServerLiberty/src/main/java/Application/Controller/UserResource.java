@@ -19,15 +19,6 @@ public class UserResource {
     public OutputDataSignup userSignUp(@DefaultValue("") @QueryParam("username") String username,
                                        @DefaultValue("") @QueryParam("password") String password,
                                        @DefaultValue("") @QueryParam("password2") String password2){
-        if(username == null){
-            username = "";
-        }
-        if(password == null){
-            password = "";
-        }
-        if(password2 == null){
-            password2 = "";
-        }
         return signUp.executeSignup(username, password, password2);
 
     }
@@ -35,14 +26,8 @@ public class UserResource {
     @Path("/login")
     @GET
     @Produces({MediaType.APPLICATION_JSON})
-    public OutputDataSignup userSignUp(@DefaultValue("") @QueryParam("username") String username,
+    public OutputDataSignup userLogin(@DefaultValue("") @QueryParam("username") String username,
                                        @DefaultValue("") @QueryParam("password") String password){
-        if(username == null){
-            username = "";
-        }
-        if(password == null) {
-            password = "";
-        }
         return signUp.executeLogin(username, password);
 
     }

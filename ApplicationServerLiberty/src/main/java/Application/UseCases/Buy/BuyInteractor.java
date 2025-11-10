@@ -1,7 +1,7 @@
 package Application.UseCases.Buy;
 
 import Application.Entities.OrderTicket;
-import Application.UseCases.PortfolioDBInterface;
+import Application.UseCases.Portfolio.PortfolioDBInterface;
 import Application.UseCases.User.UserDatabaseInterface;
 import jakarta.ejb.Singleton;
 import jakarta.inject.Inject;
