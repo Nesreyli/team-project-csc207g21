@@ -70,8 +70,7 @@ public class StockPriceDBFetcher {
             // mabye dont use while true
             while (true) {
                 System.out.println(Thread.currentThread());
-                System.out.println(stocksPrice);
-                System.out.print("Async method running");
+                System.out.print("Async method price fetcher running");
                 Response response = client.newCall(request).execute();
                 JSONObject priceResponse = (new JSONObject(response.body().string())).getJSONObject("bars");
                 response.body().close();

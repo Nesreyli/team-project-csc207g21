@@ -7,6 +7,7 @@ import Application.UseCases.Price.PricesInput;
 import jakarta.annotation.PostConstruct;
 import jakarta.ejb.Singleton;
 import jakarta.ejb.Startup;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
 import javax.naming.InitialContext;
@@ -18,8 +19,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-@Startup
-@Singleton
+@ApplicationScoped
 public class PortfolioDatabaseAccess implements PortfolioDBInterface {
     // does database access have too much logic involved.
     // doesnt work with inject for some reason
@@ -34,11 +34,6 @@ public class PortfolioDatabaseAccess implements PortfolioDBInterface {
         } catch (NamingException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    @PostConstruct
-    public void init(){
-        priceDB.init();
     }
 
     //should put this logic in interactor
