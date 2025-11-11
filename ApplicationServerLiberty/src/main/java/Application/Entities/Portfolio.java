@@ -2,6 +2,8 @@ package Application.Entities;
 
 import jakarta.enterprise.context.RequestScoped;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Map;
 
 @RequestScoped

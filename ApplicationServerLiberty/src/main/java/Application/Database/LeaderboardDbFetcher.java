@@ -3,6 +3,7 @@ package Application.Database;
 import jakarta.annotation.PostConstruct;
 import jakarta.ejb.Asynchronous;
 import jakarta.ejb.Singleton;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ public class LeaderboardDbFetcher {
 
     // main thing is when leaderboard is updating previous leaderboard should be sent
     @Asynchronous
-    public void fetchLeaderboard(ConcurrentMap<Integer, String> leaderboard){
+    public void fetchLeaderboard(ConcurrentMap<Integer, String> leaderboard, ConcurrentMap<String, Long> valuations){
         while(true){
             // this works but eventually due to race condition its gonna handle request while
             // leaderboard map is updating ..
@@ -34,9 +35,7 @@ public class LeaderboardDbFetcher {
                     usersVal = new ArrayList<String>();
                 }
                 usersVal.add(users.get(id));
-                System.out.println(usersVal);
                 portfolioValues.put(portDB.getPortfolio(id).getValue(), usersVal);
-                System.out.println(portfolioValues);
             }
             Long value;
             int i = 1;
@@ -50,13 +49,14 @@ public class LeaderboardDbFetcher {
                 int j = 0;
                 while(j < usersVal.size() && i <= 10){
                     leaderboard.put(i, usersVal.get(j));
+                    valuations.put(usersVal.get(j), value);
                     j++;
                     i++;
                 }
                 portfolioValues.pollLastEntry();
             }
-            System.out.println("Async Method Leaderboard fetch working");
             System.out.println(Thread.currentThread());
+            System.out.println("Async Method Leaderboard fetch working");
             try {
                 Thread.sleep(60000);
             } catch (InterruptedException e) {

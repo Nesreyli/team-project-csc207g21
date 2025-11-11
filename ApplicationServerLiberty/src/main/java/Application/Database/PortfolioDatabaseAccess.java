@@ -191,6 +191,7 @@ public class PortfolioDatabaseAccess implements PortfolioDBInterface {
                 (new BigDecimal(totalPrice)).divide(usdAdjust));
     }
 
+    @Override
     public Portfolio getPortfolio(int user_id){
         String sql = "SELECT usd FROM cash WHERE user_id = ?";
         BigDecimal usdAdjust = new BigDecimal(100000);
