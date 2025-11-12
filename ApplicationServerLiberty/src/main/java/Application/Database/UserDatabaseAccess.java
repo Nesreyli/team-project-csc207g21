@@ -3,14 +3,18 @@ package Application.Database;
 import Application.UseCases.User.UserDatabaseInterface;
 import jakarta.ejb.Singleton;
 import jakarta.ejb.Startup;
+import jakarta.enterprise.context.ApplicationScoped;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-@Startup
-@Singleton
+@ApplicationScoped
 public class UserDatabaseAccess implements UserDatabaseInterface {
     private String url;
     {
@@ -60,5 +64,23 @@ public class UserDatabaseAccess implements UserDatabaseInterface {
             throw new RuntimeException(e.getMessage());
         }
         // return -1 or null or throw exception
+    }
+
+    public Map<Integer, String> getUserIDs(){
+        HashMap<Integer, String> userIDs = new HashMap<>();
+        String sql = "SELECT user_id,username FROM user_record";
+        try(var conn = DriverManager.getConnection(url);
+            var stmt = conn.createStatement()){
+            var rs = stmt.executeQuery(sql);
+            if(conn != null) {
+                System.out.println(conn.getMetaData());
+            }
+            while(rs.next()){
+                userIDs.put(rs.getInt(1), rs.getString(2));
+            }
+        }catch(SQLException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+        return userIDs;
     }
 }

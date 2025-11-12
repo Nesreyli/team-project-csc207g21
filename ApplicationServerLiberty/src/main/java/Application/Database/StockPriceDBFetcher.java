@@ -14,34 +14,6 @@ import java.util.concurrent.ConcurrentMap;
 
 @Singleton
 public class StockPriceDBFetcher {
-//    ConcurrentMap<String, BigDecimal> stocksPrice = new ConcurrentHashMap<>();
-//
-//    @Inject
-//    StockPriceDBFetcher self;
-//
-//    @PostConstruct
-//    public void init(){
-//        String url = "url";
-//        String sql = "SELECT symbol FROM stocks_list";
-//        List<String> stocks = new ArrayList<>(200);
-//        try(Connection conn = DriverManager.getConnection(url);
-//            Statement stmt = conn.createStatement();
-//            ResultSet rs = stmt.executeQuery(sql)){
-//            if(conn != null) {
-//                System.out.println(conn.getMetaData());
-//            }
-//            int i = 0;
-//            while(rs.next() && i < 200){
-//                // the problem with concurrent map was putting null
-//                stocksPrice.put(rs.getString(1), new BigDecimal(-1));
-//                stocks.add(i, rs.getString(1));
-//                i++;
-//            }
-//        }catch(SQLException e) {
-//            System.out.println(e.getMessage());
-//        }
-//        self.fetchStockPrice(stocks);
-//    }
 
     @Asynchronous
     public void fetchStockPrice(ConcurrentMap stocksPrice, List<String> listStocks){
@@ -70,8 +42,7 @@ public class StockPriceDBFetcher {
             // mabye dont use while true
             while (true) {
                 System.out.println(Thread.currentThread());
-                System.out.println(stocksPrice);
-                System.out.print("Async method running");
+                System.out.print("Async method price fetcher running");
                 Response response = client.newCall(request).execute();
                 JSONObject priceResponse = (new JSONObject(response.body().string())).getJSONObject("bars");
                 response.body().close();

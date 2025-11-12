@@ -2,15 +2,17 @@ package Application.UseCases.Portfolio;
 
 import jakarta.enterprise.context.RequestScoped;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Map;
 
 @RequestScoped
 public class OutputPortfolio {
     private String message;
     private String username;
-    private Long cash;
+    private BigDecimal cash;
     private Map<String, Integer> holdings;
-    private Long value;
+    private BigDecimal value;
 
     public OutputPortfolio(){};
 
@@ -21,9 +23,10 @@ public class OutputPortfolio {
     public OutputPortfolio(String m, String u, long c, Map<String, Integer> h, long v){
         message = m;
         username = u;
-        cash = c;
+        // okay to assume rounding mode unnecessary as it depends on entity storing 100000 as 1 dollar in long int.
+        cash = new BigDecimal(c).divide(new BigDecimal(100000), 5, RoundingMode.UNNECESSARY);
         holdings = h;
-        value = v;
+        value = new BigDecimal(v).divide(new BigDecimal(100000), 5, RoundingMode.UNNECESSARY);
     }
 
     public String getMessage() {
@@ -34,7 +37,7 @@ public class OutputPortfolio {
         return username;
     }
 
-    public Long getCash() {
+    public BigDecimal getCash() {
         return cash;
     }
 
@@ -42,7 +45,7 @@ public class OutputPortfolio {
         return holdings;
     }
 
-    public Long getValue() {
+    public BigDecimal getValue() {
         return value;
     }
 }
