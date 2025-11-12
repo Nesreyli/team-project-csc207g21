@@ -13,6 +13,7 @@ public class OutputPortfolio {
     private BigDecimal cash;
     private Map<String, Integer> holdings;
     private BigDecimal value;
+    private BigDecimal performance;
 
     public OutputPortfolio(){};
 
@@ -20,13 +21,14 @@ public class OutputPortfolio {
         message = m;
     }
 
-    public OutputPortfolio(String m, String u, long c, Map<String, Integer> h, long v){
+    public OutputPortfolio(String m, String u, long c, Map<String, Integer> h, long v, BigDecimal p){
         message = m;
         username = u;
         // okay to assume rounding mode unnecessary as it depends on entity storing 100000 as 1 dollar in long int.
         cash = new BigDecimal(c).divide(new BigDecimal(100000), 5, RoundingMode.UNNECESSARY);
         holdings = h;
         value = new BigDecimal(v).divide(new BigDecimal(100000), 5, RoundingMode.UNNECESSARY);
+        performance = p;
     }
 
     public String getMessage() {
@@ -47,5 +49,9 @@ public class OutputPortfolio {
 
     public BigDecimal getValue() {
         return value;
+    }
+
+    public BigDecimal getPerformance() {
+        return performance;
     }
 }

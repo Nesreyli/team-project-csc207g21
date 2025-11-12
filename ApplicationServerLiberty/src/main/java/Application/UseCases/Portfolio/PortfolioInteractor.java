@@ -23,7 +23,8 @@ public class PortfolioInteractor {
             }
             Portfolio p = portDB.getPortfolio(userID);
 
-            return new OutputPortfolio("200", username, p.getCash(), p.getHoldings(), p.getValue());
+            return new OutputPortfolio("200", username, p.getCash(), p.getHoldings(),
+                    p.getValue(), p.getPerformance());
 
         } catch (RuntimeException e) {
             return new OutputPortfolio("500");

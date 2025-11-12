@@ -13,6 +13,7 @@ import jakarta.inject.Inject;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -227,7 +228,10 @@ public class PortfolioDatabaseAccess implements PortfolioDBInterface {
         }catch(SQLException e){
             throw new RuntimeException(e.getMessage());
         }
-        return new Portfolio(cash, holdings, value);
+        BigDecimal performance = new BigDecimal(value - 10000000000L).
+                divide(new BigDecimal(100000000L), 2, RoundingMode.CEILING);
+
+        return new Portfolio(cash, holdings, value, performance);
     }
 }
 
