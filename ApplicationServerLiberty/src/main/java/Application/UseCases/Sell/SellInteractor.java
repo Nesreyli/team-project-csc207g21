@@ -19,16 +19,16 @@ public class SellInteractor {
             userID = userDB.getUserID(sellInput.getUsername(),sellInput.getPassword());
             amount = Integer.parseInt(sellInput.getAmount());
         } catch (RuntimeException e) {
-            return new OutputDataSell("400");
+            return new OutputDataSell("401");
         }
         if(amount <= 0){
-            return new OutputDataSell("400");
+            return new OutputDataSell("401");
         }
         OrderTicket result;
         try{
             result = portfolioDB.sellStock(sellInput.getSymbol(), amount, userID);
         } catch (RuntimeException e) {
-            return new OutputDataSell("400");
+            return new OutputDataSell("500");
         }
         if (result == null) {
             return new OutputDataSell("400");

@@ -21,10 +21,13 @@ public class SignUpInteractor {
                     System.out.println(e.getMessage());
                     return new OutputDataSignup("500", null);
                 }
-                return new OutputDataSignup("201", username);
+                return new OutputDataSignup("200", username);
             }
+            //user already exists
+            return new OutputDataSignup("400", null);
         }
-        return new OutputDataSignup("400", null);
+        //password too short
+        return new OutputDataSignup("401", null);
     }
 
     public OutputDataSignup executeLogin(String username, String password) {
@@ -33,7 +36,7 @@ public class SignUpInteractor {
                 return new OutputDataSignup("400", null);
             }
         } catch (RuntimeException e) {
-            return new OutputDataSignup("400", null);
+            return new OutputDataSignup("500", null);
         }
         return new OutputDataSignup("200", username);
     }

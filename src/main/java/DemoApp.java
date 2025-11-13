@@ -10,11 +10,11 @@ public class DemoApp {
 
     public static void main(String[] args) throws IOException {
         OkHttpClient client = new OkHttpClient.Builder().build();
-        String url = "http://100.67.8.245:4848/rest/stocks/price/?symbols=";
+        String url = "http://100.71.5.98:4848/rest/stocks/price/?symbols=";
         Request request = new Request.Builder().
                 url(url + "AAPL").
                 get().
-                addHeader("accept", "application/json").
+                addHeader("Content-Type", "application/json").
                 build();
         Response response;
 
