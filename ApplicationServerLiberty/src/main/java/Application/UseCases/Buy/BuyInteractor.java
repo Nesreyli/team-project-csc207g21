@@ -19,10 +19,10 @@ public class BuyInteractor {
             userID = userDB.getUserID(buyInput.getUsername(),buyInput.getPassword());
             amount = Integer.parseInt(buyInput.getAmount());
         } catch (RuntimeException e) {
-            return new OutputDataBuy("400");
+            return new OutputDataBuy("401");
         }
         if(amount <= 0){
-            return new OutputDataBuy("400");
+            return new OutputDataBuy("401");
         }
         OrderTicket result;
         try{
