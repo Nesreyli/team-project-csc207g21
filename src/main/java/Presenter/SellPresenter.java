@@ -1,4 +1,4 @@
-package Application.Presenter;
+package Presenter;
 
 import Application.UseCases.Sell.OutputDataSell;
 
