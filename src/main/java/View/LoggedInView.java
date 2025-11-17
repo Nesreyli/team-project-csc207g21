@@ -44,6 +44,7 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
         final JPanel buttons = new JPanel();
         logOut = new JButton("Log Out");
         buttons.add(logOut);
+        buttons.setBackground(Color.LIGHT_GRAY);
 
 //        changePassword = new JButton("Change Password");
 //        buttons.add(changePassword);
@@ -73,14 +74,14 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
 //                documentListenerHelper();
 //            }
 //        });
-
-
+        this.setAlignmentX(1.0f);
         this.add(usernameInfo);
         this.add(username);
-
+        this.setBackground(Color.LIGHT_GRAY);
 //        this.add(passwordInfo);
 //        this.add(passwordErrorField);
         this.add(buttons, BorderLayout.CENTER);
+
 
     }
 
