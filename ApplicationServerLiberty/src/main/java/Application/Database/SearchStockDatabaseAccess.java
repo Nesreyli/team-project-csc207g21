@@ -143,7 +143,7 @@ public class SearchStockDatabaseAccess implements SearchStockDatabaseInterface {
                         stocks.add(new Stock(
                                 symbol,
                                 name != null ? name : symbol,
-                                BigDecimal.valueOf(price.doubleValue()),
+                                price,
                                 "United States"
                         ));
                     }
@@ -154,7 +154,7 @@ public class SearchStockDatabaseAccess implements SearchStockDatabaseInterface {
                         stocks.add(new Stock(
                                 symbol,
                                 symbolToName.get(symbol),
-                                BigDecimal.valueOf(0.0),
+                                BigDecimal.ZERO,
                                 "United States"
                         ));
                     }
