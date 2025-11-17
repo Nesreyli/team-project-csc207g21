@@ -10,6 +10,11 @@ import jakarta.ws.rs.core.MediaType;
 public class NewsFeedResource {
     @Inject
     private NewsFeedInteractor interactor;
+
+    public NewsFeedResource(NewsFeedInteractor interactor) {
+        this.interactor = interactor;
+    }
+
     @GET
     @Path("/get")
     @Produces({MediaType.APPLICATION_JSON})
