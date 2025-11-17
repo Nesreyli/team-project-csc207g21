@@ -6,6 +6,7 @@ import Application.UseCases.Price.PricesInput;
 import Application.UseCases.Stock_Search.SearchStockDatabaseInterface;
 import jakarta.ejb.Singleton;
 import jakarta.ejb.Startup;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
 import javax.naming.InitialContext;
@@ -18,8 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Startup
-@Singleton
+@ApplicationScoped
 public class SearchStockDatabaseAccess implements SearchStockDatabaseInterface {
 
     @Inject
