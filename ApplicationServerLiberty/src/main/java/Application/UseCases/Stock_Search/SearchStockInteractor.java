@@ -56,7 +56,7 @@ public class SearchStockInteractor {
     }
 
     private boolean matchesQuery(Stock stock, String query) {
-        return stock.getName().toLowerCase().contains(query) ||
+        return stock.getCompany().toLowerCase().contains(query) ||
                 stock.getSymbol().toLowerCase().contains(query);
     }
 }

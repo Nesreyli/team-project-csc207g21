@@ -4,10 +4,10 @@ import Application.Entities.Price;
 import Application.Entities.Stock;
 import Application.UseCases.Price.PricesInput;
 import Application.UseCases.Stock_Search.SearchStockDatabaseInterface;
-import jakarta.ejb.Singleton;
-import jakarta.ejb.Startup;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import java.math.BigDecimal;
+
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -75,7 +75,7 @@ public class SearchStockDatabaseAccess implements SearchStockDatabaseInterface {
                             stocks.add(new Stock(
                                     symbol,
                                     name != null ? name : symbol,
-                                    price.doubleValue(),
+                                    price,
                                     "United States"
                             ));
                         }
@@ -87,7 +87,7 @@ public class SearchStockDatabaseAccess implements SearchStockDatabaseInterface {
                         stocks.add(new Stock(
                                 symbol,
                                 symbolToName.get(symbol),
-                                0.0,
+                                BigDecimal.ZERO,
                                 "United States"
                         ));
                     }
@@ -143,7 +143,7 @@ public class SearchStockDatabaseAccess implements SearchStockDatabaseInterface {
                         stocks.add(new Stock(
                                 symbol,
                                 name != null ? name : symbol,
-                                price.doubleValue(),
+                                price,
                                 "United States"
                         ));
                     }
@@ -154,7 +154,7 @@ public class SearchStockDatabaseAccess implements SearchStockDatabaseInterface {
                         stocks.add(new Stock(
                                 symbol,
                                 symbolToName.get(symbol),
-                                0.0,
+                                BigDecimal.ZERO,
                                 "United States"
                         ));
                     }
