@@ -4,7 +4,6 @@ import Application.UseCases.Leaderboard.OutputLeaderboard;
 import java.util.Map;
 import java.util.List;
 
-@Singleton
 public class LeaderboardPresenter {
     public String retrieveTopUsers (OutputLeaderboard olb, Integer n) {
         Map<Integer, List<Object>> leaderboard = olb.getLeaderboard();

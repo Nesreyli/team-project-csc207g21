@@ -6,7 +6,6 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Map;
 
-@Singleton
 public class PortfolioPresenter {
     public String retrieveHoldings (OutputPortfolio op) {
         Map<String,Integer> holdings = op.getHoldings();
