@@ -8,4 +8,6 @@ public interface StockDatabaseInterface {
     Price checkOrder(PricesInput symbols);
 
     ArrayList<Price> checkPrice(PricesInput symbols) throws RuntimeException;
+
+    public ArrayList<Price> checkOpen(PricesInput symbols);
 }

@@ -10,25 +10,18 @@ import org.json.JSONObject;
 
 import javax.naming.InitialContext;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
 
-@Singleton
-public class StockPriceDBFetcher {
+@ApplicationScoped
+public class OpenPriceDBFetcher {
 
-    @Asynchronous
-    public void fetchStockPrice(ConcurrentMap stocksPrice, List<String> listStocks){
-        UrlBuild alpacaPriceUrl = new UrlBuild() {
-            @Override
-            public String buildUrl(String url, List<String> stocks, String feed) {
-                String dataUrl = url + "?symbols=" + String.join("%2C", stocks);
-                dataUrl = dataUrl + "&feed=" + feed;
-                return dataUrl;
-            }
-        };
+    public void fetchOpenPrice(Map stocksPrice, List<String> listStocks) {
+
         try {
             OkHttpClient client = new OkHttpClient.Builder().build();
-            String url = alpacaPriceUrl.buildUrl("https://data.alpaca.markets/v2/stocks/bars/latest",
-                    listStocks, "iex");
+            String url = "https://data.alpaca.markets/v2/stocks/bars?symbols=" + String.join("%2C", listStocks) +
+                    "&timeframe=23H&start=2025-01-01T00%3A00%3A00Z&end=2025-01-02T00%3A01%3A00Z&limit=200&adjustment=all&feed=sip&sort=asc";
             Request request = new Request.Builder().
                     url(url).
                     get().
@@ -40,9 +33,7 @@ public class StockPriceDBFetcher {
             //i already used the symbol in map to call it.
             // needs to be efficient
             // mabye dont use while true
-            while (true) {
-                System.out.println(Thread.currentThread());
-                System.out.print("Async method price fetcher running");
+
                 Response response = client.newCall(request).execute();
                 JSONObject priceResponse = (new JSONObject(response.body().string())).getJSONObject("bars");
                 response.body().close();
@@ -51,14 +42,11 @@ public class StockPriceDBFetcher {
                 for (String stock : priceResponse.keySet()) {
 //                    BigDecimal price = (BigDecimal) ((HashMap)stocks.get(stock)).get("vw");
 //                    setStocksPrice(stock, price.movePointRight(2).intValueExact());
-                    stocksPrice.put(stock, priceResponse.getJSONObject(stock).getBigDecimal("vw"));
+                    stocksPrice.put(stock, priceResponse.getJSONArray(stock).
+                            getJSONObject(0).getBigDecimal("vw"));
                 }
-                //every 10 second should be fine honestly
-                Thread.sleep(20000);
-            }
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(e.getMessage());
         }
     }
 }
-

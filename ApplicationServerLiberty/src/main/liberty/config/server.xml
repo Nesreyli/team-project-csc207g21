@@ -1,0 +1,16 @@
+<server description="defaultServer">
+    <featureManager>
+        <feature>jakartaee-9.1</feature>
+        <feature>jndi-1.0</feature>
+    </featureManager>
+    <basicRegistry id="defaultBasicRegistry" realm="BasicRealm">
+        <user name="username" password="password" />
+    </basicRegistry>
+    <keyStore id="defaultKeyStore" password="password" />
+    <httpEndpoint id="defaultHttpEndpoint" host="*" httpPort="4848" httpsPort="9443" />
+    <webApplication location="ApplicationServerLiberty.war" contextRoot="/"/>
+    <jndiEntry jndiName="alpacaAPIKey" value="PKFJL6BBXG8PNHL422KU" />
+    <jndiEntry jndiName="alpacaSecretKey" value="0xp8EGJfABZpESZnnKOoR8aX9E6gnF5PRggPvtFB" />
+    <jndiEntry jndiName="JDBCsqlPortfolio" value="jdbc:sqlite:/Users/myounghoonkim/Programming/Projects/207/team-project-csc207g21/ApplicationServerLiberty/portfolios.db" />
+    <jndiEntry jndiName="CompaniesCSV" value="/Users/myounghoonkim/Programming/Projects/207/team-project-csc207g21/ApplicationServerLiberty/CompaniesMarketCap.com.csv" />
+</server>
