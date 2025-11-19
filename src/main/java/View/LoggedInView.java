@@ -4,14 +4,18 @@ import InterfaceAdapter.logged_in.LoggedInState;
 import InterfaceAdapter.logged_in.LoggedInViewModel;
 import InterfaceAdapter.logout.LogoutController;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * The View for when the user is logged into the program.
@@ -75,14 +79,18 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
 //            }
 //        });
         this.setAlignmentX(1.0f);
-        this.add(usernameInfo);
-        this.add(username);
+
+        JPanel user = new JPanel();
+        user.add(usernameInfo);
+        user.add(username);
+        user.setLayout(new BoxLayout(user, BoxLayout.X_AXIS));
+        user.setBackground(Color.LIGHT_GRAY);
+        this.add(user);
         this.setBackground(Color.LIGHT_GRAY);
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 //        this.add(passwordInfo);
 //        this.add(passwordErrorField);
         this.add(buttons, BorderLayout.CENTER);
-
-
     }
 
     /**
