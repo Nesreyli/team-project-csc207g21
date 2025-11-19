@@ -2,6 +2,7 @@ package DataAccess;
 
 import Entity.User;
 import Entity.UserFactory;
+import UseCase.UserAccessInterface;
 import okhttp3.*;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,7 +21,7 @@ LoginUserDataAccessInterface,
 ChangePasswordUserDataAccessInterface,
 LogoutUserDataAccessInterface*/
 
-public class DBUserDataAccessObject {
+public class DBUserDataAccessObject implements UserAccessInterface {
     private static final int SUCCESS_CODE = 200;
     private static final String CONTENT_TYPE_LABEL = "Content-Type";
     private static final String CONTENT_TYPE_JSON = "application/json";
@@ -29,7 +30,7 @@ public class DBUserDataAccessObject {
     private static final String PASSWORD = "password";
     private static final String MESSAGE = "message";
     private final UserFactory userFactory;
-    private final String url = "http://100.67.8.245:4848/rest";
+    private final String url = "http://100.71.14.57:4848/rest";
 
     private String currentUsername;
 
@@ -37,7 +38,7 @@ public class DBUserDataAccessObject {
         this.userFactory = userFactory;
     }
 
-    public User logIn(String username, String password) {
+    public Entity.Response logIn(String username, String password) {
         // Make an API call to get the user object.
         final OkHttpClient client = new OkHttpClient().newBuilder().build();
         final Request request = new Request.Builder()
@@ -48,15 +49,13 @@ public class DBUserDataAccessObject {
             final Response response = client.newCall(request).execute();
 
             final JSONObject responseBody = new JSONObject(response.body().string());
-
-            if (responseBody.getInt(MESSAGE) == 201) {
-                final JSONObject userJSONObject = responseBody.getJSONObject("user");
-                final String name = userJSONObject.getString(USERNAME);
+            if (responseBody.getInt(MESSAGE) == SUCCESS_CODE) {
+                final String name = responseBody.getString("username");
                 final String pass = password;
-                return userFactory.create(name, pass);
+                return Entity.ResponseFactory.create(SUCCESS_CODE, userFactory.create(name, pass));
             }
             else {
-                return null;
+                return Entity.ResponseFactory.create(responseBody.getInt(MESSAGE), null);
             }
         }
         catch (IOException | JSONException ex) {
@@ -64,33 +63,29 @@ public class DBUserDataAccessObject {
         }
     }
 
-    public void signUp(User user) {
+    public Entity.Response signUp(String username, String password) {
         final OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
 
         // POST METHOD
-        final MediaType mediaType = MediaType.parse(CONTENT_TYPE_JSON);
-        final JSONObject requestBody = new JSONObject();
-        requestBody.put(USERNAME, user.getName());
-        requestBody.put(PASSWORD, user.getPassword());
-        final RequestBody body = RequestBody.create(requestBody.toString(), mediaType);
         final Request request = new Request.Builder()
-                .url("http://vm003.teach.cs.toronto.edu:20112/user")
-                .method("POST", body)
-                .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
+                .url(String.format(url + "/user/signup/?username=%s&password=%s&password2=%s",
+                        username, password, password))
+                .addHeader("Content-Type", CONTENT_TYPE_JSON)
                 .build();
         try {
             final Response response = client.newCall(request).execute();
-            final JSONObject responseBody = new JSONObject(response.body().string());
 
-            if (responseBody.getInt(STATUS_CODE_LABEL) == SUCCESS_CODE) {
-                // success!
+            final JSONObject responseBody = new JSONObject(response.body().string());
+            if (responseBody.getInt(MESSAGE) == SUCCESS_CODE) {
+                final JSONObject userJSONObject = responseBody.getJSONObject("user");
+                final String name = userJSONObject.getString(USERNAME);
+                final String pass = password;
+                return Entity.ResponseFactory.create(SUCCESS_CODE, userFactory.create(name, pass));
+            } else {
+                return Entity.ResponseFactory.create(responseBody.getInt(MESSAGE), null);
             }
-            else {
-                throw new RuntimeException(responseBody.getString(MESSAGE));
-            }
-        }
-        catch (IOException | JSONException ex) {
+        } catch (IOException | JSONException ex) {
             throw new RuntimeException(ex);
         }
     }
