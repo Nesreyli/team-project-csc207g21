@@ -3,6 +3,7 @@ package Application.Entities;
 import jakarta.enterprise.context.RequestScoped;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 // rn this is what gets sent to controller instead of output class so..
 //im not sure about this creating new object everytime there is new price.
 // could make this a bean then i would have to fix new Price on DBaccess
@@ -36,7 +37,7 @@ public class Price {
     }
 
     public void setPrice(BigDecimal p){
-        if(true){
+        if(p.intValue()>=0){
             price = p;
         }
         else{
