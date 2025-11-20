@@ -1,5 +1,6 @@
 package View;
 
+import InterfaceAdapter.logged_in.LoggedInState;
 import InterfaceAdapter.portfolio.PortfolioState;
 import InterfaceAdapter.portfolio.PortfolioViewModel;
 
@@ -14,7 +15,7 @@ import java.util.Map;
 public class PortfolioView extends JPanel implements ActionListener, PropertyChangeListener {
     private final String viewName = "portfolio";
     private final PortfolioViewModel portfolioViewModel;
-    private final JLabel username;
+    private final JButton username;
     private final JLabel value;
     private final JLabel cash;
     private final JLabel performance;
@@ -25,7 +26,7 @@ public class PortfolioView extends JPanel implements ActionListener, PropertyCha
         this.portfolioViewModel.addPropertyChangeListener(this);
 
         final JLabel user = new JLabel("Portfolio: ");
-        username = new JLabel();
+        username = new JButton();
         value = new JLabel();
         cash = new JLabel();
         performance = new JLabel();
@@ -75,8 +76,18 @@ public class PortfolioView extends JPanel implements ActionListener, PropertyCha
         this.setBackground(Color.LIGHT_GRAY);
     }
 
+    // Action listener for home button
     public void actionPerformed(ActionEvent evt) {
+        if (evt.getSource().equals(username)) {
+            final PortfolioState currentState = portfolioViewModel.getState();
+
+            // portfolioController.execute(
+                    currentState.getUsername(),
+                    currentState.getPassword()
+            );
+        }
     }
+
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().equals("state")) {
