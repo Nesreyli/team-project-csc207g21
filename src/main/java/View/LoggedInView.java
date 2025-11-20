@@ -2,7 +2,10 @@ package View;
 
 import InterfaceAdapter.logged_in.LoggedInState;
 import InterfaceAdapter.logged_in.LoggedInViewModel;
+import InterfaceAdapter.login.LoginController;
+import InterfaceAdapter.login.LoginState;
 import InterfaceAdapter.logout.LogoutController;
+import InterfaceAdapter.portfolio.PortfolioController;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -29,7 +32,9 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
 
     private final JLabel username;
 
-    private final JButton logOut;
+    private final JButton portfolio;
+
+    private PortfolioController portfolioController;
 
 //    private final JTextField passwordInputField = new JTextField(15);
 //    private final JButton changePassword;
@@ -46,14 +51,26 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
         username = new JLabel();
 
         final JPanel buttons = new JPanel();
-        logOut = new JButton("Log Out");
-        buttons.add(logOut);
+        portfolio = new JButton("Portfolio");
+        buttons.add(portfolio);
         buttons.setBackground(Color.LIGHT_GRAY);
 
 //        changePassword = new JButton("Change Password");
 //        buttons.add(changePassword);
 //
-        logOut.addActionListener(this);
+        portfolio.addActionListener(
+                new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                if (evt.getSource().equals(portfolio)) {
+                    final LoggedInState currentState = loggedInViewModel.getState();
+
+                    portfolioController.portExecute(
+                            currentState.getUsername(),
+                            currentState.getPassword()
+                    );
+                }
+            }
+        });
 //
 //        passwordInputField.getDocument().addDocumentListener(new DocumentListener() {
 //
@@ -123,7 +140,7 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
         return viewName;
     }
 
-    public void setLogoutController(LogoutController logoutController) {
-        this.logoutController = logoutController;
+    public void setPortfolioController(PortfolioController portfolioController) {
+        this.portfolioController = portfolioController;
     }
 }

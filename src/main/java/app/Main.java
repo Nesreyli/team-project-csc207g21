@@ -9,6 +9,8 @@ public class Main {
                 .addLoginView()
                 .addLoggedInView()
                 .addLoginUseCase()
+                .addPortfolioView()
+                .addPortfolioUseCase()
                 .build();
 
         application.pack();

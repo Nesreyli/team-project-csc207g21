@@ -116,9 +116,9 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
                 documentListenerHelper();
             }
         });
-
         this.add(title);
         this.add(usernameInfo);
+        usernameErrorField.setAlignmentX(Component.CENTER_ALIGNMENT);
         this.add(usernameErrorField);
         this.add(passwordInfo);
         this.add(buttons);

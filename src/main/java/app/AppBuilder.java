@@ -1,17 +1,25 @@
 package app;
 
 import DataAccess.DBUserDataAccessObject;
+import DataAccess.PortfolioAccessObject;
 import Entity.UserFactory;
 import InterfaceAdapter.ViewManagerModel;
+import InterfaceAdapter.logged_in.LoggedInPresenter;
 import InterfaceAdapter.logged_in.LoggedInViewModel;
 import InterfaceAdapter.login.LoginController;
 import InterfaceAdapter.login.LoginPresenter;
 import InterfaceAdapter.login.LoginViewModel;
+import InterfaceAdapter.portfolio.PortfolioController;
+import InterfaceAdapter.portfolio.PortfolioViewModel;
 import UseCase.Login.LoginInputBoundary;
 import UseCase.Login.LogInInteractor;
 import UseCase.Login.LoginOutputBoundary;
+import UseCase.portfolio.PortfolioInputBoundary;
+import UseCase.portfolio.PortfolioInteractor;
+import UseCase.portfolio.PortfolioOutputBoundary;
 import View.LoggedInView;
 import View.LoginView;
+import View.PortfolioView;
 import View.ViewManager;
 
 import javax.swing.*;
@@ -30,11 +38,14 @@ public class AppBuilder {
     // DAO version using local file storage
     // DAO version using a shared external database
     final DBUserDataAccessObject userDataAccessObject = new DBUserDataAccessObject(userFactory);
+    final PortfolioAccessObject portfolioAccessObject = new PortfolioAccessObject();
 
     private LoginViewModel loginViewModel;
     private LoggedInViewModel loggedInViewModel;
     private LoggedInView loggedInView;
     private LoginView loginView;
+    private PortfolioView portView;
+    private PortfolioViewModel portViewModel;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -66,6 +77,24 @@ public class AppBuilder {
         return this;
     }
 
+    public AppBuilder addPortfolioView(){
+        portViewModel = new PortfolioViewModel();
+        portView = new PortfolioView(portViewModel);
+        cardPanel.add(portView, portViewModel.getViewName());
+        return this;
+    }
+
+    public AppBuilder addPortfolioUseCase(){
+        final PortfolioOutputBoundary portfolioOutputBoundary = new LoggedInPresenter(viewManagerModel,
+                portViewModel, loggedInViewModel);
+        final PortfolioInputBoundary portfolioInputBoundary = new PortfolioInteractor(
+                portfolioAccessObject, portfolioOutputBoundary);
+
+        PortfolioController portfolioController = new PortfolioController(portfolioInputBoundary);
+        loggedInView.setPortfolioController(portfolioController);
+        return this;
+    }
+
     /**
      * Adds the Logout Use Case to the application.
      * @return this builder
@@ -84,7 +113,7 @@ public class AppBuilder {
 
     public JFrame build() {
         final JFrame application = new JFrame("Panic Trade");
-        application.setSize(960, 540);
+        application.setMinimumSize(new Dimension(540,360));
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         application.add(cardPanel);
