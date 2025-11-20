@@ -1,5 +1,5 @@
 package UseCase.homebutton;
 
 public interface HomeInputBoundary {
-    public void execute();
+    public void execute(String username, String password);
 }

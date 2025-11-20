@@ -17,7 +17,7 @@ public class HomeController {
     /**
      * Executes the Logout Use Case.
      */
-    public void execute() {
-        homeInteractor.execute();
+    public void execute(String username, String password) {
+        homeInteractor.execute(username, password);
     }
 }

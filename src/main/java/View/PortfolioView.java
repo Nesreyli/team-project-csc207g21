@@ -1,5 +1,6 @@
 package View;
 
+import InterfaceAdapter.homebutton.HomeController;
 import InterfaceAdapter.logged_in.LoggedInState;
 import InterfaceAdapter.portfolio.PortfolioState;
 import InterfaceAdapter.portfolio.PortfolioViewModel;
@@ -20,6 +21,8 @@ public class PortfolioView extends JPanel implements ActionListener, PropertyCha
     private final JLabel cash;
     private final JLabel performance;
     private final JPanel holdings;
+
+    private HomeController homeController;
 
     public PortfolioView(PortfolioViewModel portfolioViewModel){
         this.portfolioViewModel = portfolioViewModel;
@@ -80,8 +83,7 @@ public class PortfolioView extends JPanel implements ActionListener, PropertyCha
     public void actionPerformed(ActionEvent evt) {
         if (evt.getSource().equals(username)) {
             final PortfolioState currentState = portfolioViewModel.getState();
-
-            // portfolioController.execute(
+            homeController.execute(
                     currentState.getUsername(),
                     currentState.getPassword()
             );
@@ -126,5 +128,9 @@ public class PortfolioView extends JPanel implements ActionListener, PropertyCha
     }
     public String getViewName() {
         return viewName;
+    }
+
+    public void setHomeController(HomeController homecontroller) {
+        this.homeController = homecontroller;
     }
 }
