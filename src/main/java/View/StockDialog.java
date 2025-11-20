@@ -1,11 +1,15 @@
 package View;
 
+import InterfaceAdapter.stock.StockController;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class StockDialog extends JDialog {
-    public StockDialog(Frame frame, boolean isBuy, String stockName, String stockDetails, Double stockPrice, Integer balance) {
+    public StockDialog(Frame frame, boolean isBuy, String stockName, String stockDetails, Double stockPrice, Double balance) {
         super(frame, "Stock Trading", true);
+
+        StockController stockController = new StockController();
 
         String keyword;
         if (isBuy) {
@@ -83,6 +87,7 @@ public class StockDialog extends JDialog {
         okButton.addActionListener(e -> {
             if (isBuy && Integer.parseInt(field.getText()) * stockPrice <= balance) {
                 // Buy success
+                stockController.buyStock(stockName, field.getText());
                 System.out.println("Purchase");
                 dispose();
             } else if (isBuy) {
@@ -92,6 +97,7 @@ public class StockDialog extends JDialog {
                         JOptionPane.ERROR_MESSAGE);
             } else {
                 // Sell success
+                stockController.sellStock(stockName, field.getText());
                 System.out.println("Sale");
                 dispose();
             }

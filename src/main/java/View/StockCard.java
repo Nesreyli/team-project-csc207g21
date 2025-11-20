@@ -1,5 +1,10 @@
 package View;
 
+import InterfaceAdapter.portfolio.PortfolioViewModel;
+import InterfaceAdapter.stock.StockController;
+import InterfaceAdapter.stock.StockState;
+import InterfaceAdapter.stock.StockViewModel;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,13 +13,24 @@ public class StockCard {
 
     public static JPanel initStockCard(JFrame frame) {
 
-        // Retrieve Information
-        String stockName = "Amazon";
-        String stockDetails = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do " +
-                "eiusmod tempor incididunt ut labore et dolore magna aliqua.";
-        Double stockPrice = 22.2;
-        Integer balance = 500;
-        Integer ownedStock = 1;
+        // Call controller to set information in view model
+        StockController stockController = new StockController();
+        String currentSymbol = "AMZN"; // Change this once I find a way to grab the current symbol from search
+        stockController.fetchStockInfo(currentSymbol);
+        stockController.fetchBalance();
+
+        // Retrieve stock information
+        StockViewModel stockViewModel = new StockViewModel();
+        StockState currentState = stockViewModel.getState();
+
+        String stockName = currentState.getStockName();
+        String stockDetails = currentState.getStockDetails();
+        Double stockPrice = currentState.getStockPrice();
+        Integer ownedStock = currentState.getOwnedStock();
+
+        // Retrieve portfolio information
+        PortfolioViewModel portfolioViewModel = new PortfolioViewModel();
+        Double balance = portfolioViewModel.getState().getBalance();
 
         // Stock Information
         JPanel infoPanel = new JPanel();

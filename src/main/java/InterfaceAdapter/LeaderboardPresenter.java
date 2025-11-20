@@ -1,4 +1,4 @@
-package Presenter;
+package InterfaceAdapter;
 
 import Application.UseCases.Leaderboard.OutputLeaderboard;
 import java.util.Map;
