@@ -20,7 +20,7 @@ public class PortfolioView extends JPanel implements ActionListener, PropertyCha
     private final JLabel value;
     private final JLabel cash;
     private final JLabel performance;
-    private final JPanel holdings;
+    private JPanel holdings;
 
     private HomeController homeController;
 
@@ -107,8 +107,10 @@ public class PortfolioView extends JPanel implements ActionListener, PropertyCha
             else{
                 performance.setForeground(Color.RED.darker());
             }
-            Map<String, Object> positions = state.getHoldings();
 
+            Map<String, Object> positions = state.getHoldings();
+            // without remove all this thing just stacks again again again has memory of previous inputs.
+            holdings.removeAll();
             for(String symbol: positions.keySet()){
                 JPanel owning = new JPanel();
                 owning.add(new JLabel(symbol));
