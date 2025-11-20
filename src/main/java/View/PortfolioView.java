@@ -58,13 +58,23 @@ public class PortfolioView extends JPanel implements ActionListener, PropertyCha
         holdings.setBackground(Color.LIGHT_GRAY);
         holdings.add(new JLabel("Positions:"));
         holdings.setLayout(new BoxLayout(holdings, BoxLayout.Y_AXIS));
+        JScrollPane positions = new JScrollPane(holdings);
+        positions.setBackground(Color.LIGHT_GRAY);
 
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        this.add(portUser);
-        this.add(perf);
-        this.add(val);
-        this.add(userCash);
-        this.add(holdings);
+        JPanel box = new JPanel();
+        box.setBackground(Color.LIGHT_GRAY.brighter());
+
+        portUser.setLayout(new FlowLayout(FlowLayout.LEFT));
+
+        box.add(portUser);
+        box.add(perf);
+        box.add(val);
+        box.add(userCash);
+        box.setLayout(new BoxLayout(box, BoxLayout.Y_AXIS));
+
+        this.setLayout(new GridLayout(1,2));
+        this.add(box);
+        this.add(positions);
         this.setBackground(Color.LIGHT_GRAY);
     }
 

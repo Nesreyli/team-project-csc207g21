@@ -33,7 +33,7 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
     private final JLabel username;
 
     private final JButton portfolio;
-
+//    private final JPanel image;
     private PortfolioController portfolioController;
 
 //    private final JTextField passwordInputField = new JTextField(15);
@@ -54,6 +54,7 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
         portfolio = new JButton("Portfolio");
         buttons.add(portfolio);
         buttons.setBackground(Color.LIGHT_GRAY);
+//        image = new JPanel();
 
 //        changePassword = new JButton("Change Password");
 //        buttons.add(changePassword);
@@ -105,9 +106,11 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
         this.add(user);
         this.setBackground(Color.LIGHT_GRAY);
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-//        this.add(passwordInfo);
-//        this.add(passwordErrorField);
         this.add(buttons, BorderLayout.CENTER);
+//        JLabel pic = new JLabel(new ImageIcon(Toolkit.getDefaultToolkit().getImage("Image/buffet1.png")));
+//        pic.setPreferredSize(new Dimension(130,100));
+//        image.add(pic);
+//        this.add(image);
     }
 
     /**
