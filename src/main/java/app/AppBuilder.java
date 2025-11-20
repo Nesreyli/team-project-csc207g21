@@ -9,7 +9,7 @@ import InterfaceAdapter.logged_in.LoggedInViewModel;
 import InterfaceAdapter.login.LoginController;
 import InterfaceAdapter.login.LoginPresenter;
 import InterfaceAdapter.login.LoginViewModel;
-import InterfaceAdapter.portfolio.PortfolioController;
+import InterfaceAdapter.logged_in.LoggedInController;
 import InterfaceAdapter.portfolio.PortfolioViewModel;
 import UseCase.Login.LoginInputBoundary;
 import UseCase.Login.LogInInteractor;
@@ -90,8 +90,8 @@ public class AppBuilder {
         final PortfolioInputBoundary portfolioInputBoundary = new PortfolioInteractor(
                 portfolioAccessObject, portfolioOutputBoundary);
 
-        PortfolioController portfolioController = new PortfolioController(portfolioInputBoundary);
-        loggedInView.setPortfolioController(portfolioController);
+        LoggedInController loggedInController = new LoggedInController(portfolioInputBoundary);
+        loggedInView.setPortfolioController(loggedInController);
         return this;
     }
 

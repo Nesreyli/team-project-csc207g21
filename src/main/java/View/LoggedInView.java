@@ -2,23 +2,15 @@ package View;
 
 import InterfaceAdapter.logged_in.LoggedInState;
 import InterfaceAdapter.logged_in.LoggedInViewModel;
-import InterfaceAdapter.login.LoginController;
-import InterfaceAdapter.login.LoginState;
 import InterfaceAdapter.logout.LogoutController;
-import InterfaceAdapter.portfolio.PortfolioController;
+import InterfaceAdapter.logged_in.LoggedInController;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.File;
-import java.io.IOException;
 
 /**
  * The View for when the user is logged into the program.
@@ -34,7 +26,7 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
 
     private final JButton portfolio;
 //    private final JPanel image;
-    private PortfolioController portfolioController;
+    private LoggedInController loggedInController;
 
 //    private final JTextField passwordInputField = new JTextField(15);
 //    private final JButton changePassword;
@@ -65,7 +57,7 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
                 if (evt.getSource().equals(portfolio)) {
                     final LoggedInState currentState = loggedInViewModel.getState();
 
-                    portfolioController.portExecute(
+                    loggedInController.portExecute(
                             currentState.getUsername(),
                             currentState.getPassword()
                     );
@@ -143,7 +135,7 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
         return viewName;
     }
 
-    public void setPortfolioController(PortfolioController portfolioController) {
-        this.portfolioController = portfolioController;
+    public void setPortfolioController(LoggedInController loggedInController) {
+        this.loggedInController = loggedInController;
     }
 }

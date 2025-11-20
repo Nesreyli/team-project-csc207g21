@@ -19,13 +19,13 @@ public class PortfolioInteractor implements PortfolioInputBoundary{
             case 200:
                 PortfolioOutputData portOutputData =
                         PortfolioOutputDataFactory.create((Portfolio) response.getEntity());
-                portfolioOutput.prepareSuccessView(portOutputData);
+                portfolioOutput.preparePortSuccessView(portOutputData);
                 break;
             case 400:
-                portfolioOutput.prepareFailView("Incorrect username or password.");
+                portfolioOutput.preparePortFailView("Incorrect username or password.");
                 break;
             case 500:
-                portfolioOutput.prepareFailView("Server Error");
+                portfolioOutput.preparePortFailView("Server Error");
                 break;
             default:
                 throw new RuntimeException();

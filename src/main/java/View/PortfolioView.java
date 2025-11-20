@@ -1,10 +1,7 @@
 package View;
 
-import InterfaceAdapter.logged_in.LoggedInState;
-import InterfaceAdapter.portfolio.PortfolioController;
 import InterfaceAdapter.portfolio.PortfolioState;
 import InterfaceAdapter.portfolio.PortfolioViewModel;
-import org.intellij.lang.annotations.Flow;
 
 import javax.swing.*;
 import java.awt.*;
