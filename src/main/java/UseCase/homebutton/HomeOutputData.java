@@ -8,4 +8,13 @@ public class HomeOutputData {
         username = u;
         password = p;
     }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
 }

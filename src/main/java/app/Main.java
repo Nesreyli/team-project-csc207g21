@@ -11,6 +11,7 @@ public class Main {
                 .addLoginUseCase()
                 .addPortfolioView()
                 .addPortfolioUseCase()
+                .addHomeUseCase()
                 .build();
 
         application.pack();

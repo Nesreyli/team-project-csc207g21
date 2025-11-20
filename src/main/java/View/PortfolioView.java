@@ -35,6 +35,8 @@ public class PortfolioView extends JPanel implements ActionListener, PropertyCha
         performance = new JLabel();
         holdings = new JPanel();
 
+        username.addActionListener(this::actionPerformed);
+
         JPanel portUser = new JPanel();
         JPanel perf = new JPanel();
         JPanel userCash = new JPanel();

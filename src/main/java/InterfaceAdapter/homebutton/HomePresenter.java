@@ -22,11 +22,10 @@ public class HomePresenter implements HomeOutputBoundary {
 
     @Override
     public void prepareSuccessview(HomeOutputData output) {
-        PortfolioState portfolioState = portViewModel.getState();
 
         LoggedInState loggedInState = loggedViewModel.getState();
-        loggedInState.setUsername(portfolioState.getUsername());
-        loggedInState.setPassword(portfolioState.getPassword());
+        loggedInState.setUsername(output.getUsername());
+        loggedInState.setPassword(output.getPassword());
         loggedViewModel.firePropertyChange();
 
         portViewModel.setState(new PortfolioState());
