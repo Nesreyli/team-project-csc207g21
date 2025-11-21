@@ -14,3 +14,4 @@ public class NewsArticle {
     public String getContent() { return content; }
     public String getNews_url() { return news_url; }
 }
+//

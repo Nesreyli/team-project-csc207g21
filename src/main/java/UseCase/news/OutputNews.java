@@ -1,6 +1,5 @@
 package UseCase.news;
 import java.util.List;
-
 public class OutputNews {
     private List<NewsArticle> articles;
 

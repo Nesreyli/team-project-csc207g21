@@ -11,7 +11,6 @@ import jakarta.ws.rs.core.Response;
 public class NewsFeedResource {
     @Inject
     private NewsFeedInteractor interactor;
-
     @GET
     @Path("/get")
     @Produces({MediaType.APPLICATION_JSON})

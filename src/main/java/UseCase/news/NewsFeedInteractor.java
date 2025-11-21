@@ -2,7 +2,6 @@ package UseCase.news;
 import DataAccess.NewsApi;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-
 import java.util.List;
 
 @ApplicationScoped
