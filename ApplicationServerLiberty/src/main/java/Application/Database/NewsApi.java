@@ -1,5 +1,6 @@
-package DataAccess;
-import UseCase.news.NewsArticle;
+package Application.Database;
+import Application.Entities.NewsArticle;
+import Application.UseCases.news.NewsDBInterface;
 import jakarta.enterprise.context.ApplicationScoped;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -11,7 +12,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 @ApplicationScoped
-public class NewsApi {
+public class NewsApi implements NewsDBInterface {
     private static final String API_KEY = "f8df4a9810d546f689a4a9f9b76cf470";
 
     public List<NewsArticle> fetchNews() {
@@ -26,11 +27,6 @@ public class NewsApi {
                     .build();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-            if (response.statusCode() != 200) {
-                System.err.println("Failed : HTTP error code : " + response.statusCode());
-                return articles;
-            }
-
             JSONObject root = new JSONObject(response.body());
             JSONArray newsArray = root.getJSONArray("articles");
             int limit = Math.min(5, newsArray.length());
@@ -39,15 +35,18 @@ public class NewsApi {
                 for (int i = 0; i < limit; i++) {
                     JSONObject obj = newsArray.getJSONObject(i);
                     String title = obj.getString("title");
-                    String content = obj.getString("content");
+                    String author = obj.getString("author");
+                    String content = obj.getString("description");
+                    String date = obj.getString("publishedAt");
                     String news_url = obj.getString("url");
-                    articles.add(new NewsArticle(title, content, news_url));
+                    String urlImage = obj.getString("urlToImage");
+                    articles.add(new NewsArticle(title, content, news_url, author, date, urlImage));
                 }
             } else {
-                System.out.println("HTTP error " + response.statusCode());
+                throw new RuntimeException();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
         return articles;
