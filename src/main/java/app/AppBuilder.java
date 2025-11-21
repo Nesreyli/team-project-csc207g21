@@ -4,16 +4,21 @@ import DataAccess.DBUserDataAccessObject;
 import DataAccess.PortfolioAccessObject;
 import Entity.UserFactory;
 import InterfaceAdapter.ViewManagerModel;
+import InterfaceAdapter.homebutton.HomeController;
+import InterfaceAdapter.homebutton.HomePresenter;
 import InterfaceAdapter.logged_in.LoggedInPresenter;
 import InterfaceAdapter.logged_in.LoggedInViewModel;
 import InterfaceAdapter.login.LoginController;
 import InterfaceAdapter.login.LoginPresenter;
 import InterfaceAdapter.login.LoginViewModel;
-import InterfaceAdapter.portfolio.PortfolioController;
+import InterfaceAdapter.logged_in.LoggedInController;
 import InterfaceAdapter.portfolio.PortfolioViewModel;
 import UseCase.Login.LoginInputBoundary;
 import UseCase.Login.LogInInteractor;
 import UseCase.Login.LoginOutputBoundary;
+import UseCase.homebutton.HomeInputBoundary;
+import UseCase.homebutton.HomeInteractor;
+import UseCase.homebutton.HomeOutputBoundary;
 import UseCase.portfolio.PortfolioInputBoundary;
 import UseCase.portfolio.PortfolioInteractor;
 import UseCase.portfolio.PortfolioOutputBoundary;
@@ -90,8 +95,18 @@ public class AppBuilder {
         final PortfolioInputBoundary portfolioInputBoundary = new PortfolioInteractor(
                 portfolioAccessObject, portfolioOutputBoundary);
 
-        PortfolioController portfolioController = new PortfolioController(portfolioInputBoundary);
-        loggedInView.setPortfolioController(portfolioController);
+        LoggedInController loggedInController = new LoggedInController(portfolioInputBoundary);
+        loggedInView.setPortfolioController(loggedInController);
+        return this;
+    }
+
+    public AppBuilder addHomeUseCase() {
+        final HomeOutputBoundary homeOutputBoundary = new HomePresenter(portViewModel,
+                viewManagerModel, loggedInViewModel);
+        final HomeInputBoundary homeInputBoundary = new HomeInteractor(homeOutputBoundary);
+
+        HomeController homeController = new HomeController(homeInputBoundary);
+        portView.setHomeController(homeController);
         return this;
     }
 

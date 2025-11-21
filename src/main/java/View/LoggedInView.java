@@ -2,23 +2,15 @@ package View;
 
 import InterfaceAdapter.logged_in.LoggedInState;
 import InterfaceAdapter.logged_in.LoggedInViewModel;
-import InterfaceAdapter.login.LoginController;
-import InterfaceAdapter.login.LoginState;
 import InterfaceAdapter.logout.LogoutController;
-import InterfaceAdapter.portfolio.PortfolioController;
+import InterfaceAdapter.logged_in.LoggedInController;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.File;
-import java.io.IOException;
 
 /**
  * The View for when the user is logged into the program.
@@ -33,8 +25,8 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
     private final JLabel username;
 
     private final JButton portfolio;
-
-    private PortfolioController portfolioController;
+//    private final JPanel image;
+    private LoggedInController loggedInController;
 
 //    private final JTextField passwordInputField = new JTextField(15);
 //    private final JButton changePassword;
@@ -54,6 +46,7 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
         portfolio = new JButton("Portfolio");
         buttons.add(portfolio);
         buttons.setBackground(Color.LIGHT_GRAY);
+//        image = new JPanel();
 
 //        changePassword = new JButton("Change Password");
 //        buttons.add(changePassword);
@@ -64,7 +57,7 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
                 if (evt.getSource().equals(portfolio)) {
                     final LoggedInState currentState = loggedInViewModel.getState();
 
-                    portfolioController.portExecute(
+                    loggedInController.portExecute(
                             currentState.getUsername(),
                             currentState.getPassword()
                     );
@@ -105,9 +98,11 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
         this.add(user);
         this.setBackground(Color.LIGHT_GRAY);
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-//        this.add(passwordInfo);
-//        this.add(passwordErrorField);
         this.add(buttons, BorderLayout.CENTER);
+//        JLabel pic = new JLabel(new ImageIcon(Toolkit.getDefaultToolkit().getImage("Image/buffet1.png")));
+//        pic.setPreferredSize(new Dimension(130,100));
+//        image.add(pic);
+//        this.add(image);
     }
 
     /**
@@ -124,6 +119,7 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
             final LoggedInState state = (LoggedInState) evt.getNewValue();
             username.setText(state.getUsername());
         }
+        // for multiple porpery change
 //        else if (evt.getPropertyName().equals("password")) {
 //            final LoggedInState state = (LoggedInState) evt.getNewValue();
 //            if (state.getPasswordError() == null) {
@@ -140,7 +136,7 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
         return viewName;
     }
 
-    public void setPortfolioController(PortfolioController portfolioController) {
-        this.portfolioController = portfolioController;
+    public void setPortfolioController(LoggedInController loggedInController) {
+        this.loggedInController = loggedInController;
     }
 }

@@ -22,7 +22,7 @@ public class LoggedInPresenter implements PortfolioOutputBoundary {
     }
 
     @Override
-    public void prepareSuccessView(PortfolioOutputData response) {
+    public void preparePortSuccessView(PortfolioOutputData response) {
         // On success, update the loggedInViewModel's state
         final PortfolioState portfolioState = portViewModel.getState();
         portfolioState.setUsername(response.getUsername());
@@ -42,7 +42,7 @@ public class LoggedInPresenter implements PortfolioOutputBoundary {
     }
 
     @Override
-    public void prepareFailView(String error) {
+    public void preparePortFailView(String error) {
         final LoggedInState loginState = loggedInViewModel.getState();
         loginState.setLoggedInError(error);
         loggedInViewModel.firePropertyChange();

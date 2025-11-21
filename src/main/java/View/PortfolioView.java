@@ -1,10 +1,9 @@
 package View;
 
+import InterfaceAdapter.homebutton.HomeController;
 import InterfaceAdapter.logged_in.LoggedInState;
-import InterfaceAdapter.portfolio.PortfolioController;
 import InterfaceAdapter.portfolio.PortfolioState;
 import InterfaceAdapter.portfolio.PortfolioViewModel;
-import org.intellij.lang.annotations.Flow;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,22 +16,26 @@ import java.util.Map;
 public class PortfolioView extends JPanel implements ActionListener, PropertyChangeListener {
     private final String viewName = "portfolio";
     private final PortfolioViewModel portfolioViewModel;
-    private final JLabel username;
+    private final JButton username;
     private final JLabel value;
     private final JLabel cash;
     private final JLabel performance;
-    private final JPanel holdings;
+    private JPanel holdings;
+
+    private HomeController homeController;
 
     public PortfolioView(PortfolioViewModel portfolioViewModel){
         this.portfolioViewModel = portfolioViewModel;
         this.portfolioViewModel.addPropertyChangeListener(this);
 
         final JLabel user = new JLabel("Portfolio: ");
-        username = new JLabel();
+        username = new JButton();
         value = new JLabel();
         cash = new JLabel();
         performance = new JLabel();
         holdings = new JPanel();
+
+        username.addActionListener(this::actionPerformed);
 
         JPanel portUser = new JPanel();
         JPanel perf = new JPanel();
@@ -58,18 +61,37 @@ public class PortfolioView extends JPanel implements ActionListener, PropertyCha
         holdings.setBackground(Color.LIGHT_GRAY);
         holdings.add(new JLabel("Positions:"));
         holdings.setLayout(new BoxLayout(holdings, BoxLayout.Y_AXIS));
+        JScrollPane positions = new JScrollPane(holdings);
+        positions.setBackground(Color.LIGHT_GRAY);
 
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        this.add(portUser);
-        this.add(perf);
-        this.add(val);
-        this.add(userCash);
-        this.add(holdings);
+        JPanel box = new JPanel();
+        box.setBackground(Color.LIGHT_GRAY.brighter());
+
+        portUser.setLayout(new FlowLayout(FlowLayout.LEFT));
+
+        box.add(portUser);
+        box.add(perf);
+        box.add(val);
+        box.add(userCash);
+        box.setLayout(new BoxLayout(box, BoxLayout.Y_AXIS));
+
+        this.setLayout(new GridLayout(1,2));
+        this.add(box);
+        this.add(positions);
         this.setBackground(Color.LIGHT_GRAY);
     }
 
+    // Action listener for home button
     public void actionPerformed(ActionEvent evt) {
+        if (evt.getSource().equals(username)) {
+            final PortfolioState currentState = portfolioViewModel.getState();
+            homeController.execute(
+                    currentState.getUsername(),
+                    currentState.getPassword()
+            );
+        }
     }
+
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().equals("state")) {
@@ -85,8 +107,10 @@ public class PortfolioView extends JPanel implements ActionListener, PropertyCha
             else{
                 performance.setForeground(Color.RED.darker());
             }
-            Map<String, Object> positions = state.getHoldings();
 
+            Map<String, Object> positions = state.getHoldings();
+            // without remove all this thing just stacks again again again has memory of previous inputs.
+            holdings.removeAll();
             for(String symbol: positions.keySet()){
                 JPanel owning = new JPanel();
                 owning.add(new JLabel(symbol));
@@ -108,5 +132,9 @@ public class PortfolioView extends JPanel implements ActionListener, PropertyCha
     }
     public String getViewName() {
         return viewName;
+    }
+
+    public void setHomeController(HomeController homecontroller) {
+        this.homeController = homecontroller;
     }
 }

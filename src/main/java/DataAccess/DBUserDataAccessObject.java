@@ -30,7 +30,7 @@ public class DBUserDataAccessObject implements UserAccessInterface {
     private static final String PASSWORD = "password";
     private static final String MESSAGE = "message";
     private final UserFactory userFactory;
-    private final String url = "http://100.71.12.182:4848/rest";
+    private final String url = "http://100.71.13.240:4848/rest";
 
     private String currentUsername;
 

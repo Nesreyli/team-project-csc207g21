@@ -1,12 +1,12 @@
-package InterfaceAdapter.portfolio;
+package InterfaceAdapter.logged_in;
 
 import UseCase.portfolio.PortfolioInputBoundary;
 import UseCase.portfolio.PortfolioInputData;
 
-public class PortfolioController {
+public class LoggedInController {
     private PortfolioInputBoundary portInteractor;
 
-    public PortfolioController(PortfolioInputBoundary port){
+    public LoggedInController(PortfolioInputBoundary port){
         portInteractor = port;
     }
 
