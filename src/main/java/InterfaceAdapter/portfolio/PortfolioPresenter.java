@@ -1,21 +1,21 @@
-package InterfaceAdapter.logged_in;
+package InterfaceAdapter.portfolio;
 
 import InterfaceAdapter.ViewManagerModel;
-import InterfaceAdapter.portfolio.PortfolioState;
-import InterfaceAdapter.portfolio.PortfolioViewModel;
+import InterfaceAdapter.logged_in.LoggedInState;
+import InterfaceAdapter.logged_in.LoggedInViewModel;
 import UseCase.portfolio.PortfolioOutputBoundary;
 import UseCase.portfolio.PortfolioOutputData;
 
 // Should this be Portfolio Presenter or stay here as it
 // is in currently in logged in menu which changes flow to portfolio view
-public class LoggedInPresenter implements PortfolioOutputBoundary {
+public class PortfolioPresenter implements PortfolioOutputBoundary {
     private final PortfolioViewModel portViewModel;
     private final ViewManagerModel viewManagerModel;
     private final LoggedInViewModel loggedInViewModel;
 
 
-    public LoggedInPresenter(ViewManagerModel viewManagerModel,
-                          PortfolioViewModel portViewModel, LoggedInViewModel loggedInViewModel) {
+    public PortfolioPresenter(ViewManagerModel viewManagerModel,
+                              PortfolioViewModel portViewModel, LoggedInViewModel loggedInViewModel) {
         this.viewManagerModel = viewManagerModel;
         this.portViewModel = portViewModel;
         this.loggedInViewModel = loggedInViewModel;

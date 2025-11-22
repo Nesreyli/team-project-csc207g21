@@ -6,12 +6,14 @@ import Entity.UserFactory;
 import InterfaceAdapter.ViewManagerModel;
 import InterfaceAdapter.homebutton.HomeController;
 import InterfaceAdapter.homebutton.HomePresenter;
-import InterfaceAdapter.logged_in.LoggedInPresenter;
+import InterfaceAdapter.logout.LogoutController;
+import InterfaceAdapter.logout.LogoutPresenter;
+import InterfaceAdapter.portfolio.PortfolioPresenter;
 import InterfaceAdapter.logged_in.LoggedInViewModel;
 import InterfaceAdapter.login.LoginController;
 import InterfaceAdapter.login.LoginPresenter;
 import InterfaceAdapter.login.LoginViewModel;
-import InterfaceAdapter.logged_in.LoggedInController;
+import InterfaceAdapter.portfolio.PortfolioController;
 import InterfaceAdapter.portfolio.PortfolioViewModel;
 import UseCase.Login.LoginInputBoundary;
 import UseCase.Login.LogInInteractor;
@@ -19,6 +21,9 @@ import UseCase.Login.LoginOutputBoundary;
 import UseCase.homebutton.HomeInputBoundary;
 import UseCase.homebutton.HomeInteractor;
 import UseCase.homebutton.HomeOutputBoundary;
+import UseCase.logout.LogoutInputBoundary;
+import UseCase.logout.LogoutInteractor;
+import UseCase.logout.LogoutOutputBoundary;
 import UseCase.portfolio.PortfolioInputBoundary;
 import UseCase.portfolio.PortfolioInteractor;
 import UseCase.portfolio.PortfolioOutputBoundary;
@@ -90,13 +95,13 @@ public class AppBuilder {
     }
 
     public AppBuilder addPortfolioUseCase(){
-        final PortfolioOutputBoundary portfolioOutputBoundary = new LoggedInPresenter(viewManagerModel,
+        final PortfolioOutputBoundary portfolioOutputBoundary = new PortfolioPresenter(viewManagerModel,
                 portViewModel, loggedInViewModel);
         final PortfolioInputBoundary portfolioInputBoundary = new PortfolioInteractor(
                 portfolioAccessObject, portfolioOutputBoundary);
 
-        LoggedInController loggedInController = new LoggedInController(portfolioInputBoundary);
-        loggedInView.setPortfolioController(loggedInController);
+        PortfolioController portfolioController = new PortfolioController(portfolioInputBoundary);
+        loggedInView.setPortfolioController(portfolioController);
         return this;
     }
 
@@ -114,17 +119,14 @@ public class AppBuilder {
      * Adds the Logout Use Case to the application.
      * @return this builder
      */
-//    public AppBuilder addLogoutUseCase() {
-//        final LogoutOutputBoundary logoutOutputBoundary = new LogoutPresenter(viewManagerModel,
-//                loggedInViewModel, loginViewModel);
-//
-//        final LogoutInputBoundary logoutInteractor =
-//                new LogoutInteractor(userDataAccessObject, logoutOutputBoundary);
-//
-//        final LogoutController logoutController = new LogoutController(logoutInteractor);
-//        loggedInView.setLogoutController(logoutController);
-//        return this;
-//    }
+    public AppBuilder addLogoutUseCase() {
+        final LogoutOutputBoundary logoutOutputBoundary= new LogoutPresenter(viewManagerModel,
+                loggedInViewModel, loginViewModel);
+        final LogoutInputBoundary logoutInputBoundary = new LogoutInteractor(logoutOutputBoundary);
+        final LogoutController logoutController = new LogoutController(logoutInputBoundary);
+        loggedInView.setLogoutController(logoutController);
+        return this;
+    }
 
     public JFrame build() {
         final JFrame application = new JFrame("Panic Trade");
