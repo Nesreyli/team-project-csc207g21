@@ -27,7 +27,7 @@ public class PortfolioInteractor {
                     p.getValue(), p.getPerformance());
 
         } catch (RuntimeException e) {
-            return new OutputPortfolio("500");
+            return new OutputPortfolio("400");
         }
     }
 }
