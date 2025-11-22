@@ -9,8 +9,8 @@ public class LogoutController {
 
     private LogoutInputBoundary logoutUseCaseInteractor;
 
-    public LogoutController(LogoutInputBoundary logoutUseCaseInteractor) {
-        this.logoutUseCaseInteractor = logoutUseCaseInteractor;
+    public LogoutController(LogoutInputBoundary logoutInputBoundary) {
+        this.logoutUseCaseInteractor = logoutInputBoundary;
     }
 
     /**

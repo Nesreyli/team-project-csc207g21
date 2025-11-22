@@ -1,4 +1,4 @@
-package InterfaceAdapter.logged_in;
+package InterfaceAdapter.portfolio;
 
 import UseCase.portfolio.PortfolioInputBoundary;
 import UseCase.portfolio.PortfolioInputData;
