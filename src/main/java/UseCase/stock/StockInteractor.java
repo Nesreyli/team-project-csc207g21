@@ -1,7 +1,7 @@
 package UseCase.stock;
 
 import Entity.Response;
-import Entity.StockResponse;
+import Entity.Stock;
 
 public class StockInteractor implements StockInputBoundary {
     private StockAccessInterface stockDB;
@@ -13,13 +13,13 @@ public class StockInteractor implements StockInputBoundary {
     }
 
     public void execute(StockInputData input) {
-        Response response = stockDB.getTransactionData(input.getUsername(), input.getPassword(), input.getSymbol());
-        StockResponse stockResponse = (StockResponse) response.getEntity();
+        Response response = stockDB.getStockData(input.getUsername(), input.getPassword(), input.getSymbol());
+        Stock stock = (Stock) response.getEntity();
 
         switch(response.getStatus_code()){
             case 200:
                 StockOutputData stockOutputData =
-                        StockOutputDataFactory.create(input.getUsername(), input.getPassword(), stockResponse);
+                        StockOutputDataFactory.create(input.getUsername(), input.getPassword(), stock);
                 stockOB.prepareSuccessView(stockOutputData);
                 break;
             case 400:

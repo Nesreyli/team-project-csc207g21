@@ -2,14 +2,14 @@ package Entity;
 
 import java.math.BigDecimal;
 
-public class StockResponse {
+public class Stock {
     private Integer owned;
     private BigDecimal value;
     private BigDecimal price;
     private String company;
     private String country;
 
-    public StockResponse(Integer owned, BigDecimal value, BigDecimal price, String company, String country) {
+    public Stock(Integer owned, BigDecimal value, BigDecimal price, String company, String country) {
         this.owned = owned;
         this.value = value;
         this.price = price;

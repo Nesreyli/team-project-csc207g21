@@ -1,11 +1,11 @@
 package UseCase.stock;
 
-import Entity.StockResponse;
+import Entity.Stock;
 
 public class StockOutputDataFactory {
-    public static StockOutputData create(String username, String password, StockResponse stockResponse) {
+    public static StockOutputData create(String username, String password, Stock stock) {
         return new StockOutputData(username, password,
-                stockResponse.getOwned(), stockResponse.getPrice(), stockResponse.getValue(),
-                stockResponse.getCompany(), stockResponse.getCountry());
+                stock.getOwned(), stock.getPrice(), stock.getValue(),
+                stock.getCompany(), stock.getCountry());
     }
 }
