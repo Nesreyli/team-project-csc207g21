@@ -88,7 +88,7 @@ public class StockDialog extends JDialog {
         okButton.addActionListener(e -> {
             if (isBuy && (new BigDecimal(field.getText()).multiply(stockPrice)).compareTo(balance) <= 0) {
 
-                // TODO: Buy action
+                // TODO: Buy use case
 
                 System.out.println("Purchase");
                 dispose();
@@ -99,7 +99,7 @@ public class StockDialog extends JDialog {
                         JOptionPane.ERROR_MESSAGE);
             } else {
 
-                // TODO: Sell action
+                // TODO: Sell use case
 
                 System.out.println("Sale");
                 dispose();
