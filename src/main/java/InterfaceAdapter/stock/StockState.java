@@ -1,47 +1,60 @@
 package InterfaceAdapter.stock;
 
+import java.math.BigDecimal;
+
 public class StockState {
-    String stockName;
-    String stockDetails;
-    Double stockPrice;
-    Integer ownedStock;
+    private Integer owned;
+    private BigDecimal price;
+    private BigDecimal value;
+    private String company;
+    private String country;
+    private String error;
 
-    public StockState(String stockName, String stockDetails, Double stockPrice, int ownedStock) {
-        this.stockName = stockName;
-        this.stockDetails = stockDetails;
-        this.stockPrice = stockPrice;
-        this.ownedStock = ownedStock;
+    public Integer getOwned() {
+        return owned;
     }
 
-    public String getStockName() {
-        return stockName;
+    public void setOwned(Integer owned) {
+        this.owned = owned;
     }
 
-    public String getStockDetails() {
-        return stockDetails;
+    public BigDecimal getPrice() {
+        return price;
     }
 
-    public Double getStockPrice() {
-        return stockPrice;
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 
-    public int getOwnedStock() {
-        return ownedStock;
+    public BigDecimal getValue() {
+        return value;
     }
 
-    public void setStockName(String stockName) {
-        this.stockName = stockName;
+    public void setValue(BigDecimal value) {
+        this.value = value;
     }
 
-    public void setStockDetails(String stockDetails) {
-        this.stockDetails = stockDetails;
+    public String getCompany() {
+        return company;
     }
 
-    public void setStockPrice(Double stockPrice) {
-        this.stockPrice = stockPrice;
+    public void setCompany(String company) {
+        this.company = company;
     }
 
-    public void setOwnedStock(int ownedStock) {
-        this.ownedStock = ownedStock;
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getError() {
+        return error;
+    }
+
+    public void setError(String error) {
+        this.error = error;
     }
 }

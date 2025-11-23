@@ -4,12 +4,12 @@ import InterfaceAdapter.stock.StockController;
 
 import javax.swing.*;
 import java.awt.*;
+import java.math.BigDecimal;
 
 public class StockDialog extends JDialog {
-    public StockDialog(Frame frame, boolean isBuy, String stockName, String stockDetails, Double stockPrice, Double balance) {
+    public StockDialog(Frame frame, boolean isBuy, String stockName,
+                       String stockDetails, BigDecimal stockPrice, BigDecimal balance) {
         super(frame, "Stock Trading", true);
-
-        StockController stockController = new StockController();
 
         String keyword;
         if (isBuy) {
@@ -63,31 +63,33 @@ public class StockDialog extends JDialog {
         JPanel detailsPanel = new JPanel();
         detailsPanel.setLayout(new BoxLayout(detailsPanel, BoxLayout.Y_AXIS));
         detailsPanel.add(new JLabel(stockDetails));
-        JLabel priceLabel = new JLabel("Estimate: " + calculateTotal(stockPrice, "1"));
+        JLabel priceLabel =
+                new JLabel("Estimate: " + calculateTotal(stockPrice.doubleValue(), "1"));
         detailsPanel.add(priceLabel);
 
 
         // EVENT LISTENERS
         addButton.addActionListener(e -> {
             field.setText(String.valueOf(Integer.parseInt(field.getText()) + 1));
-            priceLabel.setText("Estimate: $" + calculateTotal(stockPrice, field.getText()));
+            priceLabel.setText("Estimate: $" + calculateTotal(stockPrice.doubleValue(), field.getText()));
         });
 
         minusButton.addActionListener(e -> {
             if (Integer.parseInt(field.getText()) >= 2) {
                 field.setText(String.valueOf(Integer.parseInt(field.getText()) - 1));
-                priceLabel.setText("Estimate: $" + calculateTotal(stockPrice, field.getText()));
+                priceLabel.setText("Estimate: $" + calculateTotal(stockPrice.doubleValue(), field.getText()));
             }
         });
 
         field.addActionListener(e -> {
-            priceLabel.setText("Estimate: $" + calculateTotal(stockPrice, field.getText()));
+            priceLabel.setText("Estimate: $" + calculateTotal(stockPrice.doubleValue(), field.getText()));
         });
 
         okButton.addActionListener(e -> {
-            if (isBuy && Integer.parseInt(field.getText()) * stockPrice <= balance) {
-                // Buy success
-                stockController.buyStock(stockName, field.getText());
+            if (isBuy && (new BigDecimal(field.getText()).multiply(stockPrice)).compareTo(balance) <= 0) {
+
+                // TODO: Buy action
+
                 System.out.println("Purchase");
                 dispose();
             } else if (isBuy) {
@@ -96,8 +98,9 @@ public class StockDialog extends JDialog {
                         "Insufficient Funds",
                         JOptionPane.ERROR_MESSAGE);
             } else {
-                // Sell success
-                stockController.sellStock(stockName, field.getText());
+
+                // TODO: Sell action
+
                 System.out.println("Sale");
                 dispose();
             }
@@ -106,7 +109,6 @@ public class StockDialog extends JDialog {
         cancelButton.addActionListener(e -> {
             dispose();
         });
-
 
         // Layout
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));

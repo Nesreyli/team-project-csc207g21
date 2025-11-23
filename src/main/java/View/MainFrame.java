@@ -11,17 +11,11 @@ public class MainFrame {
             frame.setMinimumSize(new java.awt.Dimension(600, 400));
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-            // Generate cards
-            new StockCard();
-            JPanel stockCard = StockCard.initStockCard(frame);
-
             // Add Tabbed Pane
             JTabbedPane tabbedPane = new JTabbedPane();
-            tabbedPane.addTab("Stock", stockCard);
 
             // Pack contents into layout
             frame.add(tabbedPane);
-            frame.add(stockCard);
             frame.pack();
             frame.setVisible(true);
 

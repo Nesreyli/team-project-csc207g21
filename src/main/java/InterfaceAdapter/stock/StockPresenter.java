@@ -1,43 +1,36 @@
 package InterfaceAdapter.stock;
 
-import Application.Controller.PortfolioResource;
-import Application.Entities.Stock;
-import Application.UseCases.Buy.OutputDataBuy;
-import Application.UseCases.Portfolio.OutputPortfolio;
-import Application.UseCases.Sell.OutputDataSell;
-import Application.UseCases.Stock_Search.OutputDataSearch;
+import InterfaceAdapter.ViewManagerModel;
+import UseCase.stock.StockOutputBoundary;
+import UseCase.stock.StockOutputData;
 
-import java.util.Map;
+public class StockPresenter implements StockOutputBoundary {
+    private final StockViewModel stockViewModel;
+    private final ViewManagerModel viewMan;
 
-public class StockPresenter {
-    public StockViewModel stockViewModel;
-
-    public StockPresenter() {
-        this.stockViewModel = new StockViewModel();
+    public StockPresenter(StockViewModel stockViewModel, ViewManagerModel viewMan) {
+        this.stockViewModel = stockViewModel;
+        this.viewMan = viewMan;
     }
 
-    public void updateStockViewModel(OutputDataSearch search, OutputPortfolio portfolio) {
-        // Get stock data
-        Stock stockObject = search.getStocks().get(0);
-        Double stockPrice = stockObject.getPrice().doubleValue();
-        String stockName = stockObject.getSymbol();
-        String stockCompany = stockObject.getCompany();
-        String stockCountry = stockObject.getCountry();
-        String stockDetails = "Company: " + stockCompany + "\nCountry: " + stockCountry;
+    @Override
+    public void prepareSuccessView(StockOutputData stockOD) {
+        StockState stockState = stockViewModel.getState();
+        stockState.setOwned(stockOD.getOwned());
+        stockState.setPrice(stockOD.getPrice());
+        stockState.setValue(stockOD.getValue());
+        stockState.setCountry(stockOD.getCountry());
+        stockState.setCountry(stockOD.getCountry());
 
-        // Get portfolio data
-        Map<String, Integer> holdings = portfolio.getHoldings();
-        Integer quantity = holdings.get(stockName);
-
-        // Set new state
-        stockViewModel.setStockState(stockName, stockDetails, stockPrice, quantity);
+        stockViewModel.firePropertyChange();
+        viewMan.setState(stockViewModel.getViewName());
+        viewMan.firePropertyChange();
     }
 
-    public void processBuyData(OutputDataBuy odb) {
-        // TODO: Change Portfolio state here and update GUI
-    }
-
-    public void processSellData(OutputDataSell ods) {
-        // TODO; Change Portfolio state here and update GUI
+    @Override
+    public void prepareFailView(String message) {
+        StockState stockState = stockViewModel.getState();
+        stockState.setError(message);
+        stockViewModel.firePropertyChange();
     }
 }
