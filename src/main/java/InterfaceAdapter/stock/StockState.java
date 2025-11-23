@@ -3,6 +3,8 @@ package InterfaceAdapter.stock;
 import java.math.BigDecimal;
 
 public class StockState {
+    private String username;
+    private String password;
     private Integer owned;
     private BigDecimal price;
     private BigDecimal value;
