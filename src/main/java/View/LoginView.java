@@ -48,7 +48,7 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         logIn = new JButton("log in");
         buttons.add(logIn);
 
-        signup = new JButton("Signup");
+        signup = new JButton("signup");
 
         signup.addActionListener(
                 new ActionListener() {
@@ -142,15 +142,15 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        resetFields();
         final LoginState state = (LoginState) evt.getNewValue();
         setFields(state);
-        usernameErrorField.setText(state.getLoginError());
     }
 
     private void setFields(LoginState state) {
         usernameInputField.setText(state.getUsername());
+        usernameErrorField.setText(state.getLoginError());
         passwordInputField.setText(state.getUsername());
+        passwordErrorField.setText(state.getLoginError());
     }
 
     private void resetFields(){

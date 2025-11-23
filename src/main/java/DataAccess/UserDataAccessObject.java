@@ -78,7 +78,7 @@ public class UserDataAccessObject implements LogInAccessInterface, SignupDataAcc
 
             final JSONObject responseBody = new JSONObject(response.body().string());
             if (responseBody.getInt(MESSAGE) == SUCCESS_CODE) {
-                final JSONObject userJSONObject = responseBody.getJSONObject("user");
+                final JSONObject userJSONObject = responseBody.getJSONObject("username");
                 final String name = userJSONObject.getString(USERNAME);
                 final String pass = password;
                 return Entity.ResponseFactory.create(SUCCESS_CODE, userFactory.create(name, pass));

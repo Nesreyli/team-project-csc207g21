@@ -1,5 +1,6 @@
 package View;
 
+import InterfaceAdapter.login.LoginState;
 import InterfaceAdapter.signup.SignupController;
 import InterfaceAdapter.signup.SignupState;
 import InterfaceAdapter.signup.SignupViewModel;
@@ -174,6 +175,12 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
         resetField();
     }
 
+    private void setFields(SignupState state) {
+        usernameInputField.setText(state.getUsername());
+        passwordInputField.setText(state.getPassword());
+        repeatPasswordInputField.setText(state.getRepeatPassword());
+    }
+
     public void resetField(){
         usernameInputField.setText("");
         passwordInputField.setText("");
@@ -182,10 +189,10 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        resetField();
         final SignupState state = (SignupState) evt.getNewValue();
-        if (state.getUsernameError() != null) {
-            JOptionPane.showMessageDialog(this, state.getUsernameError());
+        setFields(state);
+        if (state.error() != null) {
+            JOptionPane.showMessageDialog(this, state.error());
         }
     }
 

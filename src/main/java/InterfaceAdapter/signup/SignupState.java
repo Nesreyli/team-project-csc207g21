@@ -5,42 +5,35 @@ package InterfaceAdapter.signup;
  */
 public class SignupState {
     private String username = "";
-    private String usernameError;
+    private String error;
     private String password = "";
     private String passwordError;
     private String repeatPassword = "";
-    private String repeatPasswordError;
 
     public String getUsername() {
         return username;
     }
 
-    public String getUsernameError() {
-        return usernameError;
+    public String error() {
+        return error;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public String getPasswordError() {
-        return passwordError;
-    }
 
     public String getRepeatPassword() {
         return repeatPassword;
     }
 
-    public String getRepeatPasswordError() {
-        return repeatPasswordError;
-    }
 
     public void setUsername(String username) {
         this.username = username;
     }
 
-    public void setUsernameError(String usernameError) {
-        this.usernameError = usernameError;
+    public void error(String error) {
+        this.error = error;
     }
 
     public void setPassword(String password) {
@@ -53,10 +46,6 @@ public class SignupState {
 
     public void setRepeatPassword(String repeatPassword) {
         this.repeatPassword = repeatPassword;
-    }
-
-    public void setRepeatPasswordError(String repeatPasswordError) {
-        this.repeatPasswordError = repeatPasswordError;
     }
 
     @Override
