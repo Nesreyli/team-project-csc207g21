@@ -25,10 +25,7 @@ public class SignupPresenter implements SignupOutputBoundary {
     @Override
     public void prepareSuccessView() {
         // On success, switch to the login view.
-        loginViewModel.firePropertyChange();
-
-        viewManagerModel.setState(loginViewModel.getViewName());
-        viewManagerModel.firePropertyChange();
+        switchToLoginView();
     }
 
     @Override

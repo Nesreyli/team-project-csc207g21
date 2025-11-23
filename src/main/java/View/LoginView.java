@@ -21,11 +21,10 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
     private final String viewName = "log in";
     private final LoginViewModel loginViewModel;
 
-    private final JTextField usernameInputField = new JTextField(15);
+    private final JTextField errorField = new JTextField(15);
     private final JLabel usernameErrorField = new JLabel();
 
     private final JPasswordField passwordInputField = new JPasswordField(15);
-    private final JLabel passwordErrorField = new JLabel();
 
     private final JButton logIn;
     private LoginController loginController = null;
@@ -40,7 +39,7 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         final LabelTextPanel usernameInfo = new LabelTextPanel(
-                new JLabel("Username"), usernameInputField);
+                new JLabel("Username"), errorField);
         final LabelTextPanel passwordInfo = new LabelTextPanel(
                 new JLabel("Password"), passwordInputField);
 
@@ -74,11 +73,11 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
                 }
         );
 
-        usernameInputField.getDocument().addDocumentListener(new DocumentListener() {
+        errorField.getDocument().addDocumentListener(new DocumentListener() {
 
             private void documentListenerHelper() {
                 final LoginState currentState = loginViewModel.getState();
-                currentState.setUsername(usernameInputField.getText());
+                currentState.setUsername(errorField.getText());
                 loginViewModel.setState(currentState);
             }
 
@@ -147,17 +146,15 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
     }
 
     private void setFields(LoginState state) {
-        usernameInputField.setText(state.getUsername());
+        errorField.setText(state.getUsername());
         usernameErrorField.setText(state.getLoginError());
-        passwordInputField.setText(state.getUsername());
-        passwordErrorField.setText(state.getLoginError());
+        passwordInputField.setText(state.getPassword());
     }
 
     private void resetFields(){
-        usernameInputField.setText("");
+        errorField.setText("");
         usernameErrorField.setText("");
         passwordInputField.setText("");
-        passwordErrorField.setText("");
     }
 
     public String getViewName() {
