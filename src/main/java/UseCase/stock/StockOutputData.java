@@ -3,36 +3,29 @@ package UseCase.stock;
 import java.math.BigDecimal;
 
 public class StockOutputData {
-    private final String username;
-    private final String password;
-    private final Integer owned;
     private final BigDecimal price;
-    private final BigDecimal value;
-    private final String company;
-    private final String country;
+    private final String symbol;
+    private final BigDecimal ytdprice;
+    private final BigDecimal performance;
 
-    public StockOutputData(String username, String password, Integer owned, BigDecimal price,
-                           BigDecimal value, String company, String country) {
-        this.username = username;
-        this.password = password;
-        this.owned = owned;
+
+    public StockOutputData(BigDecimal price, String symbol,
+                           BigDecimal ytdprice, BigDecimal performance) {
         this.price = price;
-        this.value = value;
-        this.company = company;
-        this.country = country;
+        this.symbol = symbol;
+        this.ytdprice = ytdprice;
+        this.performance = performance;
     }
-
-    public String getUsername() { return username; }
-
-    public String getPassword() { return password; }
-
-    public Integer getOwned() { return owned; }
 
     public BigDecimal getPrice() { return price; }
 
-    public BigDecimal getValue() { return value; }
+    public BigDecimal getYtdprice() {
+        return ytdprice;
+    }
 
-    public String getCompany() { return company; }
+    public BigDecimal getPerformance() {
+        return performance;
+    }
 
-    public String getCountry() { return country; }
+    public String getSymbol() { return symbol; }
 }

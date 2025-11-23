@@ -50,9 +50,9 @@ public class StockAccessObject implements StockAccessInterface {
             throw new RuntimeException(ex);
         }
 
-        Price stockPrice = new Price.Builder().symbol(symbol)
+        Stock stockStock = new Stock.Builder().symbol(symbol)
                         .price(price).value(ytdPrice).performance(performance).build();
 
-        return ResponseFactory.create(SUCCESS_CODE, stockPrice);
+        return ResponseFactory.create(SUCCESS_CODE, stockStock);
     }
 }

@@ -13,11 +13,9 @@ public class StockController {
 
     /**
      * Executes the Login Use Case.
-     * @param username the username of the user logging in
-     * @param password the password of the user logging in
      */
-    public void execute(String username, String password, String symbol) {
-        final StockInputData stockInputData = new StockInputData(username, password, symbol);
+    public void execute(String symbol) {
+        final StockInputData stockInputData = new StockInputData(symbol);
 
         stockInteractor.execute(stockInputData);
     }

@@ -3,49 +3,59 @@ package Entity;
 import java.math.BigDecimal;
 
 public class Stock {
-    private Integer owned;
-    private BigDecimal value;
+    private String symbol;
     private BigDecimal price;
-    private String company;
-    private String country;
+    private BigDecimal performance;
+    private BigDecimal ytdPrice;
 
-    public Stock(Integer owned, BigDecimal value, BigDecimal price, String company, String country) {
-        this.owned = owned;
-        this.value = value;
-        this.price = price;
-        this.company = company;
-        this.country = country;
+    public Stock(){}
+
+    public Stock(String s, BigDecimal p, BigDecimal performance, BigDecimal ytdPrice){
+        symbol = s;
+        price = p;
+        this.performance = performance;
+        this.ytdPrice = ytdPrice;
+    }
+    public String getSymbol(){
+        return symbol;
     }
 
-    public Integer getOwned() {
-        return owned;
-    }
-
-    public void setOwned(Integer owned) {
-        this.owned = owned;
-    }
-
-    public BigDecimal getValue() {
-        return value;
-    }
-
-    public void setValue(BigDecimal value) {
-        this.value = value;
-    }
-
-    public BigDecimal getPrice() {
+    public BigDecimal getPrice(){
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
-        this.price = price;
+    public BigDecimal getPerformance() {
+        return performance;
     }
 
-    public String getCompany() { return company; }
+    public BigDecimal getYtdPrice() {
+        return ytdPrice;
+    }
 
-    public void setCompany(String company) { this.company = company; }
+    public static class Builder{
+        private final Stock stock;
+        public Builder(){
+            stock = new Stock();
+        }
+        public Stock.Builder symbol(String symbol){
+            stock.symbol = symbol;
+            return this;
+        }
+        public Stock.Builder price(BigDecimal price){
+            this.stock.price = price;
+            return this;
+        }
+        public Stock.Builder performance(BigDecimal performance){
+            this.stock.performance = performance;
+            return this;
+        }
+        public Stock.Builder value(BigDecimal ytdPrice){
+            this.stock.ytdPrice = ytdPrice;
+            return this;
+        }
+        public Stock build() {
+            return stock;
+        }
+    }
 
-    public String getCountry() { return country; }
-
-    public void setCountry(String country) { this.country = country; }
 }
