@@ -1,6 +1,6 @@
 package app;
 
-import DataAccess.DBUserDataAccessObject;
+import DataAccess.UserDataAccessObject;
 import DataAccess.PortfolioAccessObject;
 import Entity.UserFactory;
 import InterfaceAdapter.ViewManagerModel;
@@ -15,6 +15,9 @@ import InterfaceAdapter.login.LoginPresenter;
 import InterfaceAdapter.login.LoginViewModel;
 import InterfaceAdapter.portfolio.PortfolioController;
 import InterfaceAdapter.portfolio.PortfolioViewModel;
+import InterfaceAdapter.signup.SignupController;
+import InterfaceAdapter.signup.SignupPresenter;
+import InterfaceAdapter.signup.SignupViewModel;
 import UseCase.Login.LoginInputBoundary;
 import UseCase.Login.LogInInteractor;
 import UseCase.Login.LoginOutputBoundary;
@@ -27,10 +30,10 @@ import UseCase.logout.LogoutOutputBoundary;
 import UseCase.portfolio.PortfolioInputBoundary;
 import UseCase.portfolio.PortfolioInteractor;
 import UseCase.portfolio.PortfolioOutputBoundary;
-import View.LoggedInView;
-import View.LoginView;
-import View.PortfolioView;
-import View.ViewManager;
+import UseCase.signup.SignupInputBoundary;
+import UseCase.signup.SignupInteractor;
+import UseCase.signup.SignupOutputBoundary;
+import View.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -47,7 +50,7 @@ public class AppBuilder {
 
     // DAO version using local file storage
     // DAO version using a shared external database
-    final DBUserDataAccessObject userDataAccessObject = new DBUserDataAccessObject(userFactory);
+    final UserDataAccessObject userDataAccessObject = new UserDataAccessObject(userFactory);
     final PortfolioAccessObject portfolioAccessObject = new PortfolioAccessObject();
 
     private LoginViewModel loginViewModel;
@@ -56,6 +59,8 @@ public class AppBuilder {
     private LoginView loginView;
     private PortfolioView portView;
     private PortfolioViewModel portViewModel;
+    private SignupView signupView;
+    private SignupViewModel signupViewModel;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -78,7 +83,7 @@ public class AppBuilder {
 
     public AppBuilder addLoginUseCase() {
         final LoginOutputBoundary loginOutputBoundary = new LoginPresenter(viewManagerModel,
-                loggedInViewModel, loginViewModel);
+                loggedInViewModel, loginViewModel, signupViewModel);
         final LoginInputBoundary loginInteractor = new LogInInteractor(
                 userDataAccessObject, loginOutputBoundary);
 
@@ -93,6 +98,14 @@ public class AppBuilder {
         cardPanel.add(portView, portViewModel.getViewName());
         return this;
     }
+
+    public AppBuilder addSignupView(){
+        signupViewModel = new SignupViewModel();
+        signupView = new SignupView(signupViewModel);
+        cardPanel.add(signupView, signupViewModel.getViewName());
+        return this;
+    }
+
 
     public AppBuilder addPortfolioUseCase(){
         final PortfolioOutputBoundary portfolioOutputBoundary = new PortfolioPresenter(viewManagerModel,
@@ -125,6 +138,16 @@ public class AppBuilder {
         final LogoutInputBoundary logoutInputBoundary = new LogoutInteractor(logoutOutputBoundary);
         final LogoutController logoutController = new LogoutController(logoutInputBoundary);
         loggedInView.setLogoutController(logoutController);
+        return this;
+    }
+
+    public AppBuilder addSignupUseCase(){
+        final SignupOutputBoundary signupOutputBoundary = new SignupPresenter(viewManagerModel,
+                signupViewModel, loginViewModel);
+        final SignupInputBoundary signupInputBoundary = new SignupInteractor(userDataAccessObject,
+                signupOutputBoundary);
+        final SignupController signupController = new SignupController(signupInputBoundary);
+        signupView.setSignupController(signupController);
         return this;
     }
 

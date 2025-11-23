@@ -1,13 +1,12 @@
 package UseCase.Login;
 
 import Entity.User;
-import UseCase.UserAccessInterface;
 
 public class LogInInteractor implements LoginInputBoundary{
-    private final UserAccessInterface userAccessObject;
+    private final LogInAccessInterface userAccessObject;
     private final LoginOutputBoundary loginOutputBoundary;
 
-    public LogInInteractor(UserAccessInterface userAccessObject,
+    public LogInInteractor(LogInAccessInterface userAccessObject,
                            LoginOutputBoundary loginOutputBoundary) {
         this.userAccessObject = userAccessObject;
         this.loginOutputBoundary = loginOutputBoundary;
@@ -28,5 +27,10 @@ public class LogInInteractor implements LoginInputBoundary{
                 loginOutputBoundary.prepareFailView("Error");
                 break;
         }
+    }
+
+    @Override
+    public void toSignup() {
+        loginOutputBoundary.prepareSignupView();
     }
 }
