@@ -1,8 +1,13 @@
-package InterfaceAdapter.Search;
+package InterfaceAdapter.Stock_Search;
 
+import Entity.Stock_Search;
 import InterfaceAdapter.ViewManagerModel;
-import UseCase.Search.SearchOutputBoundary;
-import UseCase.Search.SearchOutputData;
+import UseCase.Stock_Search.SearchOutputBoundary;
+import UseCase.Stock_Search.SearchOutputData;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class SearchPresenter implements SearchOutputBoundary {
     private final SearchViewModel searchViewModel;
@@ -16,7 +21,7 @@ public class SearchPresenter implements SearchOutputBoundary {
     @Override
     public void prepareSuccessView(SearchOutputData outputData){
         final SearchState state = searchViewModel.getState();
-        state.setSearchResult(outputData.getStocks());
+        state.setSearchResults(outputData.getStocks());
         state.setSearchQuery(outputData.getQuery());
         state.setSearchError(null);
         state.setLoading(false);

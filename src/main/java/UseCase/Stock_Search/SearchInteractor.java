@@ -1,8 +1,9 @@
-package UseCase.Search;
+package UseCase.Stock_Search;
 
 import DataAccess.SearchAccessObject;
-import Entity.Stock;
+import Entity.Stock_Search;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class SearchInteractor implements SearchInputBoundary {
@@ -23,7 +24,7 @@ public class SearchInteractor implements SearchInputBoundary {
         }
 
         try{
-            List<Stock> results = searchAccessObject.searchStocks(query);
+            HashMap<String, Stock_Search> results = searchAccessObject.searchStocks(query);
 
             SearchOutputData outputData = new SearchOutputData(results, query, true);
             searchOutputBoundary.prepareSuccessView(outputData);
@@ -35,7 +36,7 @@ public class SearchInteractor implements SearchInputBoundary {
     @Override
     public void executeLoadAll(){
         try {
-            List<Stock> allStocks = searchAccessObject.getAllStocks();
+            HashMap<String, Stock_Search> allStocks = searchAccessObject.getAllStocks();
             SearchOutputData outputData = new SearchOutputData(allStocks, "", true);
             searchOutputBoundary.prepareSuccessView(outputData);
         } catch (Exception e){

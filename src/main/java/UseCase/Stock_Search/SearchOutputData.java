@@ -1,20 +1,22 @@
-package UseCase.Search;
+package UseCase.Stock_Search;
 
-import Entity.Stock;
+import Entity.Stock_Search;
+
+import java.util.HashMap;
 import java.util.List;
 
 public class SearchOutputData {
-    private final List<Stock> stocks;
+    private final HashMap<String, Stock_Search> stocks;
     private final String query;
     private final boolean isSuccess;
 
-    public SearchOutputData(List<Stock> stocks, String query, boolean isSuccess) {
+    public SearchOutputData(HashMap<String, Stock_Search> stocks, String query, boolean isSuccess) {
         this.stocks = stocks;
         this.query = query;
         this.isSuccess = isSuccess;
     }
 
-    public List<Stock> getStocks() { return stocks; }
+    public HashMap<String, Stock_Search> getStocks() { return stocks; }
 
     public String getQuery() { return query; }
 

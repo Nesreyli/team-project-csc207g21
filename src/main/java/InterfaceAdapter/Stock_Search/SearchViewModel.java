@@ -1,4 +1,4 @@
-package InterfaceAdapter.Search;
+package InterfaceAdapter.Stock_Search;
 
 import InterfaceAdapter.ViewModel;
 

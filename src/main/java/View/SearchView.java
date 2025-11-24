@@ -1,9 +1,9 @@
 package View;
 
-import Entity.Stock;
-import InterfaceAdapter.Search.SearchController;
-import InterfaceAdapter.Search.SearchState;
-import InterfaceAdapter.Search.SearchViewModel;
+import Entity.Stock_Search;
+import InterfaceAdapter.Stock_Search.SearchController;
+import InterfaceAdapter.Stock_Search.SearchState;
+import InterfaceAdapter.Stock_Search.SearchViewModel;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -16,7 +16,9 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.Phaser;
 
 /**
  * The View for Stock Search functionality.
@@ -171,20 +173,20 @@ public class SearchView extends JPanel implements  ActionListener, PropertyChang
                 errorLabel.setText("");
             }
 
-            updateTable(state.getSearchResult());
+            updateTable((HashMap<String, Stock_Search>) state.getSearchResults());
 
             if (!state.isLoading() && state.getSearchError() == null) {
-                int resultCount = state.getSearchResult().size();
+                int resultCount = state.getSearchResults().size();
                 statusLabel.setText(String.format("Found %d stock%s",
                         resultCount, resultCount == 1 ? "" : "s"));
             }
         }
     }
 
-    private void updateTable(List<Stock> stocks) {
+    private void updateTable(HashMap<String, Stock_Search> stocks) {
         tableModel.setRowCount(0);
 
-        for (Stock stock : stocks) {
+        for (Stock_Search stock : stocks.values()) {
             Object[] row = {
                     stock.getSymbol(),
                     stock.getCompany(),

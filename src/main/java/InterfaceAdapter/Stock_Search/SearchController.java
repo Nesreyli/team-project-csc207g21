@@ -1,7 +1,7 @@
-package InterfaceAdapter.Search;
+package InterfaceAdapter.Stock_Search;
 
-import UseCase.Search.SearchInputBoundary;
-import UseCase.Search.SearchInputData;
+import UseCase.Stock_Search.SearchInputBoundary;
+import UseCase.Stock_Search.SearchInputData;
 
 public class SearchController {
     private final SearchInputBoundary searchInputBoundary;

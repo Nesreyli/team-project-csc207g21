@@ -1,6 +1,6 @@
 package DataAccess;
 
-import Entity.Stock;
+import Entity.Stock_Search;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -19,7 +20,7 @@ public class SearchAccessObject {
     private static final String CONTENT_TYPE_JSON = "application/json";
     private static final int SUCCESS_CODE = 200;
 
-    public List<Stock> searchStocks(String query){
+    public HashMap<String, Stock_Search> searchStocks(String query){
         final OkHttpClient client = new OkHttpClient().newBuilder().build();
         final Request request = new Request.Builder()
                 .url(String.format(url + "/stocks/search?query=%s", query))
@@ -32,7 +33,10 @@ public class SearchAccessObject {
 
             if (responseBody.getInt("message") == SUCCESS_CODE){
                 return parseStocksFromResponse(responseBody);
-            } else{
+            } else if (responseBody.isEmpty()) {
+                throw new RuntimeException("No Stocks Found");
+            }
+            else{
                 throw new RuntimeException("Search failed with status: " + responseBody.getInt("message"));
             }
         } catch (IOException ex){
@@ -40,7 +44,7 @@ public class SearchAccessObject {
         }
     }
 
-    public List<Stock> getAllStocks(){
+    public HashMap<String, Stock_Search> getAllStocks(){
         final OkHttpClient client = new OkHttpClient().newBuilder().build();
         final Request request = new Request.Builder()
                 .url(url + "/stock/list")
@@ -60,8 +64,8 @@ public class SearchAccessObject {
         }
     }
 
-    private List<Stock> parseStocksFromResponse(final JSONObject responseBody){
-        List<Stock> stocks = new ArrayList<>();
+    private HashMap<String, Stock_Search> parseStocksFromResponse(final JSONObject responseBody){
+        HashMap<String, Stock_Search> stocks = new HashMap<>();
         JSONArray stocksArray = responseBody.getJSONArray("stocks");
 
         for (int i = 0; i < stocksArray.length(); i++){
@@ -69,13 +73,17 @@ public class SearchAccessObject {
 
             String symbol = stockJSON.getString("symbol");
             String company = stockJSON.getString("company");
-            BigDecimal marketcap = new BigDecimal(stockJSON.getString("marketcap"));
+            //BigDecimal market_cap = new BigDecimal(stockJSON.getString("marketcap"));
             BigDecimal price = stockJSON.getBigDecimal("price");
             String country = stockJSON.getString("country");
 
 
-            stocks.add(new Stock(symbol, company, price, marketcap, country));
+            Stock_Search stock = new Stock_Search(symbol, company, price, country);
+
+            stocks.put(symbol, stock);
         }
+
         return stocks;
     }
+
 }
