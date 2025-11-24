@@ -12,6 +12,8 @@ public class Main {
                 .addLogoutUseCase()
                 .addPortfolioView()
                 .addPortfolioUseCase()
+                .addSearchView()
+                .addSearchUseCase()
                 .addHomeUseCase()
                 .build();
 

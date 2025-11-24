@@ -2,6 +2,7 @@ package app;
 
 import DataAccess.DBUserDataAccessObject;
 import DataAccess.PortfolioAccessObject;
+import DataAccess.SearchAccessObject;
 import Entity.UserFactory;
 import InterfaceAdapter.ViewManagerModel;
 import InterfaceAdapter.homebutton.HomeController;
@@ -15,6 +16,9 @@ import InterfaceAdapter.login.LoginPresenter;
 import InterfaceAdapter.login.LoginViewModel;
 import InterfaceAdapter.portfolio.PortfolioController;
 import InterfaceAdapter.portfolio.PortfolioViewModel;
+import InterfaceAdapter.Search.SearchController;
+import InterfaceAdapter.Search.SearchPresenter;
+import InterfaceAdapter.Search.SearchViewModel;
 import UseCase.Login.LoginInputBoundary;
 import UseCase.Login.LogInInteractor;
 import UseCase.Login.LoginOutputBoundary;
@@ -27,9 +31,13 @@ import UseCase.logout.LogoutOutputBoundary;
 import UseCase.portfolio.PortfolioInputBoundary;
 import UseCase.portfolio.PortfolioInteractor;
 import UseCase.portfolio.PortfolioOutputBoundary;
+import UseCase.Search.SearchInputBoundary;
+import UseCase.Search.SearchInteractor;
+import UseCase.Search.SearchOutputBoundary;
 import View.LoggedInView;
 import View.LoginView;
 import View.PortfolioView;
+import View.SearchView;
 import View.ViewManager;
 
 import javax.swing.*;
@@ -49,6 +57,7 @@ public class AppBuilder {
     // DAO version using a shared external database
     final DBUserDataAccessObject userDataAccessObject = new DBUserDataAccessObject(userFactory);
     final PortfolioAccessObject portfolioAccessObject = new PortfolioAccessObject();
+    final SearchAccessObject  searchDataAccess = new SearchAccessObject();  // ✅ Add this
 
     private LoginViewModel loginViewModel;
     private LoggedInViewModel loggedInViewModel;
@@ -56,6 +65,8 @@ public class AppBuilder {
     private LoginView loginView;
     private PortfolioView portView;
     private PortfolioViewModel portViewModel;
+    private SearchView searchView;
+    private SearchViewModel searchViewModel;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -94,6 +105,13 @@ public class AppBuilder {
         return this;
     }
 
+    public AppBuilder addSearchView() {
+        searchViewModel = new SearchViewModel();
+        searchView = new SearchView(searchViewModel);
+        cardPanel.add(searchView, searchView.getViewName());
+        return this;
+    }
+
     public AppBuilder addPortfolioUseCase(){
         final PortfolioOutputBoundary portfolioOutputBoundary = new PortfolioPresenter(viewManagerModel,
                 portViewModel, loggedInViewModel);
@@ -102,6 +120,14 @@ public class AppBuilder {
 
         PortfolioController portfolioController = new PortfolioController(portfolioInputBoundary);
         loggedInView.setPortfolioController(portfolioController);
+        return this;
+    }
+
+    public AppBuilder addSearchUseCase(){
+        final SearchOutputBoundary searchOutputBoundary = new SearchPresenter(searchViewModel, viewManagerModel);
+        final SearchInputBoundary searchInteractor = new SearchInteractor(searchDataAccess, searchOutputBoundary);
+        SearchController searchController = new SearchController(searchInteractor);
+        searchView.setSearchController(searchController);
         return this;
     }
 

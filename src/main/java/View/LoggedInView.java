@@ -1,5 +1,6 @@
 package View;
 
+import InterfaceAdapter.ViewManagerModel;
 import InterfaceAdapter.logged_in.LoggedInState;
 import InterfaceAdapter.logged_in.LoggedInViewModel;
 import InterfaceAdapter.logout.LogoutController;
@@ -24,9 +25,11 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
     private final JLabel username;
     private final JButton logout;
     private final JButton portfolio;
+    private final JButton stockSearch;
 //    private final JPanel image;
     private PortfolioController portfolioController;
     private LogoutController logoutController;
+    private ViewManagerModel viewManagerModel;
 
 //    private final JTextField passwordInputField = new JTextField(15);
 //    private final JButton changePassword;
@@ -59,7 +62,9 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
         );
 
         portfolio = new JButton("Portfolio");
+        stockSearch = new JButton("Stock Search");
         buttons.add(portfolio);
+        buttons.add(stockSearch);
         buttons.setBackground(Color.LIGHT_GRAY);
         portfolio.addActionListener(
                 new ActionListener() {
@@ -74,6 +79,18 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
                 }
             }
         });
+
+        stockSearch.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        if (evt.getSource().equals(stockSearch)) {
+                            if (viewManagerModel != null) {
+                                viewManagerModel.setState("stock search");
+                                viewManagerModel.firePropertyChange();
+                            }
+                        }
+                    }
+                });
 
         this.setAlignmentX(1.0f);
 
@@ -129,5 +146,9 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
 
     public void setLogoutController(LogoutController logoutController) {
         this.logoutController = logoutController;
+    }
+
+    public void setViewManagerModel(ViewManagerModel viewManagerModel) {
+        this.viewManagerModel = viewManagerModel;
     }
 }
