@@ -69,10 +69,12 @@ public class SearchAccessObject {
 
             String symbol = stockJSON.getString("symbol");
             String company = stockJSON.getString("company");
+            BigDecimal marketcap = new BigDecimal(stockJSON.getString("marketcap"));
             BigDecimal price = stockJSON.getBigDecimal("price");
             String country = stockJSON.getString("country");
 
-            stocks.add(new Stock(symbol, company, price, country));
+
+            stocks.add(new Stock(symbol, company, price, marketcap, country));
         }
         return stocks;
     }
