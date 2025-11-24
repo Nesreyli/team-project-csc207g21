@@ -1,7 +1,7 @@
 package InterfaceAdapter.logged_in;
 
-import InterfaceAdapter.Search.SearchState;
-import InterfaceAdapter.Search.SearchViewModel;
+import InterfaceAdapter.Stock_Search.SearchState;
+import InterfaceAdapter.Stock_Search.SearchViewModel;
 import InterfaceAdapter.ViewManagerModel;
 import InterfaceAdapter.login.LoginViewModel;
 import UseCase.loggedIn.LoggedInOutputBoundary;

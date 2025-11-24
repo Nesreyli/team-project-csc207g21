@@ -47,7 +47,7 @@ public class SearchAccessObject {
     public HashMap<String, Stock_Search> getAllStocks(){
         final OkHttpClient client = new OkHttpClient().newBuilder().build();
         final Request request = new Request.Builder()
-                .url(url + "/stock/list")
+                .url(url + "/stocks/list")
                 .addHeader("Content-Type", CONTENT_TYPE_JSON)
                 .build();
         try{

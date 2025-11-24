@@ -16,7 +16,7 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.math.BigDecimal;
-import java.util.List;
+import java.util.Map;
 
 /**
  * The View for Stock Search functionality.
@@ -106,9 +106,9 @@ public class SearchView extends JPanel implements  ActionListener, PropertyChang
         // Add document listener for real-time search
         searchField.getDocument().addDocumentListener(new DocumentListener() {
             private void documentListenerHelper() {
-                final SearchState currentState = SearchViewModel.getState();
+                final SearchState currentState = searchViewModel.getState();
                 currentState.setSearchQuery(searchField.getText());
-                SearchViewModel.setState(currentState);
+                searchViewModel.setState(currentState);
             }
 
             @Override
@@ -168,23 +168,23 @@ public class SearchView extends JPanel implements  ActionListener, PropertyChang
             // Update error signature
             errorLabel.setText(state.getSearchError());
 
-            updateTable(state.getSearchResult());
+            updateTable(state.getSearchResults());
+            int resultCount = state.getSearchResults().size();
 
-            int resultCount = state.getSearchResult().size();
             statusLabel.setText(String.format("Found %d stock%s",
                         resultCount, resultCount == 1 ? "" : "s"));
         }
     }
 
-    private void updateTable(List<Stock> stocks) {
+    private void updateTable(Map<String, Stock_Search> stocks) {
         tableModel.setRowCount(0);
 
-        for (Stock stock : stocks) {
+        for (String stock : stocks.keySet()) {
             Object[] row = {
-                    stock.getSymbol(),
-                    stock.getCompany(),
-                    formatPrice(stock.getPrice()),
-                    stock.getCompany()
+                    stocks.get(stock).getSymbol(),
+                    stocks.get(stock).getCompany(),
+                    formatPrice(stocks.get(stock).getPrice()),
+                    stocks.get(stock).getCompany()
             };
             tableModel.addRow(row);
         }
