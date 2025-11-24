@@ -1,4 +1,4 @@
-package UseCase.Search;
+package UseCase.Stock_Search;
 
 public class SearchInputData {
     private final String query;

@@ -2,20 +2,20 @@ package Entity;
 
 import java.math.BigDecimal;
 
-public class Stock {
+public class Stock_Search {
     private final String symbol;
     private final String company;
     private final BigDecimal price;
-    private final BigDecimal market_cap;
+    //private final BigDecimal market_cap;
     private final String country;
 
 
-    public Stock(String symbol, String company, BigDecimal price, BigDecimal market_cap, String country) {
+    public Stock_Search(String symbol, String company, BigDecimal price, String country) {
         this.symbol = symbol;
         this.company = company;
         this.price = price;
         this.country = country;
-        this.market_cap = market_cap;
+        //this.market_cap = market_cap;
     }
 
     public String getSymbol() { return symbol; }
@@ -35,7 +35,7 @@ public class Stock {
     public boolean equals(Object obj){
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
-        Stock stock = (Stock) obj;
+        Stock_Search stock = (Stock_Search) obj;
         return symbol.equals(stock.symbol);
     }
 
