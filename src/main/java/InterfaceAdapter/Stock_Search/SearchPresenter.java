@@ -23,7 +23,7 @@ public class SearchPresenter implements SearchOutputBoundary {
         final SearchState state = searchViewModel.getState();
         state.setSearchResults(outputData.getStocks());
         state.setSearchQuery(outputData.getQuery());
-        state.setSearchError(null);
+        state.setSearchError("");
         state.setLoading(false);
 
         searchViewModel.setState(state);

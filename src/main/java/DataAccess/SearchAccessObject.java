@@ -16,7 +16,7 @@ import java.util.List;
 
 
 public class SearchAccessObject {
-    private static final String url = "http://alex-mh-mbp:4848/rest";
+    private static final String url = "http://100.67.15.150:4848/rest";
     private static final String CONTENT_TYPE_JSON = "application/json";
     private static final int SUCCESS_CODE = 200;
 

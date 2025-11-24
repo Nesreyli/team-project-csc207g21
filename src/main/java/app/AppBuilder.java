@@ -7,6 +7,9 @@ import Entity.UserFactory;
 import InterfaceAdapter.ViewManagerModel;
 import InterfaceAdapter.homebutton.HomeController;
 import InterfaceAdapter.homebutton.HomePresenter;
+import InterfaceAdapter.logged_in.LoggedInController;
+import InterfaceAdapter.logged_in.LoggedInPresenter;
+import InterfaceAdapter.logged_in.LoggedInState;
 import InterfaceAdapter.logout.LogoutController;
 import InterfaceAdapter.logout.LogoutPresenter;
 import InterfaceAdapter.portfolio.PortfolioPresenter;
@@ -25,6 +28,9 @@ import UseCase.Login.LoginOutputBoundary;
 import UseCase.homebutton.HomeInputBoundary;
 import UseCase.homebutton.HomeInteractor;
 import UseCase.homebutton.HomeOutputBoundary;
+import UseCase.loggedIn.LoggedInInputBoundary;
+import UseCase.loggedIn.LoggedInInteractor;
+import UseCase.loggedIn.LoggedInOutputBoundary;
 import UseCase.logout.LogoutInputBoundary;
 import UseCase.logout.LogoutInteractor;
 import UseCase.logout.LogoutOutputBoundary;
@@ -151,6 +157,16 @@ public class AppBuilder {
         final LogoutInputBoundary logoutInputBoundary = new LogoutInteractor(logoutOutputBoundary);
         final LogoutController logoutController = new LogoutController(logoutInputBoundary);
         loggedInView.setLogoutController(logoutController);
+        return this;
+    }
+
+    public AppBuilder addLoggedInUseCase(){
+        final LoggedInOutputBoundary loggedInOutputBoundary = new LoggedInPresenter(loggedInViewModel,
+                viewManagerModel, searchViewModel);
+        final LoggedInInputBoundary loggedInInputBoundary = new LoggedInInteractor(loggedInOutputBoundary);
+
+        final LoggedInController loggedInController = new LoggedInController(loggedInInputBoundary);
+        loggedInView.setLoggedInController(loggedInController);
         return this;
     }
 

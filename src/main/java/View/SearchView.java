@@ -16,16 +16,14 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.Phaser;
 
 /**
  * The View for Stock Search functionality.
  */
 public class SearchView extends JPanel implements  ActionListener, PropertyChangeListener {
-    private final String viewName = "stock search";
-    private final SearchViewModel SearchViewModel;
+    private final String viewName = "Stock Search";
+    private final SearchViewModel searchViewModel;
     private SearchController SearchController;
 
     //UI Stuff
@@ -38,13 +36,15 @@ public class SearchView extends JPanel implements  ActionListener, PropertyChang
     private final JScrollPane scrollPane;
     private final JLabel statusLabel = new JLabel("Ready");
 
-    public SearchView(SearchViewModel SearchViewModel) {
-        this.SearchViewModel = SearchViewModel;
-        this.SearchViewModel.addPropertyChangeListener(this);
+    public SearchView(SearchViewModel searchViewModel) {
+        this.searchViewModel = searchViewModel;
+        this.searchViewModel.addPropertyChangeListener(this);
 
         // UI Component
         searchButton = new JButton(SearchViewModel.SEARCH_BUTTON_LABEL);
+        searchButton.addActionListener(this);
         loadallButton = new JButton(SearchViewModel.LOAD_ALL_BUTTON_LABEL);
+        loadallButton.addActionListener(this);
 
         String[] columnNames = {"Symbol", "Company", "Price (USD)", "Country"};
         tableModel = new DefaultTableModel(columnNames, 0) {
@@ -62,7 +62,7 @@ public class SearchView extends JPanel implements  ActionListener, PropertyChang
         resultsTable.setRowSorter(sorter);
 
         scrollPane = new JScrollPane(resultsTable);
-        scrollPane.setPreferredSize(new Dimension(700, 400));
+        scrollPane.setPreferredSize(new Dimension(600, 400));
 
         // Layout
         this.setLayout(new BorderLayout(10, 10));
@@ -141,7 +141,7 @@ public class SearchView extends JPanel implements  ActionListener, PropertyChang
     }
 
     private void performSearch() {
-        final SearchState currentState = SearchViewModel.getState();
+        final SearchState currentState = searchViewModel.getState();
         String query = currentState.getSearchQuery();
 
         if (query == null || query.isEmpty()) {
@@ -166,27 +166,20 @@ public class SearchView extends JPanel implements  ActionListener, PropertyChang
             final SearchState state = (SearchState) evt.getNewValue();
 
             // Update error signature
-            if (state.getSearchQuery() != null) {
-                errorLabel.setText(state.getSearchError());
-                statusLabel.setText("Error Occurred");
-            } else {
-                errorLabel.setText("");
-            }
+            errorLabel.setText(state.getSearchError());
 
-            updateTable((HashMap<String, Stock_Search>) state.getSearchResults());
+            updateTable(state.getSearchResult());
 
-            if (!state.isLoading() && state.getSearchError() == null) {
-                int resultCount = state.getSearchResults().size();
-                statusLabel.setText(String.format("Found %d stock%s",
+            int resultCount = state.getSearchResult().size();
+            statusLabel.setText(String.format("Found %d stock%s",
                         resultCount, resultCount == 1 ? "" : "s"));
-            }
         }
     }
 
-    private void updateTable(HashMap<String, Stock_Search> stocks) {
+    private void updateTable(List<Stock> stocks) {
         tableModel.setRowCount(0);
 
-        for (Stock_Search stock : stocks.values()) {
+        for (Stock stock : stocks) {
             Object[] row = {
                     stock.getSymbol(),
                     stock.getCompany(),
