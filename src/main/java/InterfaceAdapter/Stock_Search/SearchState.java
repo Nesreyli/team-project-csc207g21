@@ -12,7 +12,6 @@ public class SearchState {
     private String searchQuery = "";
     private String searchError;
     private Map<String, Stock_Search> searchResults = new HashMap<>();
-    private Stock_Search selectedStock;
     private boolean isLoading = false;
     private String username;
     private String password;
@@ -21,7 +20,6 @@ public class SearchState {
         searchQuery = copy.searchQuery;
         searchError = copy.searchError;
         searchResults = new HashMap<>(copy.searchResults);
-        selectedStock = copy.selectedStock;
         isLoading = copy.isLoading;
         username = copy.username;
         password = copy.password;
@@ -52,10 +50,6 @@ public class SearchState {
     public void setSearchResults(Map<String, Stock_Search> searchResults) {
         this.searchResults = searchResults;
     }
-
-    public Stock_Search getSelectedStock() { return selectedStock; }
-
-    public void setSelectedStock(Stock_Search selectedStock) { this.selectedStock = selectedStock; }
 
     public boolean isLoading() { return isLoading; }
 

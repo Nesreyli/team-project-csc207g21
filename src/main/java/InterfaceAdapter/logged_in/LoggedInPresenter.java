@@ -29,8 +29,6 @@ public class LoggedInPresenter implements LoggedInOutputBoundary {
         searchState.setUsername(loggedInState.getUsername());
         searchState.setPassword(loggedInState.getPassword());
 
-        searchViewModel.setState(new SearchState());
-
         loggedInViewModel.firePropertyChange();
         searchViewModel.firePropertyChange();
 
