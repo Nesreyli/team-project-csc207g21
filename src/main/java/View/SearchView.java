@@ -30,16 +30,19 @@ public class SearchView extends JPanel implements  ActionListener, PropertyChang
     private final JTextField searchField = new JTextField(20);
     private final JButton searchButton;
     private final JButton loadallButton;
-    private final JLabel errorLabel = new JLabel();
+    private final JLabel errorLabel;
     private final JTable resultsTable;
     private final DefaultTableModel tableModel;
     private final JScrollPane scrollPane;
     private final JLabel statusLabel = new JLabel("Ready");
+    private final JButton previous;
 
     public SearchView(SearchViewModel searchViewModel) {
         this.searchViewModel = searchViewModel;
         this.searchViewModel.addPropertyChangeListener(this);
 
+        previous = new JButton("<");
+        previous.addActionListener(this);
         // UI Component
         searchButton = new JButton(SearchViewModel.SEARCH_BUTTON_LABEL);
         searchButton.addActionListener(this);
@@ -80,12 +83,15 @@ public class SearchView extends JPanel implements  ActionListener, PropertyChang
         searchPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
 
         JLabel searchLabel = new JLabel(SearchViewModel.SEARCH_FIELD_LABEL + ":");
+        searchPanel.add(previous);
         searchPanel.add(searchLabel);
         searchPanel.add(searchField);
         searchPanel.add(searchButton);
         searchPanel.add(loadallButton);
 
         // Error Style
+        errorLabel = new JLabel();
+
         errorLabel.setForeground(Color.RED);
         searchPanel.add(errorLabel);
 
@@ -137,6 +143,9 @@ public class SearchView extends JPanel implements  ActionListener, PropertyChang
             performSearch();
         } else if (evt.getSource().equals(loadallButton)) {
             performLoadAll();
+        } else if(evt.getSource().equals(previous)){
+            final SearchState state = searchViewModel.getState();
+            SearchController.goBack(state.getUsername(), state.getPassword());
         }
     }
 
@@ -167,6 +176,7 @@ public class SearchView extends JPanel implements  ActionListener, PropertyChang
 
             // Update error signature
             errorLabel.setText(state.getSearchError());
+            searchField.setText(state.getSearchQuery());
 
             updateTable(state.getSearchResults());
             int resultCount = state.getSearchResults().size();

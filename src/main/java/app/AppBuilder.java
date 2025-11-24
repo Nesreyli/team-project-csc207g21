@@ -130,9 +130,13 @@ public class AppBuilder {
     }
 
     public AppBuilder addSearchUseCase(){
-        final SearchOutputBoundary searchOutputBoundary = new SearchPresenter(searchViewModel, viewManagerModel);
+        final SearchOutputBoundary searchOutputBoundary = new SearchPresenter(searchViewModel,
+                viewManagerModel, loggedInViewModel);
+        final HomeOutputBoundary homeOutputBoundary = (HomeOutputBoundary) searchOutputBoundary;
+        final HomeInputBoundary homeInputBoundary = new HomeInteractor(homeOutputBoundary);
+
         final SearchInputBoundary searchInteractor = new SearchInteractor(searchDataAccess, searchOutputBoundary);
-        SearchController searchController = new SearchController(searchInteractor);
+        SearchController searchController = new SearchController(searchInteractor, homeInputBoundary);
         searchView.setSearchController(searchController);
         return this;
     }
