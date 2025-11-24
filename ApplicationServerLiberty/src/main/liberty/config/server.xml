@@ -11,7 +11,7 @@
     <webApplication location="ApplicationServerLiberty.war" contextRoot="/"/>
     <jndiEntry jndiName="alpacaAPIKey" value="PKFJL6BBXG8PNHL422KU" />
     <jndiEntry jndiName="alpacaSecretKey" value="0xp8EGJfABZpESZnnKOoR8aX9E6gnF5PRggPvtFB" />
-    <jndiEntry jndiName="JDBCsqlPortfolio" value="jdbc:sqlite:/Users/myounghoonkim/Programming/Projects/207/team-project-csc207g21/ApplicationServerLiberty/portfolios.db" />
-    <jndiEntry jndiName="CompaniesCSV" value="/Users/myounghoonkim/Programming/Projects/207/team-project-csc207g21/ApplicationServerLiberty/CompaniesMarketCap.com.csv" />
+    <jndiEntry jndiName="JDBCsqlPortfolio" value="jdbc:sqlite:Put Direct Path of PortfolioDB" />
+    <jndiEntry jndiName="CompaniesCSV" value="Put Direct Path of Companycsv file" />
     <jndiEntry jndiName="BloomAPIKey" value="f8df4a9810d546f689a4a9f9b76cf470" />
 </server>

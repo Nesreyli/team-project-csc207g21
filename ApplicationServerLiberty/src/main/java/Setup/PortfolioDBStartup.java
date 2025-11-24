@@ -15,8 +15,8 @@ public class PortfolioDBStartup {
 
     static {
         //Put url
-        DBurl = "jdbc:sqlite:/Users/.../Projects/207/team-project-csc207g21/ApplicationServerLiberty/portfolios.db";
-        companyUrl = "/Users/.../Projects/207/team-project-csc207g21/ApplicationServerLiberty/CompaniesMarketCap.com.csv";
+        DBurl = "jdbc:sqlite:ApplicationServerLiberty/portfolios.db";
+        companyUrl = "ApplicationServerLiberty/CompaniesMarketCap.com.csv";
     }
     public static void createUserTable(){
         String sql = "CREATE TABLE IF NOT EXISTS user_record ("
