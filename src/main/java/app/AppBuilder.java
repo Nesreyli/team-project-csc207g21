@@ -1,6 +1,6 @@
 package app;
 
-import DataAccess.DBUserDataAccessObject;
+import DataAccess.UserDataAccessObject;
 import DataAccess.PortfolioAccessObject;
 import DataAccess.SearchAccessObject;
 import Entity.UserFactory;
@@ -22,6 +22,9 @@ import InterfaceAdapter.portfolio.PortfolioViewModel;
 import InterfaceAdapter.Stock_Search.SearchController;
 import InterfaceAdapter.Stock_Search.SearchPresenter;
 import InterfaceAdapter.Stock_Search.SearchViewModel;
+import InterfaceAdapter.signup.SignupController;
+import InterfaceAdapter.signup.SignupPresenter;
+import InterfaceAdapter.signup.SignupViewModel;
 import UseCase.Login.LoginInputBoundary;
 import UseCase.Login.LogInInteractor;
 import UseCase.Login.LoginOutputBoundary;
@@ -37,6 +40,10 @@ import UseCase.logout.LogoutOutputBoundary;
 import UseCase.portfolio.PortfolioInputBoundary;
 import UseCase.portfolio.PortfolioInteractor;
 import UseCase.portfolio.PortfolioOutputBoundary;
+import UseCase.signup.SignupInputBoundary;
+import UseCase.signup.SignupInteractor;
+import UseCase.signup.SignupOutputBoundary;
+import View.*;
 import UseCase.Stock_Search.SearchInputBoundary;
 import UseCase.Stock_Search.SearchInteractor;
 import UseCase.Stock_Search.SearchOutputBoundary;
@@ -61,7 +68,7 @@ public class AppBuilder {
 
     // DAO version using local file storage
     // DAO version using a shared external database
-    final DBUserDataAccessObject userDataAccessObject = new DBUserDataAccessObject(userFactory);
+    final UserDataAccessObject userDataAccessObject = new UserDataAccessObject(userFactory);
     final PortfolioAccessObject portfolioAccessObject = new PortfolioAccessObject();
     final SearchAccessObject  searchDataAccess = new SearchAccessObject();  // ✅ Add this
 
@@ -71,6 +78,8 @@ public class AppBuilder {
     private LoginView loginView;
     private PortfolioView portView;
     private PortfolioViewModel portViewModel;
+    private SignupView signupView;
+    private SignupViewModel signupViewModel;
     private SearchView searchView;
     private SearchViewModel searchViewModel;
 
@@ -95,7 +104,7 @@ public class AppBuilder {
 
     public AppBuilder addLoginUseCase() {
         final LoginOutputBoundary loginOutputBoundary = new LoginPresenter(viewManagerModel,
-                loggedInViewModel, loginViewModel);
+                loggedInViewModel, loginViewModel, signupViewModel);
         final LoginInputBoundary loginInteractor = new LogInInteractor(
                 userDataAccessObject, loginOutputBoundary);
 
@@ -117,6 +126,14 @@ public class AppBuilder {
         cardPanel.add(searchView, searchView.getViewName());
         return this;
     }
+
+    public AppBuilder addSignupView(){
+        signupViewModel = new SignupViewModel();
+        signupView = new SignupView(signupViewModel);
+        cardPanel.add(signupView, signupViewModel.getViewName());
+        return this;
+    }
+
 
     public AppBuilder addPortfolioUseCase(){
         final PortfolioOutputBoundary portfolioOutputBoundary = new PortfolioPresenter(viewManagerModel,
@@ -171,6 +188,16 @@ public class AppBuilder {
 
         final LoggedInController loggedInController = new LoggedInController(loggedInInputBoundary);
         loggedInView.setLoggedInController(loggedInController);
+        return this;
+    }
+
+    public AppBuilder addSignupUseCase(){
+        final SignupOutputBoundary signupOutputBoundary = new SignupPresenter(viewManagerModel,
+                signupViewModel, loginViewModel);
+        final SignupInputBoundary signupInputBoundary = new SignupInteractor(userDataAccessObject,
+                signupOutputBoundary);
+        final SignupController signupController = new SignupController(signupInputBoundary);
+        signupView.setSignupController(signupController);
         return this;
     }
 

@@ -19,7 +19,7 @@ public class getPriceInteractor {
             prices = stockDB.checkPrice(symbols);
             openPrices = stockDB.checkOpen(symbols);
             assert(prices.size() == openPrices.size());
-        } catch(Price.IllegalPrice e){
+        }catch(Price.IllegalPrice e){
             return new OutputDataPrice("500");
         }
         catch (RuntimeException e) {

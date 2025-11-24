@@ -21,15 +21,14 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
     private final String viewName = "log in";
     private final LoginViewModel loginViewModel;
 
-    private final JTextField usernameInputField = new JTextField(15);
+    private final JTextField errorField = new JTextField(15);
     private final JLabel usernameErrorField = new JLabel();
 
     private final JPasswordField passwordInputField = new JPasswordField(15);
-    private final JLabel passwordErrorField = new JLabel();
 
     private final JButton logIn;
-    private final JButton cancel;
     private LoginController loginController = null;
+    private final JButton signup;
 
     public LoginView(LoginViewModel loginViewModel) {
 
@@ -40,16 +39,24 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         final LabelTextPanel usernameInfo = new LabelTextPanel(
-                new JLabel("Username"), usernameInputField);
+                new JLabel("Username"), errorField);
         final LabelTextPanel passwordInfo = new LabelTextPanel(
                 new JLabel("Password"), passwordInputField);
 
         final JPanel buttons = new JPanel();
         logIn = new JButton("log in");
         buttons.add(logIn);
-        cancel = new JButton("cancel");
-        buttons.add(cancel);
-        cancel.addActionListener(this);
+
+        signup = new JButton("signup");
+
+        signup.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        loginController.toSignup();
+                    }
+                });
+
+        buttons.add(signup);
 
         logIn.addActionListener(
                 new ActionListener() {
@@ -66,11 +73,11 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
                 }
         );
 
-        usernameInputField.getDocument().addDocumentListener(new DocumentListener() {
+        errorField.getDocument().addDocumentListener(new DocumentListener() {
 
             private void documentListenerHelper() {
                 final LoginState currentState = loginViewModel.getState();
-                currentState.setUsername(usernameInputField.getText());
+                currentState.setUsername(errorField.getText());
                 loginViewModel.setState(currentState);
             }
 
@@ -115,6 +122,7 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
                 documentListenerHelper();
             }
         });
+
         this.add(title);
         this.add(usernameInfo);
         usernameErrorField.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -128,19 +136,25 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
      * @param evt the ActionEvent to react to
      */
     public void actionPerformed(ActionEvent evt) {
-        System.out.println("Click " + evt.getActionCommand());
+        resetFields();
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         final LoginState state = (LoginState) evt.getNewValue();
         setFields(state);
-        usernameErrorField.setText(state.getLoginError());
     }
 
     private void setFields(LoginState state) {
-        usernameInputField.setText(state.getUsername());
-        passwordInputField.setText(state.getUsername());
+        errorField.setText(state.getUsername());
+        usernameErrorField.setText(state.getLoginError());
+        passwordInputField.setText(state.getPassword());
+    }
+
+    private void resetFields(){
+        errorField.setText("");
+        usernameErrorField.setText("");
+        passwordInputField.setText("");
     }
 
     public String getViewName() {

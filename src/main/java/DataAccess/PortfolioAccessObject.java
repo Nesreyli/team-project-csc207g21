@@ -2,7 +2,6 @@ package DataAccess;
 
 import Entity.Portfolio;
 import Entity.UserFactory;
-import UseCase.UserAccessInterface;
 import UseCase.portfolio.PortfolioAccessInterface;
 import okhttp3.*;
 import org.json.JSONException;
