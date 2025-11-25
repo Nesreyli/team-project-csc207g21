@@ -62,11 +62,12 @@ public class StockView extends JPanel implements PropertyChangeListener {
         this.stockController = stockController;
     }
 
-    // TODO: This method should be called when a stock is selected from the search results.
-    public void setDetails(String stockSymbol) {
-        symbol = stockSymbol;
-        stockController.execute(symbol);
-    }
+    // This method should be called when a stock is selected from the search results.
+    //
+    // public void setDetails(String stockSymbol) {
+    //    symbol = stockSymbol;
+    //    stockController.execute(symbol);
+    //}
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {

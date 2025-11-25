@@ -5,58 +5,52 @@ import java.math.BigDecimal;
 public class StockState {
     private String username;
     private String password;
-    private Integer owned;
+    private String symbol;
     private BigDecimal price;
-    private BigDecimal value;
-    private String company;
+    private BigDecimal ytdprice;
+    private BigDecimal performance;
     private String country;
-    private String error;
+    private String company;
+    private BigDecimal value;
+    private Integer sharesOwned;
 
-    public Integer getOwned() {
-        return owned;
-    }
+    public String getUsername() { return username; }
 
-    public void setOwned(Integer owned) {
-        this.owned = owned;
-    }
+    public void setUsername(String username) { this.username = username; }
 
-    public BigDecimal getPrice() {
-        return price;
-    }
+    public String getPassword() { return password; }
 
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
+    public void setPassword(String password) { this.password = password; }
 
-    public BigDecimal getValue() {
-        return value;
-    }
+    public BigDecimal getPrice() { return price; }
 
-    public void setValue(BigDecimal value) {
-        this.value = value;
-    }
+    public void setPrice(BigDecimal price) { this.price = price; }
 
-    public String getCompany() {
-        return company;
-    }
+    public BigDecimal getYtdprice() { return ytdprice; }
 
-    public void setCompany(String company) {
-        this.company = company;
-    }
+    public void setYtdprice(BigDecimal ytd) { this.ytdprice = ytd; }
 
-    public String getCountry() {
-        return country;
-    }
+    public String getSymbol() { return symbol; }
 
-    public void setCountry(String country) {
-        this.country = country;
-    }
+    public void setSymbol(String symbol) { this.symbol = symbol; }
 
-    public String getError() {
-        return error;
-    }
+    public BigDecimal getPerformance() { return performance; }
 
-    public void setError(String error) {
-        this.error = error;
-    }
+    public void setPerformance(BigDecimal performance) { this.performance = performance; }
+
+    public String getCountry() { return country; }
+
+    public void setCountry(String country) { this.country = country; }
+
+    public String getCompany() { return company; }
+
+    public void setCompany(String company) { this.company = company; }
+
+    public BigDecimal getValue() { return value; }
+
+    public void setValue(BigDecimal value) { this.value = value; }
+
+    public Integer getSharesOwned() { return sharesOwned; }
+
+    public void setSharesOwned(Integer sharesOwned) { this.sharesOwned = sharesOwned; }
 }
