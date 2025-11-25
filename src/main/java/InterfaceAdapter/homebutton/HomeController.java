@@ -1,7 +1,6 @@
 package InterfaceAdapter.homebutton;
 
 import UseCase.homebutton.HomeInputBoundary;
-import UseCase.logout.LogoutInputBoundary;
 
 /**
  * The controller for the Logout Use Case.
@@ -18,6 +17,6 @@ public class HomeController {
      * Executes the Logout Use Case.
      */
     public void execute(String username, String password) {
-        homeInteractor.execute(username, password);
+        homeInteractor.executePrevious(username, password);
     }
 }
