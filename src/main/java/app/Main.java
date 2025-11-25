@@ -1,18 +1,18 @@
 package app;
 
+import UI.UIFont;
+
 import javax.swing.*;
 
 public class Main {
     public static void main(String[] args) {
+        UIFont.setGlobalFont();
+
         AppBuilder appBuilder = new AppBuilder();
         JFrame application = appBuilder
                 .addLoginView()
-                .addLoggedInView()
+                .addDashboardView()
                 .addLoginUseCase()
-                .addLogoutUseCase()
-                .addPortfolioView()
-                .addPortfolioUseCase()
-                .addHomeUseCase()
                 .build();
 
         application.pack();

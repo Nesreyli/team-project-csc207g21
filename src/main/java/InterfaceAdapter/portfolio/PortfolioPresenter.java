@@ -1,51 +1,45 @@
 package InterfaceAdapter.portfolio;
 
-import InterfaceAdapter.ViewManagerModel;
-import InterfaceAdapter.logged_in.LoggedInState;
-import InterfaceAdapter.logged_in.LoggedInViewModel;
+import InterfaceAdapter.usersession.UserSessionViewModel;
 import UseCase.portfolio.PortfolioOutputBoundary;
 import UseCase.portfolio.PortfolioOutputData;
 
-// Should this be Portfolio Presenter or stay here as it
-// is in currently in logged in menu which changes flow to portfolio view
 public class PortfolioPresenter implements PortfolioOutputBoundary {
-    private final PortfolioViewModel portViewModel;
-    private final ViewManagerModel viewManagerModel;
-    private final LoggedInViewModel loggedInViewModel;
 
+    private final PortfolioViewModel portfolioViewModel;
+    private final UserSessionViewModel userSessionViewModel;
 
-    public PortfolioPresenter(ViewManagerModel viewManagerModel,
-                              PortfolioViewModel portViewModel, LoggedInViewModel loggedInViewModel) {
-        this.viewManagerModel = viewManagerModel;
-        this.portViewModel = portViewModel;
-        this.loggedInViewModel = loggedInViewModel;
+    public PortfolioPresenter(PortfolioViewModel portfolioViewModel,
+                              UserSessionViewModel userSessionViewModel) {
+        this.portfolioViewModel = portfolioViewModel;
+        this.userSessionViewModel = userSessionViewModel;
     }
 
     @Override
-    public void preparePortSuccessView(PortfolioOutputData response) {
-        // On success, update the loggedInViewModel's state
-        final PortfolioState portfolioState = portViewModel.getState();
-        portfolioState.setUsername(response.getUsername());
-        portfolioState.setPassword(response.getPassword());
-        portfolioState.setPerformance(response.getPerformance().toString() + "%");
-        portfolioState.setCash(response.getCash().toString() + " USD");
-        portfolioState.setValue(response.getValue().toString() + " USD");
-        portfolioState.setHoldings(response.getHoldings());
-        this.portViewModel.firePropertyChange();
-
-        // and clear everything from the LoginViewModel's state
-        loggedInViewModel.setState(new LoggedInState());
-
-        // switch to the logged in view
-        this.viewManagerModel.setState(portViewModel.getViewName());
-        this.viewManagerModel.firePropertyChange();
+    public void prepareSuccessView(PortfolioOutputData portfolioOutputData) {
+        PortfolioViewModel.PortfolioUIState uiState = convertToViewModel(portfolioOutputData);
+        portfolioViewModel.setState(uiState);
+        portfolioViewModel.firePropertyChange(); // triggers UI update
     }
 
     @Override
-    public void preparePortFailView(String error) {
-        final LoggedInState loginState = loggedInViewModel.getState();
-        loginState.setLoggedInError(error);
-        loggedInViewModel.firePropertyChange();
+    public void prepareFailView(String errorMessage) {
+        // Optional: reset portfolio state or show error
+        portfolioViewModel.setState(new PortfolioViewModel.PortfolioUIState(
+                portfolioViewModel.getState().cashBalance(),
+                portfolioViewModel.getState().totalPortfolioValue(),
+                portfolioViewModel.getState().performancePercentage(),
+                portfolioViewModel.getState().holdings() // keep previous holdings
+        ));
+        portfolioViewModel.firePropertyChange();
+    }
+
+    public static PortfolioViewModel.PortfolioUIState convertToViewModel(PortfolioOutputData response) {
+        return new PortfolioViewModel.PortfolioUIState(
+                response.getCash(),
+                response.getValue(),
+                response.getPerformance(),
+                response.getHoldings()
+        );
     }
 }
-

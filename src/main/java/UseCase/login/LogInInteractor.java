@@ -1,4 +1,4 @@
-package UseCase.Login;
+package UseCase.login;
 
 import Entity.User;
 import UseCase.UserAccessInterface;

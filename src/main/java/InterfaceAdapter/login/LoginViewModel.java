@@ -2,14 +2,25 @@ package InterfaceAdapter.login;
 
 import InterfaceAdapter.ViewModel;
 
-/**
- * The View Model for the Login View.
- */
-public class LoginViewModel extends ViewModel<LoginState> {
+public class LoginViewModel extends ViewModel<LoginViewModel.LoginState> {
 
     public LoginViewModel() {
-        super("log in");
-        setState(new LoginState());
+        super("Login");
+        setState(new LoginState()); // initial state
     }
 
+    public static class LoginState {
+        private String username = "";
+        private String password = "";
+        private String loginError = "";
+
+        public String getUsername() { return username; }
+        public void setUsername(String username) { this.username = username; }
+
+        public String getPassword() { return password; }
+        public void setPassword(String password) { this.password = password; }
+
+        public String getLoginError() { return loginError; }
+        public void setLoginError(String loginError) { this.loginError = loginError; }
+    }
 }

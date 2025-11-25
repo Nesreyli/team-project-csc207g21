@@ -3,7 +3,6 @@ package InterfaceAdapter.logout;
 import InterfaceAdapter.ViewManagerModel;
 import InterfaceAdapter.logged_in.LoggedInState;
 import InterfaceAdapter.logged_in.LoggedInViewModel;
-import InterfaceAdapter.login.LoginState;
 import InterfaceAdapter.login.LoginViewModel;
 import UseCase.logout.LogoutOutputBoundary;
 

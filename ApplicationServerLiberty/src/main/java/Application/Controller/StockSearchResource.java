@@ -3,7 +3,7 @@ package Application.Controller;
 
 import Application.UseCases.Stock_Search.OutputDataSearch;
 import Application.UseCases.Stock_Search.SearchStockInput;
-import Application.UseCases.Stock_Search.SearchStockInteractor;
+import main.java.Application.UseCases.Stock_Search.SearchStockInteractor;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;

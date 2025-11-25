@@ -1,48 +1,37 @@
 package InterfaceAdapter.login;
 
-import InterfaceAdapter.ViewManagerModel;
-import InterfaceAdapter.logged_in.LoggedInState;
-import InterfaceAdapter.logged_in.LoggedInViewModel;
-import UseCase.Login.LoginOutputBoundary;
-import UseCase.Login.LoginOutputData;
+import InterfaceAdapter.usersession.UserSessionViewModel;
+import UseCase.login.LoginOutputBoundary;
+import UseCase.login.LoginOutputData;
 
-/**
- * The Presenter for the Login Use Case.
- */
+import javax.swing.SwingUtilities;
+
 public class LoginPresenter implements LoginOutputBoundary {
 
+    private final UserSessionViewModel userSessionViewModel;
     private final LoginViewModel loginViewModel;
-    private final LoggedInViewModel loggedInViewModel;
-    private final ViewManagerModel viewManagerModel;
 
-    public LoginPresenter(ViewManagerModel viewManagerModel,
-                          LoggedInViewModel loggedInViewModel,
+    public LoginPresenter(UserSessionViewModel userSessionViewModel,
                           LoginViewModel loginViewModel) {
-        this.viewManagerModel = viewManagerModel;
-        this.loggedInViewModel = loggedInViewModel;
+        this.userSessionViewModel = userSessionViewModel;
         this.loginViewModel = loginViewModel;
     }
 
     @Override
     public void prepareSuccessView(LoginOutputData response) {
-        // On success, update the loggedInViewModel's state
-        final LoggedInState loggedInState = loggedInViewModel.getState();
-        loggedInState.setUsername(response.getUsername());
-        loggedInState.setPassword(response.getPassword());
-        this.loggedInViewModel.firePropertyChange();
-
-        // and clear everything from the LoginViewModel's state
-        loginViewModel.setState(new LoginState());
-
-        // switch to the logged in view
-        this.viewManagerModel.setState(loggedInViewModel.getViewName());
-        this.viewManagerModel.firePropertyChange();
+        SwingUtilities.invokeLater(() -> {
+            userSessionViewModel.login(response.getUsername(), response.getPassword());
+            loginViewModel.setState(new LoginViewModel.LoginState());
+            loginViewModel.firePropertyChange();
+        });
     }
 
     @Override
     public void prepareFailView(String error) {
-        final LoginState loginState = loginViewModel.getState();
-        loginState.setLoginError(error);
-        loginViewModel.firePropertyChange();
+        SwingUtilities.invokeLater(() -> {
+            LoginViewModel.LoginState state = loginViewModel.getState();
+            state.setLoginError(error);
+            loginViewModel.firePropertyChange();
+        });
     }
 }

@@ -1,4 +1,4 @@
-package Application.UseCases.Stock_Search;
+package main.java.Application.UseCases.Stock_Search;
 
 import Application.Entities.Stock;
 import jakarta.ejb.Singleton;
@@ -10,20 +10,20 @@ import java.util.ArrayList;
 @Singleton
 public class SearchStockInteractor {
     @Inject
-    SearchStockDatabaseInterface stockDB;
+    Application.UseCases.Stock_Search.SearchStockDatabaseInterface stockDB;
 
     private List<Stock> cachedStocks = new ArrayList<>();
 
-    public OutputDataSearch executeSearch(SearchStockInput searchStockInput) {
+    public Application.UseCases.Stock_Search.OutputDataSearch executeSearch(Application.UseCases.Stock_Search.SearchStockInput searchStockInput) {
         try{
             String query = searchStockInput.getQuery();
 
             if (query == null || query.trim().isEmpty()) {
-                return new OutputDataSearch("400", new ArrayList<>());
+                return new Application.UseCases.Stock_Search.OutputDataSearch("400", new ArrayList<>());
             }
 
             if (query.length() < 2) {
-                return new OutputDataSearch("400", new ArrayList<>());
+                return new Application.UseCases.Stock_Search.OutputDataSearch("400", new ArrayList<>());
             }
 
             // Loading stocks if not cached
@@ -37,21 +37,21 @@ public class SearchStockInteractor {
                     .filter(stock -> matchesQuery(stock, lowerQuery))
                     .toList();
 
-            return new OutputDataSearch("200", results);
+            return new Application.UseCases.Stock_Search.OutputDataSearch("200", results);
         }
         catch (RuntimeException e){
-            return new OutputDataSearch("500", new ArrayList<>());
+            return new Application.UseCases.Stock_Search.OutputDataSearch("500", new ArrayList<>());
         }
     }
 
-    public OutputDataSearch executeLoadAll() {
+    public Application.UseCases.Stock_Search.OutputDataSearch executeLoadAll() {
         try{
             if (cachedStocks.isEmpty()) {
                 cachedStocks = stockDB.getAllStocks();
             }
-            return new OutputDataSearch("200", cachedStocks);
+            return new Application.UseCases.Stock_Search.OutputDataSearch("200", cachedStocks);
         } catch (RuntimeException e){
-            return new OutputDataSearch("500", new ArrayList<>());
+            return new Application.UseCases.Stock_Search.OutputDataSearch("500", new ArrayList<>());
         }
     }
 

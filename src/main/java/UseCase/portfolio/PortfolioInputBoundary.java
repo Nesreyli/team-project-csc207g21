@@ -1,6 +1,9 @@
 package UseCase.portfolio;
 
 public interface PortfolioInputBoundary {
-
-    public void execute(PortfolioInputData input);
+    /**
+     * Executes the login use case.
+     * @param portfolioInputData the input data
+     */
+    void execute(PortfolioInputData portfolioInputData);
 }

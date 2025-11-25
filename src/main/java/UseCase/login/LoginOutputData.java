@@ -1,4 +1,4 @@
-package UseCase.Login;
+package UseCase.login;
 
 /**
  * Output Data for the Login Use Case.

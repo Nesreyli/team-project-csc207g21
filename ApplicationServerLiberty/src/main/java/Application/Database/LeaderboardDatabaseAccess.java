@@ -17,7 +17,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
 @ApplicationScoped
 public class LeaderboardDatabaseAccess implements LeaderboardDBInterface {
     @Inject
-    LeaderboardDbFetcher leaderboardFetch;
+    Application.Database.LeaderboardDbFetcher leaderboardFetch;
 
     ConcurrentMap<Integer, String> leaderboard = new ConcurrentHashMap<>();
     ConcurrentMap<String, Long> valuations = new ConcurrentHashMap<>();

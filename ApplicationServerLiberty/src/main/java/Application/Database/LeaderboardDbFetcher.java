@@ -16,9 +16,9 @@ import java.util.concurrent.ConcurrentSkipListMap;
 @Singleton
 public class LeaderboardDbFetcher {
     @Inject
-    UserDatabaseAccess userDB;
+    Application.Database.UserDatabaseAccess userDB;
     @Inject
-    PortfolioDatabaseAccess portDB;
+    Application.Database.PortfolioDatabaseAccess portDB;
 
     // main thing is when leaderboard is updating previous leaderboard should be sent
     @Asynchronous
@@ -44,7 +44,7 @@ public class LeaderboardDbFetcher {
                 if(descendVal.isEmpty()){
                     break;
                 }
-                value = descendVal.getFirst();
+                value = descendVal.first();
                 List<String> usersVal = portfolioValues.get(value);
                 int j = 0;
                 while(j < usersVal.size() && i <= 10){

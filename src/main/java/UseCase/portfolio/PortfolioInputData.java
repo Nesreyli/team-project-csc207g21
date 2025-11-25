@@ -1,10 +1,6 @@
 package UseCase.portfolio;
 
-/**
- * The Input Data for the Login Use Case.
- */
 public class PortfolioInputData {
-
     private final String username;
     private final String password;
 
@@ -13,12 +9,11 @@ public class PortfolioInputData {
         this.password = password;
     }
 
-    String getUsername() {
+    public String getUsername() {
         return username;
     }
 
-    String getPassword() {
+    public String getPassword() {
         return password;
     }
-
 }

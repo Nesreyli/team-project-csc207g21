@@ -4,15 +4,17 @@ import UseCase.portfolio.PortfolioInputBoundary;
 import UseCase.portfolio.PortfolioInputData;
 
 public class PortfolioController {
-    private PortfolioInputBoundary portInteractor;
 
-    public PortfolioController(PortfolioInputBoundary port){
-        portInteractor = port;
+    private final PortfolioInputBoundary portfolioInteractor;
+
+    public PortfolioController(PortfolioInputBoundary portfolioInteractor){
+        this.portfolioInteractor = portfolioInteractor;
     }
 
-    public void portExecute(String username, String password){
-        PortfolioInputData input = new PortfolioInputData(username, password);
-        portInteractor.execute(input);
-    }
+    public void execute(String username, String password) {
+        final PortfolioInputData portfolioInputData = new PortfolioInputData(
+                username, password);
 
+        portfolioInteractor.execute(portfolioInputData);
+    }
 }

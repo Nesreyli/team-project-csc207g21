@@ -1,7 +1,7 @@
 package InterfaceAdapter.login;
 
-import UseCase.Login.LoginInputBoundary;
-import UseCase.Login.LoginInputData;
+import UseCase.login.LoginInputBoundary;
+import UseCase.login.LoginInputData;
 
 /**
  * The controller for the Login Use Case.

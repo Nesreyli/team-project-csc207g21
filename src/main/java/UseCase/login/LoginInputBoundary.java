@@ -1,4 +1,4 @@
-package UseCase.Login;
+package UseCase.login;
 
 /**
  * Input Boundary for actions which are related to logging in.
