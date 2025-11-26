@@ -43,14 +43,12 @@ public class SearchView extends JPanel implements  ActionListener, PropertyChang
     private final JScrollPane scrollPane;
     private final JLabel statusLabel = new JLabel("Ready");
     private final JButton previous;
-    private Map<String, Stock_Search> currentStocks = new HashMap<>();
 
 
     public SearchView(SearchViewModel searchViewModel) {
         this.searchViewModel = searchViewModel;
         this.searchViewModel.addPropertyChangeListener(this);
     //Storing the stock easier
-        this.searchViewModel = searchViewModel;
         this.searchViewModel.addPropertyChangeListener(this);
 
         previous = new JButton("<");
@@ -79,7 +77,7 @@ public class SearchView extends JPanel implements  ActionListener, PropertyChang
                                                            boolean isSelected, boolean hasFocus,
                                                            int row, int column) {
                 Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                setForeground(Color.BLUE);
+                setForeground(Color.GREEN.darker());
                 setFont(getFont().deriveFont(Font.BOLD));
                 setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                 setText("<html><u>" + value + "</u></html>");
@@ -193,8 +191,9 @@ public class SearchView extends JPanel implements  ActionListener, PropertyChang
 
     // Show detailed stock information page when a symbol is clicked
     private void showStockInfo(String symbol) {
+        Map currentStocks = searchViewModel.getState().getSearchResults();
         if (currentStocks != null && currentStocks.containsKey(symbol)) {
-            Stock_Search stock = currentStocks.get(symbol);
+            Stock_Search stock = (Stock_Search) currentStocks.get(symbol);
 
             // Stock details UI
             JFrame stockFrame = new JFrame(symbol + " - Stock Details");
