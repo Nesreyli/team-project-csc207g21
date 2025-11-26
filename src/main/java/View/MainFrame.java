@@ -1,5 +1,7 @@
 package View;
 
+import InterfaceAdapter.stock.StockViewModel;
+
 import javax.swing.*;
 
 public class MainFrame {
@@ -11,11 +13,11 @@ public class MainFrame {
             frame.setMinimumSize(new java.awt.Dimension(600, 400));
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-            // Add Tabbed Pane
-            JTabbedPane tabbedPane = new JTabbedPane();
-
             // Pack contents into layout
-            frame.add(tabbedPane);
+            StockViewModel stockVM = new StockViewModel();
+            StockView stockView = new StockView(stockVM, frame);
+
+            frame.add(stockView);
             frame.pack();
             frame.setVisible(true);
 

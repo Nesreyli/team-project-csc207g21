@@ -5,6 +5,8 @@ import InterfaceAdapter.stock.StockState;
 import InterfaceAdapter.stock.StockViewModel;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.math.BigDecimal;
@@ -19,16 +21,16 @@ public class StockView extends JPanel implements PropertyChangeListener {
     private String symbol;
 
     // Elements to be updated
-    JLabel nameLabel = new JLabel();
-    JLabel countryLabel = new JLabel();
-    JLabel priceLabel = new JLabel();
+    JLabel nameLabel = new JLabel("(XXXX) Sample Company");
+    JLabel countryLabel = new JLabel("Bezosland");
+    JLabel priceLabel = new JLabel("$0.00");
     JButton buyButton = new JButton("Buy");
     JButton sellButton = new JButton("Sell");
     JButton followButton = new JButton("Follow");
     JButton addButton = new JButton("+");
     JButton minusButton = new JButton("-");
     JTextField textField = new JTextField("1");
-    JButton estimateLabel = new JButton("Estimate: $0.00");
+    JLabel estimateLabel = new JLabel("Estimate: $0.00");
     JLabel ownedLabel = new JLabel("You own 0 stocks.");
 
     // Initialize elements
@@ -57,14 +59,20 @@ public class StockView extends JPanel implements PropertyChangeListener {
         plusMinusPanel.setLayout(new BoxLayout(plusMinusPanel, BoxLayout.X_AXIS));
         plusMinusPanel.add(addButton);
         plusMinusPanel.add(textField);
+        textField.setMaximumSize(new Dimension(80, 30));
+        textField.setColumns(5);
         plusMinusPanel.add(minusButton);
+        controlPanel.add(Box.createVerticalStrut(10));
+        controlPanel.add(plusMinusPanel);
 
         // Stock Control Panel >> Button Labels
+        controlPanel.add(Box.createVerticalStrut(20));
         controlPanel.add(estimateLabel);
         controlPanel.add(ownedLabel);
 
         // Layout and add elements
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+        infoPanel.setBorder(new EmptyBorder(0, 10, 0, 0));
         add(infoPanel);
         add(controlPanel);
     }

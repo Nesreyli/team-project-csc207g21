@@ -1,5 +1,6 @@
 package InterfaceAdapter.stock;
 
+import Entity.Stock_Search;
 import InterfaceAdapter.ViewManagerModel;
 import InterfaceAdapter.logged_in.LoggedInState;
 import InterfaceAdapter.logged_in.LoggedInViewModel;
