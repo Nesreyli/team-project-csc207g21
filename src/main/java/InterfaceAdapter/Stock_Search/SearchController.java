@@ -2,15 +2,19 @@ package InterfaceAdapter.Stock_Search;
 
 import UseCase.Stock_Search.SearchInputBoundary;
 import UseCase.Stock_Search.SearchInputData;
+import UseCase.homebutton.HomeInputBoundary;
 
 public class SearchController {
     private final SearchInputBoundary searchInputBoundary;
+    private final HomeInputBoundary homeInputBoundary;
 
     /**
      * Controller for the Stock Search Use Case.
      */
-    public SearchController(SearchInputBoundary searchInputBoundary) {
+    public SearchController(SearchInputBoundary searchInputBoundary,
+                            HomeInputBoundary homeInputBoundary) {
         this.searchInputBoundary = searchInputBoundary;
+        this.homeInputBoundary = homeInputBoundary;
     }
 
     /**
@@ -28,6 +32,10 @@ public class SearchController {
      */
     public void executeLoadAll(){
         searchInputBoundary.executeLoadAll();
+    }
+
+    public void goBack(String username, String password){
+        homeInputBoundary.executePrevious(username, password);
     }
 
 }

@@ -23,35 +23,43 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Phaser;
+import java.util.Map;
 
 /**
  * The View for Stock Search functionality with clickable stock symbols..
  */
 public class SearchView extends JPanel implements  ActionListener, PropertyChangeListener {
-    private final String viewName = "stock search";
-    private final SearchViewModel SearchViewModel;
+    private final String viewName = "Stock Search";
+    private final SearchViewModel searchViewModel;
     private SearchController SearchController;
 
     //UI Stuff
     private final JTextField searchField = new JTextField(20);
     private final JButton searchButton;
     private final JButton loadallButton;
-    private final JLabel errorLabel = new JLabel();
+    private final JLabel errorLabel;
     private final JTable resultsTable;
     private final DefaultTableModel tableModel;
     private final JScrollPane scrollPane;
     private final JLabel statusLabel = new JLabel("Ready");
-
-    //Storing the stock easier
+    private final JButton previous;
     private Map<String, Stock_Search> currentStocks = new HashMap<>();
 
-    public SearchView(SearchViewModel SearchViewModel) {
-        this.SearchViewModel = SearchViewModel;
-        this.SearchViewModel.addPropertyChangeListener(this);
 
+    public SearchView(SearchViewModel searchViewModel) {
+        this.searchViewModel = searchViewModel;
+        this.searchViewModel.addPropertyChangeListener(this);
+    //Storing the stock easier
+        this.searchViewModel = searchViewModel;
+        this.searchViewModel.addPropertyChangeListener(this);
+
+        previous = new JButton("<");
+        previous.addActionListener(this);
         // UI Component
         searchButton = new JButton(SearchViewModel.SEARCH_BUTTON_LABEL);
+        searchButton.addActionListener(this);
         loadallButton = new JButton(SearchViewModel.LOAD_ALL_BUTTON_LABEL);
+        loadallButton.addActionListener(this);
 
         String[] columnNames = {"Symbol", "Company", "Price (CAD)", "Country"};
         tableModel = new DefaultTableModel(columnNames, 0) {
@@ -111,7 +119,7 @@ public class SearchView extends JPanel implements  ActionListener, PropertyChang
         resultsTable.setRowSorter(sorter);
 
         scrollPane = new JScrollPane(resultsTable);
-        scrollPane.setPreferredSize(new Dimension(700, 400));
+        scrollPane.setPreferredSize(new Dimension(600, 400));
 
         // Layout
         this.setLayout(new BorderLayout(10, 10));
@@ -129,12 +137,15 @@ public class SearchView extends JPanel implements  ActionListener, PropertyChang
         searchPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
 
         JLabel searchLabel = new JLabel(SearchViewModel.SEARCH_FIELD_LABEL + ":");
+        searchPanel.add(previous);
         searchPanel.add(searchLabel);
         searchPanel.add(searchField);
         searchPanel.add(searchButton);
         searchPanel.add(loadallButton);
 
         // Error Style
+        errorLabel = new JLabel();
+
         errorLabel.setForeground(Color.RED);
         searchPanel.add(errorLabel);
 
@@ -155,9 +166,9 @@ public class SearchView extends JPanel implements  ActionListener, PropertyChang
         // Add document listener for real-time search
         searchField.getDocument().addDocumentListener(new DocumentListener() {
             private void documentListenerHelper() {
-                final SearchState currentState = SearchViewModel.getState();
+                final SearchState currentState = searchViewModel.getState();
                 currentState.setSearchQuery(searchField.getText());
-                SearchViewModel.setState(currentState);
+                searchViewModel.setState(currentState);
             }
 
             @Override
@@ -300,11 +311,14 @@ public class SearchView extends JPanel implements  ActionListener, PropertyChang
             performSearch();
         } else if (evt.getSource().equals(loadallButton)) {
             performLoadAll();
+        } else if(evt.getSource().equals(previous)){
+            final SearchState state = searchViewModel.getState();
+            SearchController.goBack(state.getUsername(), state.getPassword());
         }
     }
 
     private void performSearch() {
-        final SearchState currentState = SearchViewModel.getState();
+        final SearchState currentState = searchViewModel.getState();
         String query = currentState.getSearchQuery();
 
         if (query == null || query.isEmpty()) {
@@ -329,32 +343,26 @@ public class SearchView extends JPanel implements  ActionListener, PropertyChang
             final SearchState state = (SearchState) evt.getNewValue();
 
             // Update error signature
-            if (state.getSearchQuery() != null) {
-                errorLabel.setText(state.getSearchError());
-                statusLabel.setText("Error Occurred");
-            } else {
-                errorLabel.setText("");
-            }
+            errorLabel.setText(state.getSearchError());
+            searchField.setText(state.getSearchQuery());
 
-            updateTable((HashMap<String, Stock_Search>) state.getSearchResults());
+            updateTable(state.getSearchResults());
+            int resultCount = state.getSearchResults().size();
 
-            if (!state.isLoading() && state.getSearchError() == null) {
-                int resultCount = state.getSearchResults().size();
-                statusLabel.setText(String.format("Found %d stock%s",
+            statusLabel.setText(String.format("Found %d stock%s",
                         resultCount, resultCount == 1 ? "" : "s"));
             }
         }
-    }
 
-    private void updateTable(HashMap<String, Stock_Search> stocks) {
+    private void updateTable(Map<String, Stock_Search> stocks) {
         tableModel.setRowCount(0);
 
-        for (Stock_Search stock : stocks.values()) {
+        for (String stock : stocks.keySet()) {
             Object[] row = {
-                    stock.getSymbol(),
-                    stock.getCompany(),
-                    formatPrice(stock.getPrice()),
-                    stock.getCountry()
+                    stocks.get(stock).getSymbol(),
+                    stocks.get(stock).getCompany(),
+                    formatPrice(stocks.get(stock).getPrice()),
+                    stocks.get(stock).getCountry()
             };
             tableModel.addRow(row);
         }

@@ -21,7 +21,7 @@ public class HomePresenter implements HomeOutputBoundary {
     }
 
     @Override
-    public void prepareSuccessview(HomeOutputData output) {
+    public void preparePreviousView(HomeOutputData output) {
 
         LoggedInState loggedInState = loggedViewModel.getState();
         loggedInState.setUsername(output.getUsername());
