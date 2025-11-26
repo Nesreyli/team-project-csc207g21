@@ -7,6 +7,7 @@ import InterfaceAdapter.stock.StockViewModel;
 import javax.swing.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.math.BigDecimal;
 
 public class StockView extends JPanel implements PropertyChangeListener {
     private final String viewName = "Stock View";
@@ -24,11 +25,11 @@ public class StockView extends JPanel implements PropertyChangeListener {
     JButton buyButton = new JButton("Buy");
     JButton sellButton = new JButton("Sell");
     JButton followButton = new JButton("Follow");
+    JButton addButton = new JButton("+");
+    JButton minusButton = new JButton("-");
+    JTextField textField = new JTextField("1");
+    JButton estimateLabel = new JButton("Estimate: $0.00");
     JLabel ownedLabel = new JLabel("You own 0 stocks.");
-
-    // TODO: Get username and password
-    String username = "username";
-    String password = "password";
 
     // Initialize elements
     public StockView(StockViewModel stockViewModel, JFrame frame) {
@@ -44,18 +45,33 @@ public class StockView extends JPanel implements PropertyChangeListener {
         infoPanel.add(nameLabel);
         infoPanel.add(countryLabel);
 
-        // Stock Control Panel
+        // Stock Control Panel >> Top Buttons
         JPanel controlPanel = new JPanel();
         controlPanel.setLayout(new BoxLayout(controlPanel, BoxLayout.Y_AXIS));
         controlPanel.add(priceLabel);
         controlPanel.add(buyButton);
         controlPanel.add(sellButton);
+
+        // Stock Control Panel >> Plus Minus Buttons
+        JPanel plusMinusPanel = new JPanel();
+        plusMinusPanel.setLayout(new BoxLayout(plusMinusPanel, BoxLayout.X_AXIS));
+        plusMinusPanel.add(addButton);
+        plusMinusPanel.add(textField);
+        plusMinusPanel.add(minusButton);
+
+        // Stock Control Panel >> Button Labels
+        controlPanel.add(estimateLabel);
         controlPanel.add(ownedLabel);
 
         // Layout and add elements
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         add(infoPanel);
         add(controlPanel);
+    }
+
+    public String calculateTotal(BigDecimal stockPrice, String quantityText) {
+        int quantity = Integer.parseInt(quantityText);
+        return String.format("%.2f", stockPrice.multiply(BigDecimal.valueOf(quantity)));
     }
 
     public void setController(StockController stockController) {
@@ -65,14 +81,17 @@ public class StockView extends JPanel implements PropertyChangeListener {
     // This method should be called when a stock is selected from the search results.
     //
     // public void setDetails(String stockSymbol) {
+    //    username = ???
+    //    password = ???
     //    symbol = stockSymbol;
-    //    stockController.execute(symbol);
+    //    stockController.execute(symbol, username, password);
     //}
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().equals("state")) {
             final StockState state = (StockState) evt.getNewValue();
+            BigDecimal stockPrice = state.getPrice();
 
             // Update name
             String nameAndSymbol = String.format("(%s) %s", symbol, state.getCompany());
@@ -83,26 +102,67 @@ public class StockView extends JPanel implements PropertyChangeListener {
             nameLabel.setText(details);
 
             // Update price
-            priceLabel.setText("$" + String.format("%.2f", state.getPrice()));
-
-            // Update buy button
-            buyButton.addActionListener( e-> {
-                    StockDialog stockDialog = new StockDialog(frame,
-                            true, nameAndSymbol, details, state.getPrice(), state.getValue());
-                    stockDialog.setVisible(true);
-            });
-
-            // Update sell button
-            sellButton.addActionListener(e -> {
-                    StockDialog stockDialog = new StockDialog(frame,
-                            false, nameAndSymbol, details, state.getPrice(), state.getValue());
-                    stockDialog.setVisible(true);
-            });
+            priceLabel.setText("Price per share: $" + String.format("%.2f", state.getPrice()));
 
             // Update follow button
             followButton.addActionListener(e -> {
                 System.out.println("Follow");
             });
+
+            // Add button
+            addButton.addActionListener(e -> {
+                textField.setText(String.valueOf(Integer.parseInt(textField.getText()) + 1));
+                priceLabel.setText("Estimate: $" + calculateTotal(stockPrice, textField.getText()));
+            });
+
+            // Minus button
+            minusButton.addActionListener(e -> {
+                if (Integer.parseInt(textField.getText()) >= 2) {
+                    textField.setText(String.valueOf(Integer.parseInt(textField.getText()) - 1));
+                    priceLabel.setText("Estimate: $" + calculateTotal(stockPrice, textField.getText()));
+                }
+            });
+
+            // Add/minus text field
+            textField.addActionListener(e -> {
+                priceLabel.setText("Estimate: $" + calculateTotal(stockPrice, textField.getText()));
+            });
+
+            // Buy button
+            buyButton.addActionListener(e -> {
+                if (new BigDecimal(textField.getText()).multiply(stockPrice)
+                        .compareTo(state.getValue()) <= 0) {
+
+                    int confirmation = JOptionPane.showConfirmDialog(frame,
+                            "Confirm Purchase?",
+                            "Confirmation",
+                            JOptionPane.YES_NO_OPTION);
+
+                    if (confirmation == JOptionPane.YES_OPTION) {
+                        System.out.println("Purchase");
+                    }
+
+                } else {
+                    JOptionPane.showMessageDialog(frame,
+                            "You do not have enough money in your balance to make this purchase!",
+                            "Insufficient Funds",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            });
+
+            // Sell button
+            sellButton.addActionListener(e -> {
+                int confirmation = JOptionPane.showConfirmDialog(frame,
+                        "Confirm Sale?",
+                        "Confirmation",
+                        JOptionPane.YES_NO_OPTION);
+
+                if (confirmation == JOptionPane.YES_OPTION) {
+                    System.out.println("Sale");
+                }
+            });
+
+
         }
     }
 }
