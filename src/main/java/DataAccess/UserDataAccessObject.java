@@ -1,8 +1,8 @@
 package DataAccess;
 
-import Entity.User;
 import Entity.UserFactory;
-import UseCase.UserAccessInterface;
+import UseCase.Login.LogInAccessInterface;
+import UseCase.signup.SignupDataAccessInterface;
 import okhttp3.*;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,7 +21,7 @@ LoginUserDataAccessInterface,
 ChangePasswordUserDataAccessInterface,
 LogoutUserDataAccessInterface*/
 
-public class DBUserDataAccessObject implements UserAccessInterface {
+public class UserDataAccessObject implements LogInAccessInterface, SignupDataAccessInterface {
     private static final int SUCCESS_CODE = 200;
     private static final String CONTENT_TYPE_LABEL = "Content-Type";
     private static final String CONTENT_TYPE_JSON = "application/json";
@@ -29,12 +29,12 @@ public class DBUserDataAccessObject implements UserAccessInterface {
     private static final String USERNAME = "username";
     private static final String PASSWORD = "password";
     private static final String MESSAGE = "message";
+    private static final String URL = "http://100.67.15.150:4848/rest";
     private final UserFactory userFactory;
-    private final String url = "http://100.71.12.182:4848/rest";
 
     private String currentUsername;
 
-    public DBUserDataAccessObject(UserFactory userFactory) {
+    public UserDataAccessObject(UserFactory userFactory) {
         this.userFactory = userFactory;
     }
 
@@ -42,7 +42,7 @@ public class DBUserDataAccessObject implements UserAccessInterface {
         // Make an API call to get the user object.
         final OkHttpClient client = new OkHttpClient().newBuilder().build();
         final Request request = new Request.Builder()
-                .url(String.format(url + "/user/login/?username=%s&password=%s", username, password))
+                .url(String.format(URL + "/user/login/?username=%s&password=%s", username, password))
                 .addHeader("Content-Type", CONTENT_TYPE_JSON)
                 .build();
         try {
@@ -69,7 +69,7 @@ public class DBUserDataAccessObject implements UserAccessInterface {
 
         // POST METHOD
         final Request request = new Request.Builder()
-                .url(String.format(url + "/user/signup/?username=%s&password=%s&password2=%s",
+                .url(String.format(URL + "/user/signup/?username=%s&password=%s&password2=%s",
                         username, password, password))
                 .addHeader("Content-Type", CONTENT_TYPE_JSON)
                 .build();
@@ -78,8 +78,7 @@ public class DBUserDataAccessObject implements UserAccessInterface {
 
             final JSONObject responseBody = new JSONObject(response.body().string());
             if (responseBody.getInt(MESSAGE) == SUCCESS_CODE) {
-                final JSONObject userJSONObject = responseBody.getJSONObject("user");
-                final String name = userJSONObject.getString(USERNAME);
+                final String name = responseBody.getString(USERNAME);
                 final String pass = password;
                 return Entity.ResponseFactory.create(SUCCESS_CODE, userFactory.create(name, pass));
             } else {

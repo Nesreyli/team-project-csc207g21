@@ -48,3 +48,4 @@ public class PortfolioPresenter implements PortfolioOutputBoundary {
         loggedInViewModel.firePropertyChange();
     }
 }
+

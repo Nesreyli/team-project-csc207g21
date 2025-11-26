@@ -1,51 +1,38 @@
 package InterfaceAdapter.logged_in;
 
+import InterfaceAdapter.Stock_Search.SearchState;
+import InterfaceAdapter.Stock_Search.SearchViewModel;
 import InterfaceAdapter.ViewManagerModel;
-import InterfaceAdapter.portfolio.PortfolioState;
-import InterfaceAdapter.portfolio.PortfolioViewModel;
-import UseCase.portfolio.PortfolioOutputBoundary;
-import UseCase.portfolio.PortfolioOutputData;
+import InterfaceAdapter.login.LoginViewModel;
+import UseCase.loggedIn.LoggedInOutputBoundary;
 
-// Should this be Portfolio Presenter or stay here as it
-// is in currently in logged in menu which changes flow to portfolio view
-public class LoggedInPresenter implements PortfolioOutputBoundary {
-    private final PortfolioViewModel portViewModel;
-    private final ViewManagerModel viewManagerModel;
-    private final LoggedInViewModel loggedInViewModel;
+import javax.swing.text.View;
 
+public class LoggedInPresenter implements LoggedInOutputBoundary {
+    private LoggedInViewModel loggedInViewModel;
+    private ViewManagerModel viewManagerModel;
+    private SearchViewModel searchViewModel;
 
-    public LoggedInPresenter(ViewManagerModel viewManagerModel,
-                          PortfolioViewModel portViewModel, LoggedInViewModel loggedInViewModel) {
-        this.viewManagerModel = viewManagerModel;
-        this.portViewModel = portViewModel;
+    public LoggedInPresenter(LoggedInViewModel loggedInViewModel,
+                             ViewManagerModel viewManagerModel,
+                             SearchViewModel searchViewModel){
         this.loggedInViewModel = loggedInViewModel;
+        this.viewManagerModel = viewManagerModel;
+        this.searchViewModel = searchViewModel;
     }
 
-    @Override
-    public void prepareSuccessView(PortfolioOutputData response) {
-        // On success, update the loggedInViewModel's state
-        final PortfolioState portfolioState = portViewModel.getState();
-        portfolioState.setUsername(response.getUsername());
-        portfolioState.setPassword(response.getPassword());
-        portfolioState.setPerformance(response.getPerformance().toString() + "%");
-        portfolioState.setCash(response.getCash().toString() + " USD");
-        portfolioState.setValue(response.getValue().toString() + " USD");
-        portfolioState.setHoldings(response.getHoldings());
-        this.portViewModel.firePropertyChange();
+    public void switchToSearch() {
+        LoggedInState loggedInState = loggedInViewModel.getState();
 
-        // and clear everything from the LoginViewModel's state
-        loggedInViewModel.setState(new LoggedInState());
+        searchViewModel.setState(new SearchState());
+        SearchState searchState = searchViewModel.getState();
+        searchState.setUsername(loggedInState.getUsername());
+        searchState.setPassword(loggedInState.getPassword());
 
-        // switch to the logged in view
-        this.viewManagerModel.setState(portViewModel.getViewName());
-        this.viewManagerModel.firePropertyChange();
-    }
-
-    @Override
-    public void prepareFailView(String error) {
-        final LoggedInState loginState = loggedInViewModel.getState();
-        loginState.setLoggedInError(error);
         loggedInViewModel.firePropertyChange();
+        searchViewModel.firePropertyChange();
+
+        viewManagerModel.setState(searchViewModel.getViewName());
+        viewManagerModel.firePropertyChange();
     }
 }
-
