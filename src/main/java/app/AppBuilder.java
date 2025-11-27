@@ -1,6 +1,6 @@
 package app;
 
-import DataAccess.UserDataAccessObject;
+import DataAccess.PriceAccessObject;
 import DataAccess.PortfolioAccessObject;
 import DataAccess.SearchAccessObject;
 import Entity.UserFactory;
@@ -9,7 +9,6 @@ import InterfaceAdapter.homebutton.HomeController;
 import InterfaceAdapter.homebutton.HomePresenter;
 import InterfaceAdapter.logged_in.LoggedInController;
 import InterfaceAdapter.logged_in.LoggedInPresenter;
-import InterfaceAdapter.logged_in.LoggedInState;
 import InterfaceAdapter.logout.LogoutController;
 import InterfaceAdapter.logout.LogoutPresenter;
 import InterfaceAdapter.portfolio.PortfolioPresenter;
@@ -68,7 +67,7 @@ public class AppBuilder {
 
     // DAO version using local file storage
     // DAO version using a shared external database
-    final UserDataAccessObject userDataAccessObject = new UserDataAccessObject(userFactory);
+    final PriceAccessObject priceAccessObject = new PriceAccessObject(userFactory);
     final PortfolioAccessObject portfolioAccessObject = new PortfolioAccessObject();
     final SearchAccessObject  searchDataAccess = new SearchAccessObject();  // ✅ Add this
 
@@ -106,7 +105,7 @@ public class AppBuilder {
         final LoginOutputBoundary loginOutputBoundary = new LoginPresenter(viewManagerModel,
                 loggedInViewModel, loginViewModel, signupViewModel);
         final LoginInputBoundary loginInteractor = new LogInInteractor(
-                userDataAccessObject, loginOutputBoundary);
+                priceAccessObject, loginOutputBoundary);
 
         LoginController loginController = new LoginController(loginInteractor);
         loginView.setLoginController(loginController);
@@ -194,7 +193,7 @@ public class AppBuilder {
     public AppBuilder addSignupUseCase(){
         final SignupOutputBoundary signupOutputBoundary = new SignupPresenter(viewManagerModel,
                 signupViewModel, loginViewModel);
-        final SignupInputBoundary signupInputBoundary = new SignupInteractor(userDataAccessObject,
+        final SignupInputBoundary signupInputBoundary = new SignupInteractor(priceAccessObject,
                 signupOutputBoundary);
         final SignupController signupController = new SignupController(signupInputBoundary);
         signupView.setSignupController(signupController);
