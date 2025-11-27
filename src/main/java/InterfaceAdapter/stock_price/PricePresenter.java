@@ -36,14 +36,9 @@ public class PricePresenter implements PriceOutputBoundary {
         priceState.setPrice(price.getPrice().toString());
         priceState.setYtdPerformance(price.getYtdPerformance().toString());
         priceState.setYtdPrice(price.getYtdPrice().toString());
+        priceState.setSymbol(price.getSymbol());
 
         priceViewModel.firePropertyChange();
-
-        searchViewModel.setState(new SearchState());
-        searchViewModel.firePropertyChange();
-
-        viewManagerModel.setState(priceViewModel.getViewName());
-        viewManagerModel.firePropertyChange();
     }
 
     @Override

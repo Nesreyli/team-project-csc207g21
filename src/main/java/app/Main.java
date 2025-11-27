@@ -11,6 +11,7 @@ public class Main {
                 .addSignupView()
                 .addPortfolioView()
                 .addSearchView()
+                .addPriceView()
                 .addPortfolioUseCase()
                 .addSearchUseCase()
                 .addLogoutUseCase()
@@ -18,6 +19,7 @@ public class Main {
                 .addHomeUseCase()
                 .addSignupUseCase()
                 .addLoggedInUseCase()
+                .addPriceUseCase()
                 .build();
 
         application.pack();

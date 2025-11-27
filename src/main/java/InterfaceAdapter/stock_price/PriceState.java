@@ -13,6 +13,7 @@ public class PriceState {
     private String country;
     private String username;
     private String password;
+    private String symbol;
 
     public PriceState(PriceState copy) {
         price = copy.price;
@@ -64,5 +65,13 @@ public class PriceState {
 
     public void setYtdPerformance(String ytdPerformance) {
         this.ytdPerformance = ytdPerformance;
+    }
+
+    public String getSymbol() {
+        return symbol;
+    }
+
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
     }
 }
