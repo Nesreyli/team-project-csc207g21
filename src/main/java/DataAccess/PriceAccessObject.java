@@ -4,6 +4,7 @@ import Entity.Price;
 import Entity.UserFactory;
 import UseCase.Login.LogInAccessInterface;
 import UseCase.signup.SignupDataAccessInterface;
+import UseCase.stock_price.PriceAccessInterface;
 import okhttp3.*;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,7 +23,7 @@ LoginUserDataAccessInterface,
 ChangePasswordUserDataAccessInterface,
 LogoutUserDataAccessInterface*/
 
-public class PriceAccessObject {
+public class PriceAccessObject implements PriceAccessInterface {
     private static final int SUCCESS_CODE = 200;
     private static final String CONTENT_TYPE_LABEL = "Content-Type";
     private static final String CONTENT_TYPE_JSON = "application/json";
@@ -31,8 +32,6 @@ public class PriceAccessObject {
     private static final String PASSWORD = "password";
     private static final String MESSAGE = "message";
     private static final String URL = "http://localhost:4848/rest";
-
-    private String currentUsername;
 
     public PriceAccessObject(){
     }

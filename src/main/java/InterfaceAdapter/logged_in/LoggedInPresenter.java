@@ -24,11 +24,11 @@ public class LoggedInPresenter implements LoggedInOutputBoundary {
     public void switchToSearch() {
         LoggedInState loggedInState = loggedInViewModel.getState();
 
-        searchViewModel.setState(new SearchState());
         SearchState searchState = searchViewModel.getState();
         searchState.setUsername(loggedInState.getUsername());
         searchState.setPassword(loggedInState.getPassword());
 
+        loggedInViewModel.setState(new LoggedInState());
         loggedInViewModel.firePropertyChange();
         searchViewModel.firePropertyChange();
 
