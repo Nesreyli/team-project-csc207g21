@@ -3,6 +3,7 @@ package app;
 import DataAccess.PriceAccessObject;
 import DataAccess.PortfolioAccessObject;
 import DataAccess.SearchAccessObject;
+import DataAccess.UserDataAccessObject;
 import Entity.UserFactory;
 import InterfaceAdapter.ViewManagerModel;
 import InterfaceAdapter.homebutton.HomeController;
@@ -67,7 +68,7 @@ public class AppBuilder {
 
     // DAO version using local file storage
     // DAO version using a shared external database
-    final PriceAccessObject priceAccessObject = new PriceAccessObject(userFactory);
+    final UserDataAccessObject userDataAccessObject = new UserDataAccessObject(userFactory);
     final PortfolioAccessObject portfolioAccessObject = new PortfolioAccessObject();
     final SearchAccessObject  searchDataAccess = new SearchAccessObject();  // ✅ Add this
 
@@ -105,7 +106,7 @@ public class AppBuilder {
         final LoginOutputBoundary loginOutputBoundary = new LoginPresenter(viewManagerModel,
                 loggedInViewModel, loginViewModel, signupViewModel);
         final LoginInputBoundary loginInteractor = new LogInInteractor(
-                priceAccessObject, loginOutputBoundary);
+                userDataAccessObject, loginOutputBoundary);
 
         LoginController loginController = new LoginController(loginInteractor);
         loginView.setLoginController(loginController);
@@ -193,7 +194,7 @@ public class AppBuilder {
     public AppBuilder addSignupUseCase(){
         final SignupOutputBoundary signupOutputBoundary = new SignupPresenter(viewManagerModel,
                 signupViewModel, loginViewModel);
-        final SignupInputBoundary signupInputBoundary = new SignupInteractor(priceAccessObject,
+        final SignupInputBoundary signupInputBoundary = new SignupInteractor(userDataAccessObject,
                 signupOutputBoundary);
         final SignupController signupController = new SignupController(signupInputBoundary);
         signupView.setSignupController(signupController);
