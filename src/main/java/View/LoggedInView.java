@@ -3,6 +3,7 @@ package View;
 import InterfaceAdapter.logged_in.LoggedInState;
 import InterfaceAdapter.logged_in.LoggedInViewModel;
 import InterfaceAdapter.logout.LogoutController;
+import InterfaceAdapter.news.NewsController;
 import InterfaceAdapter.portfolio.PortfolioController;
 
 import javax.swing.*;
@@ -24,9 +25,11 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
     private final JLabel username;
     private final JButton logout;
     private final JButton portfolio;
+    private final JButton news;
 //    private final JPanel image;
     private PortfolioController portfolioController;
     private LogoutController logoutController;
+    private NewsController newsController;
 
 //    private final JTextField passwordInputField = new JTextField(15);
 //    private final JButton changePassword;
@@ -45,7 +48,6 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
         final JPanel buttons = new JPanel();
         logout = new JButton("Logout");
         buttons.add(logout);
-        logout.setBackground(Color.LIGHT_GRAY);
         logout.addActionListener(
                 new ActionListener() {
                     @Override
@@ -60,7 +62,6 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
 
         portfolio = new JButton("Portfolio");
         buttons.add(portfolio);
-        buttons.setBackground(Color.LIGHT_GRAY);
         portfolio.addActionListener(
                 new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
@@ -74,6 +75,19 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
                 }
             }
         });
+
+        news = new JButton("Top News");
+        buttons.add(news);
+        news.addActionListener(
+            new ActionListener(){
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    newsController.execute();
+                }
+            }
+        );
+        buttons.setBackground(Color.LIGHT_GRAY);
+
 
         this.setAlignmentX(1.0f);
 
@@ -129,5 +143,9 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
 
     public void setLogoutController(LogoutController logoutController) {
         this.logoutController = logoutController;
+    }
+
+    public void setNewsController(NewsController newsController) {
+        this.newsController = newsController;
     }
 }

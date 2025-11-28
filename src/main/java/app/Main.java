@@ -10,6 +10,8 @@ public class Main {
                 .addLoggedInView()
                 .addSignupView()
                 .addPortfolioView()
+                .addNewsView()
+                .addNewsUseCase()
                 .addLoginUseCase()
                 .addLogoutUseCase()
                 .addPortfolioUseCase()

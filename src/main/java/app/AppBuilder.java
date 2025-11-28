@@ -1,5 +1,6 @@
 package app;
 
+import DataAccess.NewsAccessObject;
 import DataAccess.UserDataAccessObject;
 import DataAccess.PortfolioAccessObject;
 import Entity.UserFactory;
@@ -8,6 +9,9 @@ import InterfaceAdapter.homebutton.HomeController;
 import InterfaceAdapter.homebutton.HomePresenter;
 import InterfaceAdapter.logout.LogoutController;
 import InterfaceAdapter.logout.LogoutPresenter;
+import InterfaceAdapter.news.NewsController;
+import InterfaceAdapter.news.NewsPresenter;
+import InterfaceAdapter.news.NewsViewModel;
 import InterfaceAdapter.portfolio.PortfolioPresenter;
 import InterfaceAdapter.logged_in.LoggedInViewModel;
 import InterfaceAdapter.login.LoginController;
@@ -27,6 +31,9 @@ import UseCase.homebutton.HomeOutputBoundary;
 import UseCase.logout.LogoutInputBoundary;
 import UseCase.logout.LogoutInteractor;
 import UseCase.logout.LogoutOutputBoundary;
+import UseCase.news.NewsInputBoundary;
+import UseCase.news.NewsInteractor;
+import UseCase.news.NewsOutputBoundary;
 import UseCase.portfolio.PortfolioInputBoundary;
 import UseCase.portfolio.PortfolioInteractor;
 import UseCase.portfolio.PortfolioOutputBoundary;
@@ -52,6 +59,7 @@ public class AppBuilder {
     // DAO version using a shared external database
     final UserDataAccessObject userDataAccessObject = new UserDataAccessObject(userFactory);
     final PortfolioAccessObject portfolioAccessObject = new PortfolioAccessObject();
+    final NewsAccessObject newsAccessObject = new NewsAccessObject();
 
     private LoginViewModel loginViewModel;
     private LoggedInViewModel loggedInViewModel;
@@ -61,6 +69,8 @@ public class AppBuilder {
     private PortfolioViewModel portViewModel;
     private SignupView signupView;
     private SignupViewModel signupViewModel;
+    private NewsViewModel newsViewModel;
+    private NewsPanel newsPanel;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -106,6 +116,22 @@ public class AppBuilder {
         return this;
     }
 
+    public AppBuilder addNewsView(){
+        newsViewModel = new NewsViewModel();
+        newsPanel = new NewsPanel(newsViewModel);
+        cardPanel.add(newsPanel, newsViewModel.getViewName());
+        return this;
+    }
+
+    public AppBuilder addNewsUseCase(){
+        final NewsOutputBoundary newsOutputBoundary = new NewsPresenter(viewManagerModel,
+                newsViewModel);
+        final NewsInputBoundary newsInputBoundary = new NewsInteractor(newsAccessObject, newsOutputBoundary);
+        final NewsController newsController = new NewsController(newsInputBoundary);
+
+        loggedInView.setNewsController(newsController);
+        return this;
+    }
 
     public AppBuilder addPortfolioUseCase(){
         final PortfolioOutputBoundary portfolioOutputBoundary = new PortfolioPresenter(viewManagerModel,

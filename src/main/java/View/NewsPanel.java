@@ -1,4 +1,7 @@
 package View;
+import Entity.News;
+import InterfaceAdapter.news.NewsState;
+import InterfaceAdapter.news.NewsViewModel;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -6,73 +9,51 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.swing.*;
+import javax.swing.text.JTextComponent;
 import java.awt.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
 
-public class NewsPanel extends JPanel {
-
+public class NewsPanel extends JPanel implements PropertyChangeListener {
+    private final JPanel newsPanel;
+    private NewsViewModel newsViewModel;
     private JTextArea newsTextArea;
 
-    public NewsPanel() {
+    public NewsPanel(NewsViewModel newsViewModel) {
+        this.newsViewModel = newsViewModel;
+        newsViewModel.addPropertyChangeListener(this);
+
+        newsPanel = new JPanel();
+        newsPanel.setLayout(new BoxLayout(newsPanel, BoxLayout.Y_AXIS));
+
         setLayout(new BorderLayout());
-        setPreferredSize(new Dimension(300, 350));
         setBorder(BorderFactory.createTitledBorder("Latest News"));
+        JScrollPane newsScroll = new JScrollPane(newsPanel);
 
-        newsTextArea = new JTextArea();
-        newsTextArea.setEditable(false);
-        newsTextArea.setLineWrap(true);
-        newsTextArea.setWrapStyleWord(true);
-
-        JScrollPane scrollPane = new JScrollPane(newsTextArea);
-        add(scrollPane, BorderLayout.CENTER);
-
-        loadNews();
+        this.add(newsScroll);
     }
 
-    private void loadNews() {
-        SwingWorker<Void, Void> worker = new SwingWorker<>() {
-            @Override
-            protected Void doInBackground() {
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        NewsState newsState = (NewsState) evt.getNewValue();
+        newsPanel.removeAll();
+        for(News news: newsState.getNews()){
+            JPanel panel = new JPanel();
+            panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
-                String url = "http://localhost:4848/news/get";
+            JTextArea title = new JTextArea(news.getTitle());
+            title.setAlignmentX(LEFT_ALIGNMENT);
+            JTextArea content = new JTextArea(news.getContent());
+            content.setAlignmentX(LEFT_ALIGNMENT);
+            JTextArea date = new JTextArea(news.getDate());
+            date.setAlignmentX(LEFT_ALIGNMENT);
 
-                OkHttpClient client = new OkHttpClient();
-                Request request = new Request.Builder()
-                        .url(url)
-                        .get()
-                        .build();
+            panel.add(title);
+            panel.add(content);
+            panel.add(date);
 
-                try (Response response = client.newCall(request).execute()) {
-
-                    String body = response.body().string();
-                    JSONArray arr = new JSONArray(body);
-
-                    StringBuilder text = new StringBuilder();
-
-                    for (int i = 0; i < arr.length(); i++) {
-                        JSONObject obj = arr.getJSONObject(i);
-
-                        String title = obj.getString("title");
-                        String desc = obj.optString("description", "");
-                        String link = obj.getString("url");
-                        text.append("- ").append(title).append("\n");
-                        text.append(link).append("\n");
-                        if (!desc.isEmpty()) {
-                            text.append("   ").append(desc).append("\n");
-                        }
-                        text.append("\n");
-                    }
-
-                    newsTextArea.setText(text.toString());
-
-                } catch (IOException e) {
-                    newsTextArea.setText("Error loading news: " + e.getMessage());
-                }
-
-                return null;
-            }
-        };
-
-        worker.execute();
+            newsPanel.add(panel);
+        }
     }
 }
