@@ -9,6 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
@@ -43,15 +44,20 @@ public class NewsPanel extends JPanel implements PropertyChangeListener {
             panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
             JTextArea title = new JTextArea(news.getTitle());
+            title.setFont(new Font("Arial", Font.BOLD, 13));
             title.setAlignmentX(LEFT_ALIGNMENT);
+            title.setLocation(title.getLocation().x, title.getLocation().y - 20);
             JTextArea content = new JTextArea(news.getContent());
             content.setAlignmentX(LEFT_ALIGNMENT);
             JTextArea date = new JTextArea(news.getDate());
+            date.setFont(new Font("Arial", Font.ITALIC, 9));
             date.setAlignmentX(LEFT_ALIGNMENT);
 
             panel.add(title);
             panel.add(content);
             panel.add(date);
+
+            panel.setBorder(new BevelBorder(2));
 
             newsPanel.add(panel);
         }
