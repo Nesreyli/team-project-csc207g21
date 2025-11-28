@@ -22,7 +22,7 @@ public class SearchStockInteractor {
                 return new OutputDataSearch("400", new ArrayList<>());
             }
 
-            if (query.length() < 2) {
+            if (query.length() < 1) {
                 return new OutputDataSearch("400", new ArrayList<>());
             }
 

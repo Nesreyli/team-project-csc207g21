@@ -1,5 +1,7 @@
 package View;
 
+import InterfaceAdapter.ViewManagerModel;
+import InterfaceAdapter.logged_in.LoggedInController;
 import InterfaceAdapter.logged_in.LoggedInState;
 import InterfaceAdapter.logged_in.LoggedInViewModel;
 import InterfaceAdapter.logout.LogoutController;
@@ -30,6 +32,9 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
     private PortfolioController portfolioController;
     private LogoutController logoutController;
     private NewsController newsController;
+    private final JButton stockSearch;
+//    private final JPanel image;
+    private LoggedInController loggedInController;
 
 //    private final JTextField passwordInputField = new JTextField(15);
 //    private final JButton changePassword;
@@ -75,6 +80,17 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
                 }
             }
         });
+      
+        stockSearch = new JButton("Stock Search");
+        buttons.add(stockSearch);
+      
+        stockSearch.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        loggedInController.switchToSearch();
+                    }
+                });      
+
 
         news = new JButton("Top News");
         buttons.add(news);
@@ -87,7 +103,6 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
             }
         );
         buttons.setBackground(Color.LIGHT_GRAY);
-
 
         this.setAlignmentX(1.0f);
 
@@ -147,5 +162,8 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
 
     public void setNewsController(NewsController newsController) {
         this.newsController = newsController;
+      
+    public void setLoggedInController(LoggedInController loggedInController) {
+        this.loggedInController = loggedInController;
     }
 }

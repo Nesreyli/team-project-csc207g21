@@ -11,12 +11,17 @@ public class Main {
                 .addSignupView()
                 .addPortfolioView()
                 .addNewsView()
+                .addSearchView()
                 .addNewsUseCase()
                 .addLoginUseCase()
                 .addLogoutUseCase()
                 .addPortfolioUseCase()
+                .addSearchUseCase()
+                .addLogoutUseCase()
+                .addLoginUseCase()
                 .addHomeUseCase()
                 .addSignupUseCase()
+                .addLoggedInUseCase()
                 .build();
 
         application.pack();
