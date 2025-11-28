@@ -25,6 +25,10 @@ public class StockPriceView extends JFrame implements ActionListener, PropertyCh
     private final JButton buy;
     private final JButton sell;
 
+    // Additional labels for info panel
+    private JLabel companyValue;
+    private JLabel symbolValue;
+
     public StockPriceView(PriceViewModel priceViewModel){
         this.setVisible(false);
 
@@ -37,83 +41,129 @@ public class StockPriceView extends JFrame implements ActionListener, PropertyCh
         price = new JLabel();
         ytdPrice = new JLabel();
         ytdPerformance = new JLabel();
-        buy = new JButton("Buy");
-        sell = new JButton("sell");
+        buy = new JButton("Buy Stock");
+        sell = new JButton("Sell Stock");
+
         this.setTitle("Stock Details");
-        this.setSize(700, 400);
+        this.setSize(700, 450);
+        this.setLocationRelativeTo(null);
 
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout(10,10));
         mainPanel.setBackground(Color.WHITE);
         mainPanel.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
 
-        // Header Panel
+        // Header Panel - Contains symbol/company on left and price info on right
         JPanel headerPanel = new JPanel();
-        headerPanel.setLayout(new BoxLayout(headerPanel, BoxLayout.Y_AXIS));
+        headerPanel.setLayout(new BorderLayout(15, 15));
         headerPanel.setBackground(new Color(240, 248, 255));
         headerPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15,15));
+
+        // Left side - Symbol and Company
+        JPanel leftHeader = new JPanel();
+        leftHeader.setLayout(new BoxLayout(leftHeader, BoxLayout.Y_AXIS));
+        leftHeader.setBackground(new Color(240, 248, 255));
 
         symbol.setFont(new Font("Arial", Font.BOLD, 32));
         symbol.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        company.setFont(new Font("Arial", Font.PLAIN, 18));
+        company.setFont(new Font("Arial", Font.BOLD, 18));
+        company.setForeground(Color.DARK_GRAY);
         company.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        headerPanel.add(symbol);
-        headerPanel.add(Box.createVerticalStrut(5));
-        headerPanel.add(company);
+        leftHeader.add(symbol);
+        leftHeader.add(Box.createVerticalStrut(5));
+        leftHeader.add(company);
 
-        price.setFont(new Font("Arial", Font.PLAIN, 20));
+        // Right side - Price information
+        JPanel rightHeader = new JPanel();
+        rightHeader.setLayout(new BoxLayout(rightHeader, BoxLayout.Y_AXIS));
+        rightHeader.setBackground(new Color(240, 248, 255));
+
+        price.setFont(new Font("Arial", Font.BOLD, 28));
         price.setAlignmentX(Component.RIGHT_ALIGNMENT);
 
-        ytdPerformance.setFont(new Font("Arial", Font.PLAIN, 16));
+        ytdPerformance.setFont(new Font("Arial", Font.BOLD, 16));
         ytdPerformance.setAlignmentX(Component.RIGHT_ALIGNMENT);
 
-        ytdPrice.setFont(new Font("Arial", Font.PLAIN, 10));
+        ytdPrice.setFont(new Font("Arial", Font.BOLD, 12));
+        ytdPrice.setForeground(Color.GRAY);
         ytdPrice.setAlignmentX(Component.RIGHT_ALIGNMENT);
 
-        // Info Panel
+        rightHeader.add(price);
+        rightHeader.add(Box.createVerticalStrut(5));
+        rightHeader.add(ytdPerformance);
+        rightHeader.add(Box.createVerticalStrut(3));
+        rightHeader.add(ytdPrice);
+
+        headerPanel.add(leftHeader, BorderLayout.WEST);
+        headerPanel.add(rightHeader, BorderLayout.EAST);
+
+        // Info Panel - Display additional details
         JPanel infoPanel = new JPanel();
-        infoPanel.setLayout(new GridLayout(0, 2, 20, 15));
+        infoPanel.setLayout(new GridLayout(3, 2, 20, 15));
         infoPanel.setBackground(Color.WHITE);
         infoPanel.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
 
-        JPanel row = new JPanel();
-        row.add(infoPanel.add(price));
+        // Create static labels for display
+        JLabel countryLabelTitle = new JLabel("Country:");
+        countryLabelTitle.setFont(new Font("Arial", Font.BOLD, 14));
+        countryLabelTitle.setForeground(Color.DARK_GRAY);
 
-        addInfoRow(infoPanel, "Country", country.getText());
-        addInfoRow(infoPanel, "Company", company.getText());
+        JLabel companyLabelTitle = new JLabel("Company:");
+        companyLabelTitle.setFont(new Font("Arial", Font.BOLD, 14));
+        companyLabelTitle.setForeground(Color.DARK_GRAY);
 
-        // Action Buttons
+        JLabel symbolLabelTitle = new JLabel("Symbol:");
+        symbolLabelTitle.setFont(new Font("Arial", Font.BOLD, 14));
+        symbolLabelTitle.setForeground(Color.DARK_GRAY);
+
+        // Set font for value labels
+        country.setFont(new Font("Arial", Font.BOLD, 14));
+
+        JLabel companyValue = new JLabel();
+        companyValue.setFont(new Font("Arial", Font.BOLD, 14));
+
+        JLabel symbolValue = new JLabel();
+        symbolValue.setFont(new Font("Arial", Font.BOLD, 14));
+
+        // Add rows to info panel
+        infoPanel.add(countryLabelTitle);
+        infoPanel.add(country);
+        infoPanel.add(companyLabelTitle);
+        infoPanel.add(companyValue);
+        infoPanel.add(symbolLabelTitle);
+        infoPanel.add(symbolValue);
+
+        // Store references for updates
+        this.companyValue = companyValue;
+        this.symbolValue = symbolValue;
+
+        // Action Buttons Panel
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
         buttonPanel.setBackground(Color.WHITE);
 
-        // Buy
+        // Buy Button
         buy.setBackground(new Color(76, 175, 80));
-        buy.setForeground(Color.BLACK);
+        buy.setForeground(Color.WHITE);
         buy.setFocusPainted(false);
         buy.setFont(new Font("Arial", Font.BOLD, 14));
         buy.setPreferredSize(new Dimension(120, 40));
         buy.addActionListener(e -> {
-            JOptionPane.showMessageDialog(this, "Buy functionality would redirect for" + symbol);
-            // Implement buy functionality somewhere or import from Lucas one
-            // SearchController.navigateToBuyPage(symbol);
+            showBuyDialog();
         });
 
-        // Sell
+        // Sell Button
         sell.setBackground(new Color(244, 67, 54));
-        sell.setForeground(Color.BLACK);
+        sell.setForeground(Color.WHITE);
         sell.setFocusPainted(false);
         sell.setFont(new Font("Arial", Font.BOLD, 14));
         sell.setPreferredSize(new Dimension(120, 40));
         sell.addActionListener(e -> {
-            JOptionPane.showMessageDialog(this, "Sell functionality would redirect for" + symbol);
-            // Implement sell functionality somewhere or import from Lucas one
-            // SearchController.navigateToSellPage(symbol);
-
+            showSellDialog();
         });
 
-        // Close
+        // Close Button
         JButton closeButton = new JButton("Close");
         closeButton.setBackground(Color.LIGHT_GRAY);
         closeButton.setFocusPainted(false);
@@ -134,16 +184,199 @@ public class StockPriceView extends JFrame implements ActionListener, PropertyCh
         this.add(mainPanel);
     }
 
-    private void addInfoRow(JPanel panel, String label, String value) {
-        JLabel labelComponent = new JLabel(label);
-        labelComponent.setFont(new Font("Arial", Font.BOLD, 15));
-        labelComponent.setForeground(Color.DARK_GRAY);
 
-        JLabel valueLabel = new JLabel(value);
-        valueLabel.setFont(new Font("Arial", Font.BOLD, 15));
+    /**
+     * Shows buy dialog for the stock
+     */
+    private void showBuyDialog() {
+        final PriceState state = priceViewModel.getState();
 
-        panel.add(labelComponent);
-        panel.add(valueLabel);
+        JDialog buyDialog = new JDialog(this, "Buy " + state.getSymbol(), true);
+        buyDialog.setSize(400, 250);
+        buyDialog.setLocationRelativeTo(this);
+
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BorderLayout(10, 10));
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        mainPanel.setBackground(Color.WHITE);
+
+        // Info Panel
+        JPanel infoPanel = new JPanel();
+        infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
+        infoPanel.setBackground(Color.WHITE);
+
+        JLabel titleLabel = new JLabel("Buy " + state.getSymbol());
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        titleLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        JLabel priceLabel = new JLabel("Current Price: " + state.getPrice());
+        priceLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        priceLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        infoPanel.add(titleLabel);
+        infoPanel.add(Box.createVerticalStrut(10));
+        infoPanel.add(priceLabel);
+        infoPanel.add(Box.createVerticalStrut(15));
+
+        // Amount Input Panel
+        JPanel inputPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        inputPanel.setBackground(Color.WHITE);
+        JLabel amountLabel = new JLabel("Amount (shares):");
+        amountLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        JTextField amountField = new JTextField(10);
+        amountField.setFont(new Font("Arial", Font.PLAIN, 14));
+        inputPanel.add(amountLabel);
+        inputPanel.add(amountField);
+        infoPanel.add(inputPanel);
+
+        // Button Panel
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
+        buttonPanel.setBackground(Color.WHITE);
+
+        JButton confirmButton = new JButton("Confirm Buy");
+        confirmButton.setBackground(new Color(76, 175, 80));
+        confirmButton.setForeground(Color.WHITE);
+        confirmButton.setFocusPainted(false);
+        confirmButton.setFont(new Font("Arial", Font.BOLD, 14));
+        confirmButton.addActionListener(e -> {
+            String amount = amountField.getText().trim();
+            if (amount.isEmpty()) {
+                JOptionPane.showMessageDialog(buyDialog,
+                        "Please enter an amount", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            try {
+                int shares = Integer.parseInt(amount);
+                if (shares <= 0) {
+                    JOptionPane.showMessageDialog(buyDialog,
+                            "Amount must be greater than 0", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                // TODO: Get username/password from logged in state
+                // executeBuyOrder(state.getSymbol(), amount, username, password, buyDialog);
+                JOptionPane.showMessageDialog(buyDialog,
+                        "Buy functionality: " + shares + " shares of " + state.getSymbol());
+                buyDialog.dispose();
+
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(buyDialog,
+                        "Please enter a valid number", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+        JButton cancelButton = new JButton("Cancel");
+        cancelButton.setBackground(Color.LIGHT_GRAY);
+        cancelButton.setFocusPainted(false);
+        cancelButton.setFont(new Font("Arial", Font.PLAIN, 14));
+        cancelButton.addActionListener(e -> buyDialog.dispose());
+
+        buttonPanel.add(confirmButton);
+        buttonPanel.add(cancelButton);
+
+        mainPanel.add(infoPanel, BorderLayout.CENTER);
+        mainPanel.add(buttonPanel, BorderLayout.SOUTH);
+
+        buyDialog.add(mainPanel);
+        buyDialog.setVisible(true);
+    }
+
+    /**
+     * Shows sell dialog for the stock
+     */
+    private void showSellDialog() {
+        final PriceState state = priceViewModel.getState();
+
+        JDialog sellDialog = new JDialog(this, "Sell " + state.getSymbol(), true);
+        sellDialog.setSize(400, 250);
+        sellDialog.setLocationRelativeTo(this);
+
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BorderLayout(10, 10));
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        mainPanel.setBackground(Color.WHITE);
+
+        // Info Panel
+        JPanel infoPanel = new JPanel();
+        infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
+        infoPanel.setBackground(Color.WHITE);
+
+        JLabel titleLabel = new JLabel("Sell " + state.getSymbol());
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        titleLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        JLabel priceLabel = new JLabel("Current Price: " + state.getPrice());
+        priceLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        priceLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        infoPanel.add(titleLabel);
+        infoPanel.add(Box.createVerticalStrut(10));
+        infoPanel.add(priceLabel);
+        infoPanel.add(Box.createVerticalStrut(15));
+
+        // Amount Input Panel
+        JPanel inputPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        inputPanel.setBackground(Color.WHITE);
+        JLabel amountLabel = new JLabel("Amount (shares):");
+        amountLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        JTextField amountField = new JTextField(10);
+        amountField.setFont(new Font("Arial", Font.PLAIN, 14));
+        inputPanel.add(amountLabel);
+        inputPanel.add(amountField);
+        infoPanel.add(inputPanel);
+
+        // Button Panel
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
+        buttonPanel.setBackground(Color.WHITE);
+
+        JButton confirmButton = new JButton("Confirm Sell");
+        confirmButton.setBackground(new Color(244, 67, 54));
+        confirmButton.setForeground(Color.WHITE);
+        confirmButton.setFocusPainted(false);
+        confirmButton.setFont(new Font("Arial", Font.BOLD, 14));
+        confirmButton.addActionListener(e -> {
+            String amount = amountField.getText().trim();
+            if (amount.isEmpty()) {
+                JOptionPane.showMessageDialog(sellDialog,
+                        "Please enter an amount", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            try {
+                int shares = Integer.parseInt(amount);
+                if (shares <= 0) {
+                    JOptionPane.showMessageDialog(sellDialog,
+                            "Amount must be greater than 0", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                // TODO: Get username/password from logged in state
+                // executeSellOrder(state.getSymbol(), amount, username, password, sellDialog);
+                JOptionPane.showMessageDialog(sellDialog,
+                        "Sell functionality: " + shares + " shares of " + state.getSymbol());
+                sellDialog.dispose();
+
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(sellDialog,
+                        "Please enter a valid number", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+        JButton cancelButton = new JButton("Cancel");
+        cancelButton.setBackground(Color.LIGHT_GRAY);
+        cancelButton.setFocusPainted(false);
+        cancelButton.setFont(new Font("Arial", Font.PLAIN, 14));
+        cancelButton.addActionListener(e -> sellDialog.dispose());
+
+        buttonPanel.add(confirmButton);
+        buttonPanel.add(cancelButton);
+
+        mainPanel.add(infoPanel, BorderLayout.CENTER);
+        mainPanel.add(buttonPanel, BorderLayout.SOUTH);
+
+        sellDialog.add(mainPanel);
+        sellDialog.setVisible(true);
     }
 
     @Override
@@ -152,15 +385,52 @@ public class StockPriceView extends JFrame implements ActionListener, PropertyCh
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        this.setVisible(true);
+        if (evt.getPropertyName().equals("state")) {
+            this.setVisible(true);
 
-        final PriceState priceState = (PriceState) evt.getNewValue();
-        symbol.setText(priceState.getSymbol());
-        company.setText(priceState.getCompany());
-        ytdPrice.setText(priceState.getYtdPrice());
-        ytdPerformance.setText(priceState.getYtdPerformance());
-        country.setText(priceState.getCountry());
+            final PriceState priceState = (PriceState) evt.getNewValue();
 
+            // Update header labels
+            symbol.setText(priceState.getSymbol());
+            company.setText(priceState.getCompany());
+
+            // Update info panel labels
+            country.setText(priceState.getCountry());
+            companyValue.setText(priceState.getCompany());
+            symbolValue.setText(priceState.getSymbol());
+
+            // Format and display price
+            price.setText(priceState.getPrice());
+
+            // Format and display YTD info
+            ytdPrice.setText("YTD Open: " + priceState.getYtdPrice());
+
+            // Color code the performance
+            String perfText = priceState.getYtdPerformance();
+            ytdPerformance.setText(perfText);
+
+            // Set color based on positive/negative performance
+            if (perfText != null && !perfText.isEmpty()) {
+                try {
+                    // Remove % sign if present and parse
+                    String numericPart = perfText.replace("%", "").trim();
+                    double perfValue = Double.parseDouble(numericPart);
+
+                    // Add % symbol if not already present
+                    String displayText = perfText.contains("%") ? perfText : perfText + "%";
+                    ytdPerformance.setText(displayText);
+
+                    if (perfValue >= 0) {
+                        ytdPerformance.setForeground(new Color(76, 175, 80)); // Green
+                    } else {
+                        ytdPerformance.setForeground(new Color(244, 67, 54)); // Red
+                    }
+                } catch (NumberFormatException e) {
+                    ytdPerformance.setText(perfText);
+                    ytdPerformance.setForeground(Color.BLACK);
+                }
+            }
+        }
     }
 
     public String getViewName() {
