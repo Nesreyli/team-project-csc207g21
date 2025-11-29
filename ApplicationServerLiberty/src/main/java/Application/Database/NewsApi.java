@@ -44,7 +44,7 @@ public class NewsApi implements NewsDBInterface {
                     .build();
 
             Response response = client.newCall(request).execute();
-            String responseBody = new String(response.body().string().getBytes(StandardCharsets.UTF_8));
+            String responseBody = new String(response.body().string());
             JSONObject root = new JSONObject(responseBody);
             JSONArray newsArray = root.getJSONArray("articles");
             response.close();
@@ -53,9 +53,10 @@ public class NewsApi implements NewsDBInterface {
 
             if (root.getString("status").equals("ok")) {
                 for (int i = 0; i < limit; i++) {
+                    System.out.println(newsArray);
                     JSONObject obj = newsArray.getJSONObject(i);
                     String title = obj.getString("title");
-                    String author = obj.getString("author");
+                    String author = obj.get("author").equals(null) ? "" : obj.getString("author");
                     String content = obj.getString("description");
                     String date = obj.getString("publishedAt");
                     String news_url = obj.getString("url");

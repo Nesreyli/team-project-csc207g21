@@ -29,6 +29,7 @@ public class PortfolioView extends JPanel implements ActionListener, PropertyCha
         this.portfolioViewModel.addPropertyChangeListener(this);
 
         final JLabel user = new JLabel("Portfolio: ");
+        user.setFont(new Font("SansSerif", Font.BOLD, 20));
         username = new JButton();
         value = new JLabel();
         cash = new JLabel();
@@ -44,19 +45,22 @@ public class PortfolioView extends JPanel implements ActionListener, PropertyCha
 
         perf.add(new JLabel("Total return since inception: "));
         perf.add(performance);
-        perf.setBackground(Color.LIGHT_GRAY);
+        perf.setBackground(new Color(211, 211, 211));
+        performance.setFont(new Font("Arial", Font.BOLD, 17));
 
         userCash.add(new JLabel("Buying Power: "));
         userCash.add(cash);
-        userCash.setBackground(Color.LIGHT_GRAY);
+        userCash.setBackground(new Color(211, 211, 211));
+        cash.setFont(new Font("Arial", Font.BOLD, 15));
 
         val.add(new JLabel("Total Valuation: "));
         val.add(value);
-        val.setBackground(Color.LIGHT_GRAY);
+        val.setBackground(new Color(211, 211, 211));
+        value.setFont(new Font("Arial", Font.BOLD, 15));
 
         portUser.add(username);
         portUser.add(user);
-        portUser.setBackground(Color.LIGHT_GRAY);
+        portUser.setBackground(new Color(211, 211, 211));
 
         holdings.setBackground(Color.LIGHT_GRAY);
         holdings.add(new JLabel("Positions:"));
