@@ -1,12 +1,9 @@
 package InterfaceAdapter.stock_price;
 
-import Entity.Stock_Search;
-
-import java.util.HashMap;
-import java.util.Map;
+import java.math.BigDecimal;
 
 public class PriceState {
-    private String price;
+    private BigDecimal price;
     private String ytdPrice;
     private String ytdPerformance;
     private String company;
@@ -35,9 +32,9 @@ public class PriceState {
 
     public void setPassword(String password) { this.password = password; }
 
-    public String getPrice() { return price; }
+    public BigDecimal getPrice() { return price; }
 
-    public void setPrice(String price) { this.price = price; }
+    public void setPrice(BigDecimal price) { this.price = price; }
 
     public String getYtdPrice() { return ytdPrice; }
 

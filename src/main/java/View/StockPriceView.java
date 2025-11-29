@@ -1,15 +1,25 @@
 package View;
 
+import InterfaceAdapter.login.LoginState;
 import InterfaceAdapter.stock_price.PriceController;
 import InterfaceAdapter.stock_price.PriceState;
 import InterfaceAdapter.stock_price.PriceViewModel;
 
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.MatteBorder;
+import javax.swing.border.SoftBevelBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.regex.Pattern;
 
 public class StockPriceView extends JFrame implements ActionListener, PropertyChangeListener {
     private final String viewName = "Stock Price";
@@ -144,8 +154,7 @@ public class StockPriceView extends JFrame implements ActionListener, PropertyCh
         buttonPanel.setBackground(Color.WHITE);
 
         // Buy Button
-        buy.setBackground(new Color(76, 175, 80));
-        buy.setForeground(Color.WHITE);
+        buy.setBorder(new MatteBorder(2,2,2,2,new Color(0, 96, 5)));
         buy.setFocusPainted(false);
         buy.setFont(new Font("Arial", Font.BOLD, 14));
         buy.setPreferredSize(new Dimension(120, 40));
@@ -154,8 +163,7 @@ public class StockPriceView extends JFrame implements ActionListener, PropertyCh
         });
 
         // Sell Button
-        sell.setBackground(new Color(244, 67, 54));
-        sell.setForeground(Color.WHITE);
+        sell.setBorder(new MatteBorder(2,2,2,2 ,new Color(96, 0, 0)));
         sell.setFocusPainted(false);
         sell.setFont(new Font("Arial", Font.BOLD, 14));
         sell.setPreferredSize(new Dimension(120, 40));
@@ -165,7 +173,7 @@ public class StockPriceView extends JFrame implements ActionListener, PropertyCh
 
         // Close Button
         JButton closeButton = new JButton("Close");
-        closeButton.setBackground(Color.LIGHT_GRAY);
+        closeButton.setBorder(new MatteBorder(2,2,2,2 ,new Color(122, 122, 122, 55)) );
         closeButton.setFocusPainted(false);
         closeButton.setFont(new Font("Arial", Font.PLAIN, 14));
         closeButton.setPreferredSize(new Dimension(120, 40));
@@ -209,14 +217,19 @@ public class StockPriceView extends JFrame implements ActionListener, PropertyCh
         titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
         titleLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        JLabel priceLabel = new JLabel("Current Price: " + state.getPrice());
-        priceLabel.setFont(new Font("Arial", Font.PLAIN, 14));
-        priceLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        infoPanel.add(titleLabel);
-        infoPanel.add(Box.createVerticalStrut(10));
-        infoPanel.add(priceLabel);
-        infoPanel.add(Box.createVerticalStrut(15));
+        JLabel priceLabel = new JLabel("Delayed Price: " + state.getPrice());
+        priceLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        priceLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        JPanel titlePanel = new JPanel();
+        titlePanel.add(titleLabel);
+        JLabel gap = new JLabel();
+        gap.setText("------");
+        gap.setForeground(Color.WHITE);
+        titlePanel.add(gap);
+        titlePanel.add(priceLabel);
+        titlePanel.setBackground(Color.WHITE);
+        infoPanel.add(titlePanel);
 
         // Amount Input Panel
         JPanel inputPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -225,17 +238,54 @@ public class StockPriceView extends JFrame implements ActionListener, PropertyCh
         amountLabel.setFont(new Font("Arial", Font.PLAIN, 14));
         JTextField amountField = new JTextField(10);
         amountField.setFont(new Font("Arial", Font.PLAIN, 14));
+        inputPanel.setBackground(new Color(246, 246, 246));
+        inputPanel.setBorder(new MatteBorder(2,2,0,2,new Color(93, 110, 93)));
+
+        JPanel totalPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JLabel totalLabel = new JLabel("Estimated Cost:");
+        amountLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        JLabel totalCost = new JLabel();
+        totalPanel.setBackground(new Color(246, 246, 246));
+        totalPanel.setBorder(new MatteBorder(0,2,2,2,new Color(93, 110, 93)));
+
+        amountField.getDocument().addDocumentListener(new DocumentListener() {
+
+            private void documentListenerHelper() {
+                final PriceState currentState = priceViewModel.getState();
+                if(Pattern.matches("[0-9]+",amountField.getText())){
+                    totalCost.setText(
+                            currentState.getPrice().multiply(
+                                    new BigDecimal(Integer.parseInt(amountField.getText()))).toString());
+                }
+            }
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+        });
         inputPanel.add(amountLabel);
         inputPanel.add(amountField);
+        totalPanel.add(totalLabel);
+        totalPanel.add(totalCost);
         infoPanel.add(inputPanel);
-
+        infoPanel.add(totalPanel);
         // Button Panel
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
         buttonPanel.setBackground(Color.WHITE);
 
         JButton confirmButton = new JButton("Confirm Buy");
         confirmButton.setBackground(new Color(76, 175, 80));
-        confirmButton.setForeground(Color.WHITE);
         confirmButton.setFocusPainted(false);
         confirmButton.setFont(new Font("Arial", Font.BOLD, 14));
         confirmButton.addActionListener(e -> {
@@ -306,14 +356,18 @@ public class StockPriceView extends JFrame implements ActionListener, PropertyCh
         titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
         titleLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        JLabel priceLabel = new JLabel("Current Price: " + state.getPrice());
+        JLabel priceLabel = new JLabel("Delayed Price: " + state.getPrice());
         priceLabel.setFont(new Font("Arial", Font.PLAIN, 14));
-        priceLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-
-        infoPanel.add(titleLabel);
-        infoPanel.add(Box.createVerticalStrut(10));
-        infoPanel.add(priceLabel);
-        infoPanel.add(Box.createVerticalStrut(15));
+        priceLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        JPanel titlePanel = new JPanel();
+        titlePanel.add(titleLabel);
+        JLabel gap = new JLabel();
+        gap.setText("------");
+        gap.setForeground(Color.WHITE);
+        titlePanel.add(gap);
+        titlePanel.add(priceLabel);
+        titlePanel.setBackground(Color.WHITE);
+        infoPanel.add(titlePanel);
 
         // Amount Input Panel
         JPanel inputPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -322,9 +376,50 @@ public class StockPriceView extends JFrame implements ActionListener, PropertyCh
         amountLabel.setFont(new Font("Arial", Font.PLAIN, 14));
         JTextField amountField = new JTextField(10);
         amountField.setFont(new Font("Arial", Font.PLAIN, 14));
+        inputPanel.setBackground(new Color(246, 246, 246));
+        inputPanel.setBorder(new MatteBorder(2,2,0,2,new Color(62, 0, 0)));
+
+        JPanel totalPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JLabel totalLabel = new JLabel("Estimated Cost:");
+        amountLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        JLabel totalCost = new JLabel();
+        totalPanel.setBackground(new Color(246, 246, 246));
+        totalPanel.setBorder(new MatteBorder(0,2,2,2,new Color(62, 0, 0)));
+
+        amountField.getDocument().addDocumentListener(new DocumentListener() {
+
+            private void documentListenerHelper() {
+                final PriceState currentState = priceViewModel.getState();
+                if(Pattern.matches("[0-9]+",amountField.getText())){
+                    totalCost.setText(
+                            currentState.getPrice().multiply(
+                                    new BigDecimal(Integer.parseInt(amountField.getText()))).toString());
+                }
+            }
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+        });
+
         inputPanel.add(amountLabel);
         inputPanel.add(amountField);
+        totalPanel.add(totalLabel);
+        totalPanel.add(totalCost);
         infoPanel.add(inputPanel);
+        infoPanel.add(totalPanel);
+
 
         // Button Panel
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
@@ -332,7 +427,6 @@ public class StockPriceView extends JFrame implements ActionListener, PropertyCh
 
         JButton confirmButton = new JButton("Confirm Sell");
         confirmButton.setBackground(new Color(244, 67, 54));
-        confirmButton.setForeground(Color.WHITE);
         confirmButton.setFocusPainted(false);
         confirmButton.setFont(new Font("Arial", Font.BOLD, 14));
         confirmButton.addActionListener(e -> {
@@ -400,7 +494,7 @@ public class StockPriceView extends JFrame implements ActionListener, PropertyCh
             symbolValue.setText(priceState.getSymbol());
 
             // Format and display price
-            price.setText(priceState.getPrice());
+            price.setText(priceState.getPrice().toString());
 
             // Format and display YTD info
             ytdPrice.setText("YTD Open: " + priceState.getYtdPrice());

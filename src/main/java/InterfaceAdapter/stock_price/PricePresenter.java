@@ -4,8 +4,6 @@ import Entity.Price;
 import InterfaceAdapter.Stock_Search.SearchState;
 import InterfaceAdapter.Stock_Search.SearchViewModel;
 import InterfaceAdapter.ViewManagerModel;
-import UseCase.stock_price.PriceAccessInterface;
-import UseCase.stock_price.PriceInputBoundary;
 import UseCase.stock_price.PriceOutputBoundary;
 import kotlin.NotImplementedError;
 
@@ -33,7 +31,7 @@ public class PricePresenter implements PriceOutputBoundary {
                 get(price.getSymbol()).getCompany());
         priceState.setCountry(searchState.getSearchResults().
                 get(price.getSymbol()).getCountry());
-        priceState.setPrice(price.getPrice().toString());
+        priceState.setPrice(price.getPrice());
         priceState.setYtdPerformance(price.getYtdPerformance().toString());
         priceState.setYtdPrice(price.getYtdPrice().toString());
         priceState.setSymbol(price.getSymbol());
