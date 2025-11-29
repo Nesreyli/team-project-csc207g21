@@ -1,12 +1,9 @@
-// Application/Controller/WatchlistResource.java
 package Application.Controller;
 
 import Application.UseCases.watchlist.*;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
-
-import java.util.List;
 
 @Path("/watchlist")
 public class WatchlistResource {
@@ -15,24 +12,28 @@ public class WatchlistResource {
     WatchlistInteractor watchlistInteractor;
 
     @GET
-    @Path("/{userId}")
+    @Path("/get")
     @Produces(MediaType.APPLICATION_JSON)
-    public OutputWatchlist getWatchlist(@PathParam("userId") int userId,
-                                        @QueryParam("includePrices") boolean includePrices) {
-        return watchlistInteractor.executeWatchlistByUserId(userId, includePrices);
+    public OutputWatchlist getWatchlist(@QueryParam("username") String username,
+                                        @QueryParam("password") String password) {
+        return watchlistInteractor.executeWatchlist(username, password, true);
     }
 
     @POST
-    @Path("/{userId}/add")
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("/add")
     @Produces(MediaType.APPLICATION_JSON)
-    public WatchlistEntry addToWatchlist(@PathParam("userId") int userId, WatchlistEntry entry) {
-        return watchlistInteractor.addStockToWatchlist(userId, entry.getSymbol());
+    public OutputWatchlist addToWatchlist(@QueryParam("username") String username,
+                                          @QueryParam("password") String password,
+                                          @QueryParam("symbol") String symbol) {
+        return watchlistInteractor.addStock(username, password, symbol);
     }
 
     @DELETE
-    @Path("/{userId}/remove/{symbol}")
-    public void removeFromWatchlist(@PathParam("userId") int userId, @PathParam("symbol") String symbol) {
-        watchlistInteractor.removeStockFromWatchlist(userId, symbol);
+    @Path("/remove")
+    @Produces(MediaType.APPLICATION_JSON)
+    public OutputWatchlist removeFromWatchlist(@QueryParam("username") String username,
+                                               @QueryParam("password") String password,
+                                               @QueryParam("symbol") String symbol) {
+        return watchlistInteractor.removeStock(username, password, symbol);
     }
 }

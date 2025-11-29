@@ -1,10 +1,10 @@
-// Application/Database/WatchlistDatabaseAccess.java
 package Application.Database;
 
 import Application.UseCases.watchlist.WatchlistDatabaseInterface;
 import Application.UseCases.watchlist.WatchlistEntry;
-
+import Setup.PortfolioDBStartup;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -22,6 +22,10 @@ public class WatchlistDatabaseAccess implements WatchlistDatabaseInterface {
         } catch (NamingException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public WatchlistDatabaseAccess(String url) {
+        this.url = url;
     }
 
     @Override
@@ -48,7 +52,7 @@ public class WatchlistDatabaseAccess implements WatchlistDatabaseInterface {
 
     @Override
     public void addToWatchlist(int userId, String symbol) {
-        String sql = "INSERT INTO watchlist(user_id, symbol) VALUES(?, ?)";
+        String sql = "INSERT INTO watchlist(user_id, symbol) VALUES (?, ?)";
         try (Connection conn = DriverManager.getConnection(url);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, userId);
@@ -56,6 +60,7 @@ public class WatchlistDatabaseAccess implements WatchlistDatabaseInterface {
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new RuntimeException("Failed to add to watchlist", e);
         }
     }
 

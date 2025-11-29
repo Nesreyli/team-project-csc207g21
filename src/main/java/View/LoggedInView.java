@@ -7,6 +7,7 @@ import InterfaceAdapter.logged_in.LoggedInViewModel;
 import InterfaceAdapter.logout.LogoutController;
 import InterfaceAdapter.news.NewsController;
 import InterfaceAdapter.portfolio.PortfolioController;
+import InterfaceAdapter.watchlist.WatchlistController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,6 +25,9 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
     private final LoggedInViewModel loggedInViewModel;
     private final JLabel passwordErrorField = new JLabel();
 
+    private final JButton watchlist;
+    private WatchlistController watchlistController;
+
     private final JLabel username;
     private final JButton logout;
     private final JButton portfolio;
@@ -32,6 +36,7 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
     private PortfolioController portfolioController;
     private LogoutController logoutController;
     private NewsController newsController;
+
     private final JButton stockSearch;
 //    private final JPanel image;
     private LoggedInController loggedInController;
@@ -74,6 +79,22 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
                     final LoggedInState currentState = loggedInViewModel.getState();
 
                     portfolioController.portExecute(
+                            currentState.getUsername(),
+                            currentState.getPassword()
+                    );
+                }
+            }
+        });
+
+        watchlist = new JButton("Watchlist");
+        buttons.add(watchlist);
+        watchlist.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                if (evt.getSource().equals(watchlist)) {
+                    final LoggedInState currentState = loggedInViewModel.getState();
+
+                    watchlistController.execute(
                             currentState.getUsername(),
                             currentState.getPassword()
                     );
@@ -154,6 +175,10 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
 
     public void setPortfolioController(PortfolioController portfolioController) {
         this.portfolioController = portfolioController;
+    }
+
+    public void setWatchlistController(WatchlistController controller){
+        this.watchlistController = controller;
     }
 
     public void setLogoutController(LogoutController logoutController) {

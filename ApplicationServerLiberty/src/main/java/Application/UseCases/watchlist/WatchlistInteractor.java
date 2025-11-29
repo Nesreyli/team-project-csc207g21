@@ -1,12 +1,13 @@
-// Application/UseCases/watchlist/WatchlistInteractor.java
 package Application.UseCases.watchlist;
 
 import Application.UseCases.Price.OutputDataPrice;
 import Application.UseCases.Price.PricesInput;
 import Application.UseCases.Price.getPriceInteractor;
+import Application.UseCases.User.UserDatabaseInterface;
 import jakarta.ejb.Singleton;
 import jakarta.inject.Inject;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -20,36 +21,70 @@ public class WatchlistInteractor {
     @Inject
     getPriceInteractor priceInteractor;
 
-    public OutputWatchlist executeWatchlistByUserId(int userId, boolean includePrices) {
+    @Inject
+    UserDatabaseInterface userDB;
+
+    public OutputWatchlist executeWatchlist(String username, String password, boolean includePrices) {
+        Integer userId;
         try {
+            userId = userDB.getUserID(username, password);
             List<WatchlistEntry> entries = watchlistDB.getWatchlistForUser(userId);
             List<String> symbols = entries.stream()
                     .map(WatchlistEntry::getSymbol)
                     .collect(Collectors.toList());
 
             if (includePrices && !symbols.isEmpty()) {
-                PricesInput input = new PricesInput(String.join(",", symbols));
-                OutputDataPrice priceData = priceInteractor.executePrice(input);
-                Map<String, Map<String, java.math.BigDecimal>> prices = priceData.getPrices();
-                return new OutputWatchlist("200", null, symbols, prices);
+                PricesInput priceInput = new PricesInput(String.join(",", symbols));
+                OutputDataPrice priceData = priceInteractor.executePrice(priceInput);
+
+                if (!"200".equals(priceData.getMessage())) {
+                    return new OutputWatchlist("400");
+                }
+
+                Map<String, Map<String, BigDecimal>> pricesMap = priceData.getPrices();
+                return new OutputWatchlist("200", username, symbols, pricesMap);
             } else {
-                return new OutputWatchlist("200", null, symbols);
+                return new OutputWatchlist("200", username, symbols);
             }
+
         } catch (RuntimeException e) {
-            return new OutputWatchlist("500");
+            return new OutputWatchlist("400");
         }
     }
 
-    public WatchlistEntry addStockToWatchlist(int userId, String symbol) {
-        watchlistDB.addToWatchlist(userId, symbol);
-        return new WatchlistEntry(symbol);
+    public OutputWatchlist addStock(String username, String password, String symbol) {
+        Integer userId;
+        try {
+            userId = userDB.getUserID(username, password);
+            watchlistDB.addToWatchlist(userId, symbol);
+
+            List<String> symbols = watchlistDB.getWatchlistForUser(userId)
+                    .stream()
+                    .map(WatchlistEntry::getSymbol)
+                    .collect(Collectors.toList());
+
+            return new OutputWatchlist("200", username, symbols);
+
+        } catch (RuntimeException e) {
+            return new OutputWatchlist("400");
+        }
     }
 
-    public void removeStockFromWatchlist(int userId, String symbol) {
-        watchlistDB.removeFromWatchlist(userId, symbol);
-    }
+    public OutputWatchlist removeStock(String username, String password, String symbol) {
+        Integer userId;
+        try {
+            userId = userDB.getUserID(username, password);
+            watchlistDB.removeFromWatchlist(userId, symbol);
 
-    public List<WatchlistEntry> getWatchlistForUser(int userId) {
-        return watchlistDB.getWatchlistForUser(userId);
+            List<String> symbols = watchlistDB.getWatchlistForUser(userId)
+                    .stream()
+                    .map(WatchlistEntry::getSymbol)
+                    .collect(Collectors.toList());
+
+            return new OutputWatchlist("200", username, symbols);
+
+        } catch (RuntimeException e) {
+            return new OutputWatchlist("400");
+        }
     }
 }
