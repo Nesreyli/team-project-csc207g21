@@ -14,6 +14,8 @@ public class DatabaseStartup {
     PortfolioDatabaseAccess portDB;
     @Inject
     LeaderboardDatabaseAccess lbDB;
+    @Inject
+    WatchlistDatabaseAccess watchlistDB;
 
     public DatabaseStartup(){}
 

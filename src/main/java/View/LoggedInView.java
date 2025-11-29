@@ -5,7 +5,9 @@ import InterfaceAdapter.logged_in.LoggedInController;
 import InterfaceAdapter.logged_in.LoggedInState;
 import InterfaceAdapter.logged_in.LoggedInViewModel;
 import InterfaceAdapter.logout.LogoutController;
+import InterfaceAdapter.news.NewsController;
 import InterfaceAdapter.portfolio.PortfolioController;
+import InterfaceAdapter.watchlist.WatchlistController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,13 +25,20 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
     private final LoggedInViewModel loggedInViewModel;
     private final JLabel passwordErrorField = new JLabel();
 
+    private final JButton watchlist;
+    private WatchlistController watchlistController;
+
     private final JLabel username;
     private final JButton logout;
     private final JButton portfolio;
-    private final JButton stockSearch;
+    private final JButton news;
 //    private final JPanel image;
     private PortfolioController portfolioController;
     private LogoutController logoutController;
+    private NewsController newsController;
+
+    private final JButton stockSearch;
+//    private final JPanel image;
     private LoggedInController loggedInController;
 
 //    private final JTextField passwordInputField = new JTextField(15);
@@ -49,7 +58,6 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
         final JPanel buttons = new JPanel();
         logout = new JButton("Logout");
         buttons.add(logout);
-        logout.setBackground(Color.LIGHT_GRAY);
         logout.addActionListener(
                 new ActionListener() {
                     @Override
@@ -63,10 +71,7 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
         );
 
         portfolio = new JButton("Portfolio");
-        stockSearch = new JButton("Stock Search");
         buttons.add(portfolio);
-        buttons.add(stockSearch);
-        buttons.setBackground(Color.LIGHT_GRAY);
         portfolio.addActionListener(
                 new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
@@ -81,12 +86,44 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
             }
         });
 
+        watchlist = new JButton("Watchlist");
+        buttons.add(watchlist);
+        watchlist.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                if (evt.getSource().equals(watchlist)) {
+                    final LoggedInState currentState = loggedInViewModel.getState();
+
+                    watchlistController.execute(
+                            currentState.getUsername(),
+                            currentState.getPassword()
+                    );
+                }
+            }
+        });
+      
+        stockSearch = new JButton("Stock Search");
+        buttons.add(stockSearch);
+      
         stockSearch.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
                         loggedInController.switchToSearch();
                     }
-                });
+                });      
+
+
+        news = new JButton("Top News");
+        buttons.add(news);
+        news.addActionListener(
+            new ActionListener(){
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    newsController.execute();
+                }
+            }
+        );
+        buttons.setBackground(Color.LIGHT_GRAY);
 
         this.setAlignmentX(1.0f);
 
@@ -140,10 +177,17 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
         this.portfolioController = portfolioController;
     }
 
+    public void setWatchlistController(WatchlistController controller){
+        this.watchlistController = controller;
+    }
+
     public void setLogoutController(LogoutController logoutController) {
         this.logoutController = logoutController;
     }
 
+    public void setNewsController(NewsController newsController) {
+        this.newsController = newsController;
+    }
     public void setLoggedInController(LoggedInController loggedInController) {
         this.loggedInController = loggedInController;
     }

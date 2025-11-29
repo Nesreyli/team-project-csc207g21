@@ -10,7 +10,16 @@ public class Main {
                 .addLoggedInView()
                 .addSignupView()
                 .addPortfolioView()
+                .addNewsView()
+                .addWatchlistView()
+                .addWatchlistUseCase()
                 .addSearchView()
+                .addAddToWatchlistUseCase()
+                .addRemoveFromWatchlistUseCase()
+                .addPriceView()
+                .addNewsUseCase()
+                .addLoginUseCase()
+                .addLogoutUseCase()
                 .addPortfolioUseCase()
                 .addSearchUseCase()
                 .addLogoutUseCase()
@@ -18,6 +27,7 @@ public class Main {
                 .addHomeUseCase()
                 .addSignupUseCase()
                 .addLoggedInUseCase()
+                .addPriceUseCase()
                 .build();
 
         application.pack();

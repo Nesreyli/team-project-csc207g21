@@ -4,27 +4,39 @@ import Entity.Stock_Search;
 import InterfaceAdapter.Stock_Search.SearchController;
 import InterfaceAdapter.Stock_Search.SearchState;
 import InterfaceAdapter.Stock_Search.SearchViewModel;
+import InterfaceAdapter.stock_price.PriceController;
+import InterfaceAdapter.stock_price.PriceViewModel;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Phaser;
 import java.util.Map;
 
 /**
- * The View for Stock Search functionality.
+ * The View for Stock Search functionality with clickable stock symbols..
  */
 public class SearchView extends JPanel implements  ActionListener, PropertyChangeListener {
+    private JPanel location = this;
     private final String viewName = "Stock Search";
     private final SearchViewModel searchViewModel;
     private SearchController SearchController;
+    private PriceController priceController;
+    private StockPriceView stockPriceView;
 
     //UI Stuff
     private final JTextField searchField = new JTextField(20);
@@ -37,8 +49,11 @@ public class SearchView extends JPanel implements  ActionListener, PropertyChang
     private final JLabel statusLabel = new JLabel("Ready");
     private final JButton previous;
 
+
     public SearchView(SearchViewModel searchViewModel) {
         this.searchViewModel = searchViewModel;
+        this.searchViewModel.addPropertyChangeListener(this);
+        // Storing the stock easier
         this.searchViewModel.addPropertyChangeListener(this);
 
         previous = new JButton("<");
@@ -49,7 +64,7 @@ public class SearchView extends JPanel implements  ActionListener, PropertyChang
         loadallButton = new JButton(SearchViewModel.LOAD_ALL_BUTTON_LABEL);
         loadallButton.addActionListener(this);
 
-        String[] columnNames = {"Symbol", "Company", "Price (USD)", "Country"};
+        String[] columnNames = {"Symbol", "Company", "Price (CAD)", "Country"};
         tableModel = new DefaultTableModel(columnNames, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -59,6 +74,49 @@ public class SearchView extends JPanel implements  ActionListener, PropertyChang
 
         resultsTable = new JTable(tableModel);
         resultsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        // Custom Render to make Symbol Column look like a link
+        resultsTable.getColumnModel().getColumn(0).setCellRenderer(new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value,
+                                                           boolean isSelected, boolean hasFocus,
+                                                           int row, int column) {
+                Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                setForeground(Color.GREEN.darker());
+                setFont(getFont().deriveFont(Font.BOLD));
+                setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                setText("<html><u>" + value + "</u></html>");
+                return c;
+            }
+        });
+
+        // Clicking capability
+        resultsTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e){
+                int row = resultsTable.rowAtPoint(e.getPoint());
+                int column = resultsTable.columnAtPoint(e.getPoint());
+
+                if (row >= 0 && column >= 0) {
+                    String symbol = (String) resultsTable.getValueAt(row, 0);
+                    // new Stock Price tab
+                    priceController.executePrice(symbol);
+                }
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e){
+                int column = resultsTable.columnAtPoint(e.getPoint());
+                if (column >= 0) {
+                    resultsTable.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                }
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e){
+                resultsTable.setCursor(Cursor.getDefaultCursor());
+            }
+        });
 
         // Sorting Capability
         TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(tableModel);
@@ -137,6 +195,121 @@ public class SearchView extends JPanel implements  ActionListener, PropertyChang
         searchField.addActionListener(e -> performSearch());
     }
 
+    // Show detailed stock information page when a symbol is clicked
+//    private void showStockInfo(String symbol) {
+//        Map currentStocks = searchViewModel.getState().getSearchResults();
+//        if (currentStocks != null && currentStocks.containsKey(symbol)) {
+//            Stock_Search stock = (Stock_Search) currentStocks.get(symbol);
+//
+//            // Stock details UI
+//            JFrame stockFrame = new JFrame(symbol + " - Stock Details");
+//            stockFrame.setSize(700, 400);
+//            stockFrame.setLocationRelativeTo(this);
+//
+//            JPanel mainPanel = new JPanel();
+//            mainPanel.setLayout(new BorderLayout(10,10));
+//            mainPanel.setBackground(Color.WHITE);
+//            mainPanel.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
+//
+//            // Header Panel
+//            JPanel headerPanel = new JPanel();
+//            headerPanel.setLayout(new BoxLayout(headerPanel, BoxLayout.Y_AXIS));
+//            headerPanel.setBackground(new Color(240, 248, 255));
+//            headerPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15,15));
+//
+//            JLabel symbolLabel = new JLabel(stock.getSymbol());
+//            symbolLabel.setFont(new Font("Arial", Font.BOLD, 32));
+//            symbolLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+//
+//            JLabel companyLabel = new JLabel(stock.getCompany());
+//            companyLabel.setFont(new Font("Arial", Font.PLAIN, 18));
+//            companyLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+//
+//            headerPanel.add(symbolLabel);
+//            headerPanel.add(Box.createVerticalStrut(5));
+//            headerPanel.add(companyLabel);
+//
+//            // Info Panel
+//            JPanel infoPanel = new JPanel();
+//            infoPanel.setLayout(new GridLayout(0, 2, 20, 15));
+//            infoPanel.setBackground(Color.WHITE);
+//            infoPanel.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
+//
+//            addInfoRow(infoPanel, "Current Price:", "S" + formatPrice(stock.getPrice()));
+//            addInfoRow(infoPanel, "Country", stock.getCountry());
+//            addInfoRow(infoPanel, "Company", stock.getCompany());
+//
+//            // Action Buttons
+//            JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
+//            buttonPanel.setBackground(Color.WHITE);
+//
+//            // Buy
+//            JButton buyButton = new JButton("Buy Stock!");
+//            buyButton.setBackground(new Color(76, 175, 80));
+//            buyButton.setForeground(Color.WHITE);
+//            buyButton.setFocusPainted(false);
+//            buyButton.setFont(new Font("Arial", Font.BOLD, 14));
+//            buyButton.setPreferredSize(new Dimension(120, 40));
+//            buyButton.addActionListener(e -> {
+//                JOptionPane.showMessageDialog(stockFrame, "Buy functionality would redirect for" + symbol);
+//                // Implement buy functionality somewhere or import from Lucas one
+//                // SearchController.navigateToBuyPage(symbol);
+//            });
+//
+//            // Sell
+//            JButton sellButton = new JButton("Sell Stock!");
+//            sellButton.setBackground(new Color(244, 67, 54));
+//            sellButton.setForeground(Color.WHITE);
+//            sellButton.setFocusPainted(false);
+//            sellButton.setFont(new Font("Arial", Font.BOLD, 14));
+//            sellButton.setPreferredSize(new Dimension(120, 40));
+//            sellButton.addActionListener(e -> {
+//                JOptionPane.showMessageDialog(stockFrame, "Sell functionality would redirect for" + symbol);
+//                // Implement sell functionality somewhere or import from Lucas one
+//                // SearchController.navigateToSellPage(symbol);
+//
+//            });
+//
+//            // Close
+//            JButton closeButton = new JButton("Close");
+//            closeButton.setBackground(Color.LIGHT_GRAY);
+//            closeButton.setFocusPainted(false);
+//            closeButton.setFont(new Font("Arial", Font.PLAIN, 14));
+//            closeButton.setPreferredSize(new Dimension(120, 40));
+//            closeButton.addActionListener(e -> stockFrame.dispose());
+//
+//            // Assemble Button Panel
+//            buttonPanel.add(buyButton);
+//            buttonPanel.add(sellButton);
+//            buttonPanel.add(closeButton);
+//
+//            // Assemble main frame
+//            mainPanel.add(headerPanel, BorderLayout.NORTH);
+//            mainPanel.add(infoPanel, BorderLayout.CENTER);
+//            mainPanel.add(buttonPanel, BorderLayout.SOUTH);
+//
+//            stockFrame.add(mainPanel);
+//            stockFrame.setVisible(true);
+//
+//        }
+//    }
+
+    // Helper method to add info rows to info panel
+    private void addInfoRow(JPanel panel, String label, String value) {
+        JLabel labelComponent = new JLabel(label);
+        labelComponent.setFont(new Font("Arial", Font.BOLD, 15));
+        labelComponent.setForeground(Color.DARK_GRAY);
+
+        JLabel valueLabel = new JLabel(value);
+        valueLabel.setFont(new Font("Arial", Font.BOLD, 15));
+
+        panel.add(labelComponent);
+        panel.add(valueLabel);
+    }
+
+
+
+
     @Override
     public void actionPerformed(ActionEvent evt) {
         if (evt.getSource().equals(searchButton)) {
@@ -183,8 +356,8 @@ public class SearchView extends JPanel implements  ActionListener, PropertyChang
 
             statusLabel.setText(String.format("Found %d stock%s",
                         resultCount, resultCount == 1 ? "" : "s"));
+            }
         }
-    }
 
     private void updateTable(Map<String, Stock_Search> stocks) {
         tableModel.setRowCount(0);
@@ -194,7 +367,7 @@ public class SearchView extends JPanel implements  ActionListener, PropertyChang
                     stocks.get(stock).getSymbol(),
                     stocks.get(stock).getCompany(),
                     formatPrice(stocks.get(stock).getPrice()),
-                    stocks.get(stock).getCompany()
+                    stocks.get(stock).getCountry()
             };
             tableModel.addRow(row);
         }
@@ -213,6 +386,10 @@ public class SearchView extends JPanel implements  ActionListener, PropertyChang
 
     public void setSearchController(SearchController SearchController) {
         this.SearchController = SearchController;
+    }
+
+    public void setPriceController(PriceController priceController) {
+        this.priceController = priceController;
     }
 }
 
