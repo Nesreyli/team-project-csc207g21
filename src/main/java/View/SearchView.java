@@ -53,7 +53,7 @@ public class SearchView extends JPanel implements  ActionListener, PropertyChang
     public SearchView(SearchViewModel searchViewModel) {
         this.searchViewModel = searchViewModel;
         this.searchViewModel.addPropertyChangeListener(this);
-    //Storing the stock easier
+        // Storing the stock easier
         this.searchViewModel.addPropertyChangeListener(this);
 
         previous = new JButton("<");
