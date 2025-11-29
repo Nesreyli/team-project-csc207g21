@@ -1,16 +1,18 @@
 package app;
 
+import DataAccess.PriceAccessObject;
 import DataAccess.NewsAccessObject;
 import DataAccess.UserDataAccessObject;
 import DataAccess.PortfolioAccessObject;
 import DataAccess.SearchAccessObject;
+import DataAccess.UserDataAccessObject;
+import Entity.Price;
 import Entity.UserFactory;
 import InterfaceAdapter.ViewManagerModel;
 import InterfaceAdapter.homebutton.HomeController;
 import InterfaceAdapter.homebutton.HomePresenter;
 import InterfaceAdapter.logged_in.LoggedInController;
 import InterfaceAdapter.logged_in.LoggedInPresenter;
-import InterfaceAdapter.logged_in.LoggedInState;
 import InterfaceAdapter.logout.LogoutController;
 import InterfaceAdapter.logout.LogoutPresenter;
 import InterfaceAdapter.news.NewsController;
@@ -29,6 +31,9 @@ import InterfaceAdapter.Stock_Search.SearchViewModel;
 import InterfaceAdapter.signup.SignupController;
 import InterfaceAdapter.signup.SignupPresenter;
 import InterfaceAdapter.signup.SignupViewModel;
+import InterfaceAdapter.stock_price.PriceController;
+import InterfaceAdapter.stock_price.PricePresenter;
+import InterfaceAdapter.stock_price.PriceViewModel;
 import UseCase.Login.LoginInputBoundary;
 import UseCase.Login.LogInInteractor;
 import UseCase.Login.LoginOutputBoundary;
@@ -50,6 +55,9 @@ import UseCase.portfolio.PortfolioOutputBoundary;
 import UseCase.signup.SignupInputBoundary;
 import UseCase.signup.SignupInteractor;
 import UseCase.signup.SignupOutputBoundary;
+import UseCase.stock_price.PriceInputBoundary;
+import UseCase.stock_price.PriceOutputBoundary;
+import UseCase.stock_price.StockPriceInteractor;
 import View.*;
 import UseCase.Stock_Search.SearchInputBoundary;
 import UseCase.Stock_Search.SearchInteractor;
@@ -79,6 +87,7 @@ public class AppBuilder {
     final PortfolioAccessObject portfolioAccessObject = new PortfolioAccessObject();
     final NewsAccessObject newsAccessObject = new NewsAccessObject();
     final SearchAccessObject  searchDataAccess = new SearchAccessObject();  // ✅ Add this
+    final PriceAccessObject priceAccessObject = new PriceAccessObject();
 
     private LoginViewModel loginViewModel;
     private LoggedInViewModel loggedInViewModel;
@@ -92,6 +101,8 @@ public class AppBuilder {
     private NewsPanel newsPanel;
     private SearchView searchView;
     private SearchViewModel searchViewModel;
+    private StockPriceView stockPriceView;
+    private PriceViewModel priceViewModel;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -141,6 +152,24 @@ public class AppBuilder {
         signupViewModel = new SignupViewModel();
         signupView = new SignupView(signupViewModel);
         cardPanel.add(signupView, signupViewModel.getViewName());
+        return this;
+    }
+
+    public AppBuilder addPriceView(){
+        priceViewModel = new PriceViewModel();
+        stockPriceView = new StockPriceView(priceViewModel);
+        stockPriceView.setLocationRelativeTo(searchView);
+        return this;
+    }
+
+    public AppBuilder addPriceUseCase(){
+        final PriceOutputBoundary priceOutputBoundary = new PricePresenter(viewManagerModel,
+                searchViewModel, priceViewModel);
+        final PriceInputBoundary priceInputBoundary = new StockPriceInteractor(
+                priceAccessObject, priceOutputBoundary);
+
+        PriceController priceController = new PriceController(priceInputBoundary);
+        searchView.setPriceController(priceController);
         return this;
     }
 
