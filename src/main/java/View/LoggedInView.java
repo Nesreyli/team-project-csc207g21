@@ -162,7 +162,7 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
 
     public void setNewsController(NewsController newsController) {
         this.newsController = newsController;
-      
+    }
     public void setLoggedInController(LoggedInController loggedInController) {
         this.loggedInController = loggedInController;
     }
