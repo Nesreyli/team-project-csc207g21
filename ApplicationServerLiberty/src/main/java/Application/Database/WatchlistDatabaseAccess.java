@@ -30,7 +30,6 @@ public class WatchlistDatabaseAccess implements WatchlistDatabaseInterface {
 
     @Override
     public void newUser(int userId) {
-
     }
 
     @Override

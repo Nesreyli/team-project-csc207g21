@@ -121,18 +121,6 @@ public class PortfolioDBStartup {
         }
     }
 
-    public static void addToWatchlist(int userId, String symbol) {
-        String sql = "INSERT OR IGNORE INTO watchlist(user_id, symbol) VALUES(?, ?)";
-        try (var conn = DriverManager.getConnection(DBurl);
-             var stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, userId);
-            stmt.setString(2, symbol);
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
 //    public static String urlBuilder(String url, List<String> stocks, String feed){
 //        String dataUrl = url + "?symbols=" + String.join("%2C", stocks);
 //        dataUrl = String.format(dataUrl + "&feed=%s", feed);
