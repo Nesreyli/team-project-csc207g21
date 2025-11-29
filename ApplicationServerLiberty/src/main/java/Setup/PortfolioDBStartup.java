@@ -1,11 +1,15 @@
 package Setup;
 
+import Application.Database.WatchlistDatabaseAccess;
+import Application.UseCases.watchlist.WatchlistEntry;
+
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.*;
+import java.util.List;
 
 //sql lite does not support concurrency with multiple connection pool
 //use this class only once. to start up the database.
@@ -72,6 +76,23 @@ public class PortfolioDBStartup {
         }
     }
 
+    public static void createWatchlistTable() {
+        String sql = "CREATE TABLE IF NOT EXISTS watchlist ("
+                + "id INTEGER PRIMARY KEY,"
+                + "user_id INTEGER NOT NULL,"
+                + "symbol TEXT NOT NULL,"
+                + "UNIQUE(user_id, symbol)"
+                + " );";
+        try(var conn = DriverManager.getConnection(DBurl); var stmt = conn.createStatement()){
+            if(conn != null){
+                System.out.println(conn.getMetaData());
+            }
+            stmt.execute(sql);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     public static void createStocksTable(){
         String sql = "CREATE TABLE IF NOT EXISTS stocks_list ("
                 + " id INTEGER PRIMARY KEY,"
@@ -100,6 +121,18 @@ public class PortfolioDBStartup {
         }
     }
 
+    public static void addToWatchlist(int userId, String symbol) {
+        String sql = "INSERT OR IGNORE INTO watchlist(user_id, symbol) VALUES(?, ?)";
+        try (var conn = DriverManager.getConnection(DBurl);
+             var stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, userId);
+            stmt.setString(2, symbol);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
 //    public static String urlBuilder(String url, List<String> stocks, String feed){
 //        String dataUrl = url + "?symbols=" + String.join("%2C", stocks);
 //        dataUrl = String.format(dataUrl + "&feed=%s", feed);
@@ -111,6 +144,7 @@ public class PortfolioDBStartup {
         createUserTable();
         createHoldingsTable();
         createCashTable();
+        createWatchlistTable();
 
         BufferedReader stocksData = new BufferedReader(new FileReader(companyUrl));
         String headline = stocksData.readLine();
