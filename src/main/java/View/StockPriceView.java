@@ -36,7 +36,6 @@ public class StockPriceView extends JFrame implements PropertyChangeListener {
     private WatchlistViewModel watchlistViewModel;
     private LoggedInViewModel loggedInViewModel;
 
-    private final ReceiptDialog receiptDialog = new ReceiptDialog(this);
     private BuySellController buySellController;
 
     private final JLabel symbol;
@@ -310,8 +309,6 @@ public class StockPriceView extends JFrame implements PropertyChangeListener {
             }
 
             buySellController.execute(priceViewModel.getState(), Integer.parseInt(amount), true);
-            receiptDialog.setVisible(true);
-
         });
         JButton cancelButton = new JButton("Cancel");
         cancelButton.setBackground(Color.LIGHT_GRAY);
@@ -379,8 +376,6 @@ public class StockPriceView extends JFrame implements PropertyChangeListener {
             }
 
             buySellController.execute(priceViewModel.getState(), Integer.parseInt(amount), false);
-            receiptDialog.setVisible(true);
-
         });
         JButton cancelButton = new JButton("Cancel");
         cancelButton.setBackground(Color.LIGHT_GRAY);

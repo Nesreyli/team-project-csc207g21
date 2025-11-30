@@ -14,7 +14,7 @@ public class StockAccessObject implements StockAccessInterface {
     private static final int SUCCESS_CODE = 200;
     private static final String CONTENT_TYPE_JSON = "application/json";
     private static final String MESSAGE = "message";
-    private final String url = "http://100.71.12.182:4848/rest";
+    private final String url = " http://localhost:4848/rest";
 
     public Response getStockData(String symbol) {
 

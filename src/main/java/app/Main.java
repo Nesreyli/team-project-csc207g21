@@ -14,6 +14,7 @@ public class Main {
                 .addWatchlistView()
                 .addWatchlistUseCase()
                 .addSearchView()
+                .addBuySellView()
                 .addAddToWatchlistUseCase()
                 .addRemoveFromWatchlistUseCase()
                 .addPriceView()

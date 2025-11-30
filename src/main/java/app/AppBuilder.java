@@ -308,6 +308,12 @@ public class AppBuilder {
         return this;
     }
 
+    public AppBuilder addBuySellView(){
+        buySellViewModel = new BuySellViewModel();
+        buySellViewModel = new BuySellViewModel();
+        receiptDialog = new ReceiptDialog(stockPriceView, buySellViewModel);
+        return this;
+    }
     public AppBuilder addBuySellUseCase() {
         final BuySellOutputBoundary bsOutputBoundary = new BuySellPresenter(buySellViewModel, viewManagerModel);
         final BuySellInputBoundary bsInputBoundary = new BuySellInteractor(buySellAccessObject, bsOutputBoundary);

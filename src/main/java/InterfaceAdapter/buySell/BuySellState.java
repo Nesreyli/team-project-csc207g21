@@ -8,7 +8,7 @@ public class BuySellState {
     private Integer amount;
     private BigDecimal price;
     private BigDecimal totalPrice;
-    private String errorMessage = null;
+    private String errorMessage;
 
     public Character getOrder() {
         return order;

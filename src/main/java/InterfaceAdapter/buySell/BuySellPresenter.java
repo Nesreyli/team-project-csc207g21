@@ -30,26 +30,17 @@ public class BuySellPresenter implements BuySellOutputBoundary {
         bsState.setOrder(buySellOD.getOrder());
         bsState.setSymbol(buySellOD.getSymbol());
         bsState.setPrice(buySellOD.getPrice());
-        bsState.setPrice(buySellOD.getPrice());
-        bsState.setTotalPrice(buySellOD.getPrice());
-
+        bsState.setAmount(buySellOD.getAmount());
+        bsState.setTotalPrice(buySellOD.getTotalPrice());
+        bsState.setErrorMessage("");
         buySellViewModel.firePropertyChange();
-        viewMan.setState(buySellViewModel.getViewName());
-        viewMan.firePropertyChange();
     }
 
     @Override
     public void prepareFailView(String message) {
         BuySellState bsState = buySellViewModel.getState();
 
-        if (Objects.equals(message, "Server Error")) {
-            bsState.setErrorMessage(message);
-        } else if (bsState.getOrder().equals('b')) {
-            bsState.setErrorMessage("Inadequate funds for purchase.");
-        } else {
-            bsState.setErrorMessage("Inadequate shares owned for sale.");
-        }
-
-        buySellViewModel.firePropertyChange();
+        bsState.setErrorMessage(message);
+        buySellViewModel.firePropertyChange("error");
     }
 }

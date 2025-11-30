@@ -15,7 +15,7 @@ public class BuySellAccessObject implements BuySellAccessInterface {
     private static final int SUCCESS_CODE = 200;
     private static final String CONTENT_TYPE_JSON = "application/json";
     private static final String MESSAGE = "message";
-    private final String url = "http://100.71.12.182:4848/rest";
+    private final String url = " http://localhost:4848/rest";
 
     public Response setStockData(PriceState priceState, Integer amount, Boolean isBuy) {
         String symbol = priceState.getSymbol();
@@ -30,9 +30,9 @@ public class BuySellAccessObject implements BuySellAccessInterface {
 
         String apiUrl;
         if (isBuy) {
-            apiUrl = "buy/marketorder/?symbol=%s&amount=%s&username=%s&password=%s";
+            apiUrl = "/buy/marketorder/?symbol=%s&amount=%s&username=%s&password=%s";
         } else {
-            apiUrl = "sell/marketorder/?symbol=%s&amount=%s&username=%s&password=%s";
+            apiUrl = "/sell/marketorder/?symbol=%s&amount=%s&username=%s&password=%s";
         }
 
         final OkHttpClient client = new OkHttpClient().newBuilder().build();
@@ -53,8 +53,8 @@ public class BuySellAccessObject implements BuySellAccessInterface {
                 order = buyResponseBody.getString("order").toCharArray()[0];
                 outSymbol = buyResponseBody.getString("symbol");
                 outAmount = buyResponseBody.getInt("amount");
-                price = new BigDecimal(buyResponseBody.getString("price"));
-                totalPrice = new BigDecimal(buyResponseBody.getString("totalPrice"));
+                price = buyResponseBody.getBigDecimal("price");
+                totalPrice = buyResponseBody.getBigDecimal("totalPrice");
             } else {
                 // Error in buy request
                 return ResponseFactory.create(buyResponseBody.getInt(MESSAGE), null);
