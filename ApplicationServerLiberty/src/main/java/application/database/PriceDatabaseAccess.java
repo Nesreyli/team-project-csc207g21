@@ -1,6 +1,5 @@
 package application.database;
 
-
 import application.entities.Price;
 import application.use_case.Price.PricesInput;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -29,9 +28,9 @@ public class PriceDatabaseAccess implements StockDatabaseInterface {
 //    @Inject
 //    Price stockPrice;
     @Inject
-    StockPriceDBFetcher self;
+    StockPriceDbFetcher self;
     @Inject
-    OpenPriceDBFetcher open;
+    OpenPriceDbFetcher open;
 
     // problem was i had this in StockPriceDBFetcher so even if it was concurrent it was created in the asynchronous thread
     // therefore everything was null. So if i want to access concurrent map i need to first initialize it in main thread

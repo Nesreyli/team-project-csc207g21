@@ -9,18 +9,20 @@ import jakarta.inject.Inject;
 @Startup
 public class DatabaseStartup {
     @Inject
-    PriceDatabaseAccess priceDB;
+    private PriceDatabaseAccess priceDb;
     @Inject
-    PortfolioDatabaseAccess portDB;
+    private PortfolioDatabaseAccess portDb;
     @Inject
-    LeaderboardDatabaseAccess lbDB;
+    private LeaderboardDatabaseAccess lbDb;
     @Inject
-    WatchlistDatabaseAccess watchlistDB;
+    private WatchlistDatabaseAccess watchlistDb;
 
-    public DatabaseStartup(){}
-
+    /**
+     * Singleton bean that eagerly starts price DB.
+     * @throws InterruptedException exception
+     */
     @PostConstruct
     public void init() throws InterruptedException {
-        priceDB.init();
+        priceDb.init();
     }
 }
