@@ -327,7 +327,6 @@ public class AppBuilder {
 
     public AppBuilder addBuySellView(){
         buySellViewModel = new BuySellViewModel();
-        buySellViewModel = new BuySellViewModel();
         receiptDialog = new ReceiptDialog(stockPriceView, buySellViewModel);
         return this;
     }

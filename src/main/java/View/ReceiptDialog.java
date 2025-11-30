@@ -22,6 +22,7 @@ public class ReceiptDialog extends JFrame implements PropertyChangeListener {
 
     public ReceiptDialog(Frame parentFrame, BuySellViewModel buySellViewModel) {
         setVisible(false);
+        this.setAlwaysOnTop(true);
         setLocationRelativeTo(parentFrame);
         setMinimumSize(new Dimension(300,200));
         buySellViewModel.addPropertyChangeListener(this);
@@ -42,6 +43,7 @@ public class ReceiptDialog extends JFrame implements PropertyChangeListener {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().equals("state")) {
+            this.setVisible(true);
             titleLabel.setText("Order Filled");
             final BuySellState state = (BuySellState) evt.getNewValue();
             String symbol = state.getSymbol();
@@ -70,16 +72,15 @@ public class ReceiptDialog extends JFrame implements PropertyChangeListener {
             closeButton.addActionListener(e -> {
                 dispose();
             });
-            this.setVisible(true);
         }
         if (evt.getPropertyName().equals("error")){
+            this.setVisible(true);
             final BuySellState state = (BuySellState) evt.getNewValue();
             introLabel.setText("");
             descLabel.setText("");
             priceLabel.setText("");
             totalPriceLabel.setText("");
             errorLabel.setText(state.getErrorMessage());
-            this.setVisible(true);
         }
     }
 }

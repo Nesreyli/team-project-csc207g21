@@ -371,19 +371,14 @@ public class StockPriceView extends JFrame implements PropertyChangeListener {
                             "Amount must be greater than 0", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-
-                // TODO: Get username/password from logged in state
-                // executeBuyOrder(state.getSymbol(), amount, username, password, buyDialog);
-                JOptionPane.showMessageDialog(buyDialog,
-                        "Buy functionality: " + shares + " shares of " + state.getSymbol());
-                buyDialog.dispose();
+                buyDialog.setVisible(false);
+                buySellController.execute(priceViewModel.getState(), shares, true);
 
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(buyDialog,
                         "Please enter a valid number", "Error", JOptionPane.ERROR_MESSAGE);
             }
 
-            buySellController.execute(priceViewModel.getState(), Integer.parseInt(amount), true);
         });
 
         JButton cancelButton = new JButton("Cancel");
@@ -457,7 +452,6 @@ public class StockPriceView extends JFrame implements PropertyChangeListener {
         totalPanel.setBorder(new MatteBorder(0,2,2,2,new Color(62, 0, 0)));
 
         amountField.getDocument().addDocumentListener(new DocumentListener() {
-
             private void documentListenerHelper() {
                 final PriceState currentState = priceViewModel.getState();
                 if(Pattern.matches("[0-9]+",amountField.getText())){
@@ -481,8 +475,6 @@ public class StockPriceView extends JFrame implements PropertyChangeListener {
             public void changedUpdate(DocumentEvent e) {
                 documentListenerHelper();
             }
-
-            buySellController.execute(priceViewModel.getState(), Integer.parseInt(amount), false);
         });
 
         inputPanel.add(amountLabel);
@@ -516,17 +508,14 @@ public class StockPriceView extends JFrame implements PropertyChangeListener {
                             "Amount must be greater than 0", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-
-                // TODO: Get username/password from logged in state
-                // executeSellOrder(state.getSymbol(), amount, username, password, sellDialog);
-                JOptionPane.showMessageDialog(sellDialog,
-                        "Sell functionality: " + shares + " shares of " + state.getSymbol());
-                sellDialog.dispose();
+                sellDialog.setVisible(false);
+                buySellController.execute(priceViewModel.getState(), shares, false);
 
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(sellDialog,
                         "Please enter a valid number", "Error", JOptionPane.ERROR_MESSAGE);
             }
+
         });
 
         JButton cancelButton = new JButton("Cancel");
