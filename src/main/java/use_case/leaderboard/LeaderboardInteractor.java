@@ -1,4 +1,4 @@
-package UseCase.leaderboard;
+package use_case.leaderboard;
 
 import java.util.List;
 import java.util.Map;

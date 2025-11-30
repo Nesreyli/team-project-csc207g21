@@ -2,7 +2,7 @@ package data_access;
 
 import entity.Response;
 import entity.ResponseFactory;
-import UseCase.leaderboard.LeaderboardAccessInterface;
+import use_case.leaderboard.LeaderboardAccessInterface;
 import okhttp3.*;
 import org.json.JSONArray;
 import org.json.JSONException;

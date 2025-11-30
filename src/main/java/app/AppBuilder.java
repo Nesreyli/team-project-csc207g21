@@ -6,6 +6,9 @@ import interface_adapter.ViewManagerModel;
 import interface_adapter.add_watchlist.AddToWatchlistController;
 import interface_adapter.add_watchlist.AddToWatchlistPresenter;
 import interface_adapter.add_watchlist.AddToWatchlistViewModel;
+import interface_adapter.buySell.BuySellController;
+import interface_adapter.buySell.BuySellPresenter;
+import interface_adapter.buySell.BuySellViewModel;
 import interface_adapter.homebutton.HomeController;
 import interface_adapter.homebutton.HomePresenter;
 import interface_adapter.logged_in.LoggedInController;
@@ -46,6 +49,9 @@ import use_case.login.LoginOutputBoundary;
 import use_case.add_watchlist.AddToWatchlistInputBoundary;
 import use_case.add_watchlist.AddToWatchlistInteractor;
 import use_case.add_watchlist.AddToWatchlistOutputBoundary;
+import use_case.buySell.BuySellInputBoundary;
+import use_case.buySell.BuySellInteractor;
+import use_case.buySell.BuySellOutputBoundary;
 import use_case.homebutton.HomeInputBoundary;
 import use_case.homebutton.HomeInteractor;
 import use_case.homebutton.HomeOutputBoundary;
@@ -58,9 +64,9 @@ import use_case.logout.LogoutOutputBoundary;
 import use_case.news.NewsInputBoundary;
 import use_case.news.NewsInteractor;
 import use_case.news.NewsOutputBoundary;
-import UseCase.leaderboard.LeaderboardInputBoundary;
-import UseCase.leaderboard.LeaderboardInteractor;
-import UseCase.leaderboard.LeaderboardOutputBoundary;
+import use_case.leaderboard.LeaderboardInputBoundary;
+import use_case.leaderboard.LeaderboardInteractor;
+import use_case.leaderboard.LeaderboardOutputBoundary;
 import use_case.portfolio.PortfolioInputBoundary;
 import use_case.portfolio.PortfolioInteractor;
 import use_case.portfolio.PortfolioOutputBoundary;
@@ -99,6 +105,7 @@ public class AppBuilder {
     final PriceAccessObject priceAccessObject = new PriceAccessObject();
     final WatchlistAccessObject watchlistAccessObject = new WatchlistAccessObject();
     final LeaderboardAccessObject leaderboardAccessObject = new LeaderboardAccessObject();
+    final BuySellAccessObject buySellAccessObject = new BuySellAccessObject();
 
     private AddToWatchlistViewModel addToWatchlistViewModel;
     private AddToWatchlistController addToWatchlistController;
@@ -122,6 +129,9 @@ public class AppBuilder {
     private PriceViewModel priceViewModel;
     private WatchlistViewModel watchlistViewModel;
     private WatchlistView watchlistView;
+    private ReceiptDialog receiptDialog;
+    private BuySellViewModel buySellViewModel;
+
     private LeaderboardViewModel leaderboardViewModel;
     private LeaderboardView leaderboardView;
 
@@ -308,6 +318,19 @@ public class AppBuilder {
         final NewsInputBoundary newsInputBoundary = new NewsInteractor(newsAccessObject, newsOutputBoundary);
         final NewsController newsController = new NewsController(newsInputBoundary);
         loggedInView.setNewsController(newsController);
+        return this;
+    }
+
+    public AppBuilder addBuySellView(){
+        buySellViewModel = new BuySellViewModel();
+        receiptDialog = new ReceiptDialog(stockPriceView, buySellViewModel);
+        return this;
+    }
+    public AppBuilder addBuySellUseCase() {
+        final BuySellOutputBoundary bsOutputBoundary = new BuySellPresenter(buySellViewModel, viewManagerModel);
+        final BuySellInputBoundary bsInputBoundary = new BuySellInteractor(buySellAccessObject, bsOutputBoundary);
+        final BuySellController bsController = new BuySellController(bsInputBoundary);
+        stockPriceView.setBuySellController(bsController);
         return this;
     }
 
