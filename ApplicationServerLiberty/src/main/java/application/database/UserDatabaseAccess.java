@@ -1,82 +1,103 @@
 package application.database;
 
-import application.use_case.User.UserDatabaseInterface;
-import jakarta.enterprise.context.ApplicationScoped;
-
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+
+import application.use_case.User.UserDatabaseInterface;
+import jakarta.enterprise.context.ApplicationScoped;
+
 @ApplicationScoped
 public class UserDatabaseAccess implements UserDatabaseInterface {
-    private String url;
+    private final String url;
+
     {
         try {
             url = InitialContext.doLookup("JDBCsqlPortfolio");
-        } catch (NamingException e) {
-            throw new RuntimeException(e);
+        }
+        catch (NamingException ex) {
+            throw new RuntimeException(ex);
         }
     }
-    // return void? also exception to handle business logic? idk also have to be aware from where in
-    // stack do i return exception
-    // throws exception
-    // is entity really needed
-    public boolean addUser(String username, String password){
-        String sql = "INSERT INTO user_record(username,password) VALUES(?,?)";
-        try(var conn = DriverManager.getConnection(url); var stmt = conn.prepareStatement(sql)
-        ){
+
+    /**
+     * Adds new user to database.
+     * @param username username
+     * @param password password
+     * @return true if works
+     */
+    public boolean addUser(String username, String password) {
+        final String sql = "INSERT INTO user_record(username,password) VALUES(?,?)";
+        try (var conn = DriverManager.getConnection(url);
+             var stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, username);
             stmt.setString(2, password);
             stmt.executeUpdate();
-            if(conn != null) {
+            if (conn != null) {
                 System.out.println(conn.getMetaData());
             }
-        }catch(SQLException e) {
+        }
+        catch (SQLException ex) {
             return false;
         }
         return true;
     }
 
-    public Integer getUserID(String username, String password){
-        String sql = "SELECT user_id,username FROM user_record WHERE username = ? AND password = ?";
-        try(var conn = DriverManager.getConnection(url);
-            var stmt = conn.prepareStatement(sql)){
+    /**
+     * Get user id of existing user.
+     * @param username username
+     * @param password password
+     * @return int id
+     * @throws RuntimeException when user doesn't exist
+     */
+    public Integer getUserID(String username, String password) {
+        final String sql = "SELECT user_id,username FROM user_record WHERE username = ? AND password = ?";
+        try (var conn = DriverManager.getConnection(url);
+            var stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, username);
             stmt.setString(2, password);
-            var rs = stmt.executeQuery();
-            if(conn != null) {
+            final var rs = stmt.executeQuery();
+            if (conn != null) {
                 System.out.println(conn.getMetaData());
             }
-            if(rs.next()){
+            if (rs.next()) {
                 return rs.getInt("user_id");
             }
-            else{
+            else {
                 return null;
             }
-        }catch(SQLException e) {
-            throw new RuntimeException(e.getMessage());
+        }
+        catch (SQLException ex) {
+            throw new RuntimeException(ex.getMessage());
         }
         // return -1 or null or throw exception
     }
 
-    public Map<Integer, String> getUserIDs(){
-        HashMap<Integer, String> userIDs = new HashMap<>();
-        String sql = "SELECT user_id,username FROM user_record";
-        try(var conn = DriverManager.getConnection(url);
-            var stmt = conn.createStatement()){
-            var rs = stmt.executeQuery(sql);
-            if(conn != null) {
+    /**
+     * Get ids of all users.
+     * @return Hashmap of id to username
+     * @throws RuntimeException when sql error
+     */
+    public Map<Integer, String> getUserIds() {
+        final Map<Integer, String> userIds = new HashMap<>();
+        final String sql = "SELECT user_id,username FROM user_record";
+        try (var conn = DriverManager.getConnection(url);
+            var stmt = conn.createStatement()) {
+            final var rs = stmt.executeQuery(sql);
+            if (conn != null) {
                 System.out.println(conn.getMetaData());
             }
-            while(rs.next()){
-                userIDs.put(rs.getInt(1), rs.getString(2));
+            while (rs.next()) {
+                userIds.put(rs.getInt(1), rs.getString(2));
             }
-        }catch(SQLException e) {
-            throw new RuntimeException(e.getMessage());
         }
-        return userIDs;
+        catch (SQLException ex) {
+            throw new RuntimeException(ex.getMessage());
+        }
+        return userIds;
     }
 }

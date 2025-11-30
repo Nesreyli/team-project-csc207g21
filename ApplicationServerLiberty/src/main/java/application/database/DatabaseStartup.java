@@ -15,7 +15,7 @@ public class DatabaseStartup {
     @Inject
     private LeaderboardDatabaseAccess lbDb;
     @Inject
-    private Application.Database.WatchlistDatabaseAccess watchlistDatabaseAccess;
+    private WatchlistDatabaseAccess watchlistDatabaseAccess;
 
     /**
      * Singleton bean that eagerly starts price DB.

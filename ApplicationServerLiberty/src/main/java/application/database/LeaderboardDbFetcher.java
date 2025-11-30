@@ -32,7 +32,7 @@ public class LeaderboardDbFetcher {
             // this works but eventually due to race condition its gonna handle request while
             // leaderboard map is updating ..
             final ConcurrentSkipListMap<Long, List<String>> portfolioValues = new ConcurrentSkipListMap<>();
-            final Map<Integer, String> users = userDb.getUserIDs();
+            final Map<Integer, String> users = userDb.getUserIds();
             // Can use if null as concurrent map doesn't allow null key or value
             for (Integer id: users.keySet()) {
                 List<String> usersVal = portfolioValues.get(portDb.getPortfolio(id).getValue());
