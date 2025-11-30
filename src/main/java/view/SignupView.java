@@ -1,9 +1,8 @@
-package View;
+package view;
 
-import InterfaceAdapter.login.LoginState;
-import InterfaceAdapter.signup.SignupController;
-import InterfaceAdapter.signup.SignupState;
-import InterfaceAdapter.signup.SignupViewModel;
+import interface_adapter.signup.SignupController;
+import interface_adapter.signup.SignupState;
+import interface_adapter.signup.SignupViewModel;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
