@@ -15,7 +15,7 @@ public class LeaderboardInteractor implements LeaderboardInputBoundary {
 
     public void execute() {
         try {
-            Entity.Response response = leaderboardAccessInterface.getLeaderboard();
+            entity.Response response = leaderboardAccessInterface.getLeaderboard();
             switch (response.getStatus_code()) {
                 case 200:
                     @SuppressWarnings("unchecked")
