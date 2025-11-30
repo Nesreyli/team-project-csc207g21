@@ -10,13 +10,18 @@ import jakarta.ws.rs.core.MediaType;
 
 @Path("/leaderboard")
 public class LeaderboardResource {
-    @Inject
-    LeaderboardInteractor leaderboardUseCase;
 
+    @Inject
+    private LeaderboardInteractor leaderboardUseCase;
+
+    /**
+     * Endpoint for leaderboard.
+     * @return JSON
+     */
     @GET
-    @Produces({MediaType.APPLICATION_JSON})
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("/get")
-    public OutputLeaderboard getLeaderboard(){
+    public OutputLeaderboard getLeaderboard() {
         return leaderboardUseCase.executeLeaderboard();
     }
 }
