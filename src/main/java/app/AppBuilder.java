@@ -6,6 +6,9 @@ import InterfaceAdapter.ViewManagerModel;
 import InterfaceAdapter.addToWatchlist.AddToWatchlistController;
 import InterfaceAdapter.addToWatchlist.AddToWatchlistPresenter;
 import InterfaceAdapter.addToWatchlist.AddToWatchlistViewModel;
+import InterfaceAdapter.buySell.BuySellController;
+import InterfaceAdapter.buySell.BuySellPresenter;
+import InterfaceAdapter.buySell.BuySellViewModel;
 import InterfaceAdapter.homebutton.HomeController;
 import InterfaceAdapter.homebutton.HomePresenter;
 import InterfaceAdapter.logged_in.LoggedInController;
@@ -43,6 +46,9 @@ import UseCase.Login.LoginOutputBoundary;
 import UseCase.addToWatchlist.AddToWatchlistInputBoundary;
 import UseCase.addToWatchlist.AddToWatchlistInteractor;
 import UseCase.addToWatchlist.AddToWatchlistOutputBoundary;
+import UseCase.buySell.BuySellInputBoundary;
+import UseCase.buySell.BuySellInteractor;
+import UseCase.buySell.BuySellOutputBoundary;
 import UseCase.homebutton.HomeInputBoundary;
 import UseCase.homebutton.HomeInteractor;
 import UseCase.homebutton.HomeOutputBoundary;
@@ -92,6 +98,7 @@ public class AppBuilder {
     final SearchAccessObject searchDataAccess = new SearchAccessObject();
     final PriceAccessObject priceAccessObject = new PriceAccessObject();
     final WatchlistAccessObject watchlistAccessObject = new WatchlistAccessObject();
+    final BuySellAccessObject buySellAccessObject = new BuySellAccessObject();
 
     private AddToWatchlistViewModel addToWatchlistViewModel;
     private AddToWatchlistController addToWatchlistController;
@@ -115,6 +122,8 @@ public class AppBuilder {
     private PriceViewModel priceViewModel;
     private WatchlistViewModel watchlistViewModel;
     private WatchlistView watchlistView;
+    private ReceiptDialog receiptDialog;
+    private BuySellViewModel buySellViewModel;
 
 
     private WatchlistController watchlistController;
@@ -296,6 +305,14 @@ public class AppBuilder {
         final NewsInputBoundary newsInputBoundary = new NewsInteractor(newsAccessObject, newsOutputBoundary);
         final NewsController newsController = new NewsController(newsInputBoundary);
         loggedInView.setNewsController(newsController);
+        return this;
+    }
+
+    public AppBuilder addBuySellUseCase() {
+        final BuySellOutputBoundary bsOutputBoundary = new BuySellPresenter(buySellViewModel, viewManagerModel);
+        final BuySellInputBoundary bsInputBoundary = new BuySellInteractor(buySellAccessObject, bsOutputBoundary);
+        final BuySellController bsController = new BuySellController(bsInputBoundary);
+        stockPriceView.setBuySellController(bsController);
         return this;
     }
 

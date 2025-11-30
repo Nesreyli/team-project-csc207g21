@@ -2,6 +2,7 @@ package View;
 
 import InterfaceAdapter.addToWatchlist.AddToWatchlistController;
 import InterfaceAdapter.addToWatchlist.AddToWatchlistViewModel;
+import InterfaceAdapter.buySell.BuySellController;
 import InterfaceAdapter.logged_in.LoggedInViewModel;
 import InterfaceAdapter.stock_price.PriceController;
 import InterfaceAdapter.stock_price.PriceState;
@@ -10,6 +11,8 @@ import InterfaceAdapter.removeFromWatchlist.RemoveFromWatchlistController;
 import InterfaceAdapter.removeFromWatchlist.RemoveFromWatchlistViewModel;
 import InterfaceAdapter.watchlist.WatchlistController;
 import InterfaceAdapter.watchlist.WatchlistViewModel;
+import UseCase.buySell.BuySellInputData;
+import UseCase.buySell.BuySellInteractor;
 
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
@@ -32,6 +35,9 @@ public class StockPriceView extends JFrame implements PropertyChangeListener {
     private RemoveFromWatchlistController removeFromWatchlistController;
     private WatchlistViewModel watchlistViewModel;
     private LoggedInViewModel loggedInViewModel;
+
+    private final ReceiptDialog receiptDialog = new ReceiptDialog(this);
+    private BuySellController buySellController;
 
     private final JLabel symbol;
     private final JLabel company;
@@ -218,6 +224,10 @@ public class StockPriceView extends JFrame implements PropertyChangeListener {
         }
     }
 
+    public void setBuySellController(BuySellController buySellController) {
+        this.buySellController = buySellController;
+    }
+
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().equals("state")) {
@@ -298,6 +308,10 @@ public class StockPriceView extends JFrame implements PropertyChangeListener {
             if (!amount.isEmpty()) {
                 dialog.dispose();
             }
+
+            buySellController.execute(priceViewModel.getState(), Integer.parseInt(amount), true);
+            receiptDialog.setVisible(true);
+
         });
         JButton cancelButton = new JButton("Cancel");
         cancelButton.setBackground(Color.LIGHT_GRAY);
@@ -363,6 +377,10 @@ public class StockPriceView extends JFrame implements PropertyChangeListener {
             if (!amount.isEmpty()) {
                 dialog.dispose();
             }
+
+            buySellController.execute(priceViewModel.getState(), Integer.parseInt(amount), false);
+            receiptDialog.setVisible(true);
+
         });
         JButton cancelButton = new JButton("Cancel");
         cancelButton.setBackground(Color.LIGHT_GRAY);

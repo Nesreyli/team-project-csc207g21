@@ -28,6 +28,7 @@ public class Main {
                 .addSignupUseCase()
                 .addLoggedInUseCase()
                 .addPriceUseCase()
+                .addBuySellUseCase()
                 .build();
 
         application.pack();
