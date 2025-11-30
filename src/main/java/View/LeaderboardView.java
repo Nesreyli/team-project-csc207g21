@@ -58,7 +58,6 @@ public class LeaderboardView extends JPanel implements ActionListener, PropertyC
         homeButton.setFont(new Font("Segoe UI", Font.BOLD, 18));
         homeButton.setForeground(BRIGHT);
         homeButton.setBackground(DARK);
-        homeButton.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
         homeButton.setFocusPainted(false);
         homeButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         homeButton.setContentAreaFilled(false);
