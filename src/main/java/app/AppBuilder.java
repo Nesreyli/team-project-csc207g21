@@ -75,8 +75,12 @@ import UseCase.Stock_Search.SearchInteractor;
 import UseCase.Stock_Search.SearchOutputBoundary;
 import View.*;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class AppBuilder {
     private final JPanel cardPanel = new JPanel();
