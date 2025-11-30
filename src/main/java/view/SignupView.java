@@ -192,7 +192,7 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout(10, 5));
         panel.setBackground(Color.WHITE);
-        panel.setMaximumSize(new Dimension(400, 70));
+        panel.setPreferredSize(new Dimension(400, 70));
 
         JLabel label = new JLabel(labelText);
         label.setFont(new Font("Segoe UI", Font.PLAIN, 13));
