@@ -219,19 +219,64 @@ public class LeaderboardView extends JPanel implements ActionListener, PropertyC
                                         rankPrefix = "";
                                     }
 
-                                    // Create styled entry panel
+                                    // Create styled entry panel (clickable)
                                     JPanel entryPanel = new JPanel(new GridLayout(1, 3, 10, 0));
                                     entryPanel.setBackground(bgColor);
                                     entryPanel.setBorder(BorderFactory.createCompoundBorder(
                                             BorderFactory.createRaisedBevelBorder(),
                                             BorderFactory.createEmptyBorder(6, 20, 6, 20)
                                     ));
+                                    entryPanel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+                                    // Make panel clickable to show purchases
+                                    final String finalUsername = username;
+                                    final Color finalBgColor = bgColor;
+                                    
+                                    // Panel-specific exit handler that actually checks bounds
+                                    entryPanel.addMouseListener(new java.awt.event.MouseAdapter() {
+                                        @Override
+                                        public void mouseClicked(java.awt.event.MouseEvent e) {
+                                            UserPurchasesView purchasesView = new UserPurchasesView(finalUsername);
+                                            purchasesView.setVisible(true);
+                                        }
+                                        
+                                        @Override
+                                        public void mouseEntered(java.awt.event.MouseEvent e) {
+                                            entryPanel.setBackground(finalBgColor.brighter());
+                                        }
+                                        
+                                        @Override
+                                        public void mouseExited(java.awt.event.MouseEvent e) {
+                                            // Check if mouse is still within panel using screen coordinates
+                                            Point mousePos = java.awt.MouseInfo.getPointerInfo().getLocation();
+                                            SwingUtilities.convertPointFromScreen(mousePos, entryPanel);
+                                            if (!entryPanel.contains(mousePos)) {
+                                                entryPanel.setBackground(finalBgColor);
+                                            }
+                                        }
+                                    });
+                                    
+                                    // Labels only handle enter and click, not exit
+                                    java.awt.event.MouseAdapter labelAdapter = new java.awt.event.MouseAdapter() {
+                                        @Override
+                                        public void mouseClicked(java.awt.event.MouseEvent e) {
+                                            UserPurchasesView purchasesView = new UserPurchasesView(finalUsername);
+                                            purchasesView.setVisible(true);
+                                        }
+                                        
+                                        @Override
+                                        public void mouseEntered(java.awt.event.MouseEvent e) {
+                                            entryPanel.setBackground(finalBgColor.brighter());
+                                        }
+                                    };
 
                                     // Rank label with special styling for top 3
                                     JLabel rankLabel = new JLabel(rankPrefix + rank.toString());
                                     rankLabel.setFont(rankFont);
                                     rankLabel.setForeground(rankColor);
                                     rankLabel.setHorizontalAlignment(SwingConstants.CENTER);
+                                    rankLabel.setOpaque(false);
+                                    rankLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+                                    rankLabel.addMouseListener(labelAdapter);
 
                                     // Username label
                                     JLabel userLabel = new JLabel(username);
@@ -243,6 +288,9 @@ public class LeaderboardView extends JPanel implements ActionListener, PropertyC
                                         userLabel.setForeground(BRIGHT);
                                     }
                                     userLabel.setHorizontalAlignment(SwingConstants.CENTER);
+                                    userLabel.setOpaque(false);
+                                    userLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+                                    userLabel.addMouseListener(labelAdapter);
 
                                     // Value label with currency formatting
                                     JLabel valueLabel = new JLabel(valueStr);
@@ -254,6 +302,9 @@ public class LeaderboardView extends JPanel implements ActionListener, PropertyC
                                         valueLabel.setForeground(new Color(144, 238, 144)); // Light green for values
                                     }
                                     valueLabel.setHorizontalAlignment(SwingConstants.CENTER);
+                                    valueLabel.setOpaque(false);
+                                    valueLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+                                    valueLabel.addMouseListener(labelAdapter);
 
                                     entryPanel.add(rankLabel);
                                     entryPanel.add(userLabel);
