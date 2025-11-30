@@ -144,24 +144,24 @@ public class LeaderboardView extends JPanel implements ActionListener, PropertyC
                     JPanel headerPanel = new JPanel(new BorderLayout(15, 0));
                     headerPanel.setBackground(HEADER_BG);
                     headerPanel.setBorder(BorderFactory.createCompoundBorder(
-                            BorderFactory.createMatteBorder(0, 0, 3, 0, ACCENT_GOLD),
+                            BorderFactory.createMatteBorder(0, 0, 2, 0, BRIGHT.darker()),
                             BorderFactory.createEmptyBorder(6, 15, 6, 15)
                     ));
 
                     JLabel rankHeader = new JLabel("Rank");
-                    rankHeader.setFont(new Font("Segoe UI", Font.BOLD, 16));
-                    rankHeader.setForeground(ACCENT_GOLD);
+                    rankHeader.setFont(new Font("Segoe UI", Font.BOLD, 18));
+                    rankHeader.setForeground(BRIGHT);
                     rankHeader.setHorizontalAlignment(SwingConstants.CENTER);
                     rankHeader.setPreferredSize(new Dimension(60, 0)); // Narrower for rank
 
                     JLabel userHeader = new JLabel("Username");
-                    userHeader.setFont(new Font("Segoe UI", Font.BOLD, 17));
-                    userHeader.setForeground(ACCENT_GOLD);
-                    userHeader.setHorizontalAlignment(SwingConstants.CENTER);
+                    userHeader.setFont(new Font("Segoe UI", Font.BOLD, 18));
+                    userHeader.setForeground(BRIGHT);
+                    userHeader.setHorizontalAlignment(SwingConstants.LEFT);
 
                     JLabel valueHeader = new JLabel("Portfolio Value");
-                    valueHeader.setFont(new Font("Segoe UI", Font.BOLD, 17));
-                    valueHeader.setForeground(ACCENT_GOLD);
+                    valueHeader.setFont(new Font("Segoe UI", Font.BOLD, 18));
+                    valueHeader.setForeground(BRIGHT);
                     valueHeader.setHorizontalAlignment(SwingConstants.CENTER);
 
                     headerPanel.add(rankHeader, BorderLayout.WEST);
@@ -210,22 +210,22 @@ public class LeaderboardView extends JPanel implements ActionListener, PropertyC
                                     if (rank == 1) {
                                         rankColor = ACCENT_GOLD;
                                         bgColor = TOP_THREE_BG;
-                                        rankFont = new Font("Segoe UI", Font.BOLD, 18);
+                                        rankFont = new Font("Segoe UI", Font.BOLD, 14);
                                         rankPrefix = "";
                                     } else if (rank == 2) {
                                         rankColor = ACCENT_SILVER;
                                         bgColor = TOP_THREE_BG;
-                                        rankFont = new Font("Segoe UI", Font.BOLD, 18);
+                                        rankFont = new Font("Segoe UI", Font.BOLD, 14);
                                         rankPrefix = "";
                                     } else if (rank == 3) {
                                         rankColor = ACCENT_BRONZE;
                                         bgColor = TOP_THREE_BG;
-                                        rankFont = new Font("Segoe UI", Font.BOLD, 18);
+                                        rankFont = new Font("Segoe UI", Font.BOLD, 14);
                                         rankPrefix = "";
                                     } else {
                                         rankColor = BRIGHT;
                                         bgColor = CARD_BG;
-                                        rankFont = new Font("Segoe UI", Font.BOLD, 16);
+                                        rankFont = new Font("Segoe UI", Font.BOLD, 13);
                                         rankPrefix = "";
                                     }
 
@@ -287,28 +287,28 @@ public class LeaderboardView extends JPanel implements ActionListener, PropertyC
                                     rankLabel.addMouseListener(labelAdapter);
                                     rankPanel.add(rankLabel);
 
-                                    // Username label - larger, more prominent
+                                    // Username label - smaller than header, left-aligned
                                     JLabel userLabel = new JLabel(username);
                                     if (rank <= 3) {
-                                        userLabel.setFont(new Font("Segoe UI", Font.BOLD, 17));
+                                        userLabel.setFont(new Font("Segoe UI", Font.BOLD, 16));
                                         userLabel.setForeground(rankColor);
                                     } else {
-                                        userLabel.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+                                        userLabel.setFont(new Font("Segoe UI", Font.BOLD, 14));
                                         userLabel.setForeground(BRIGHT);
                                     }
-                                    userLabel.setHorizontalAlignment(SwingConstants.CENTER);
+                                    userLabel.setHorizontalAlignment(SwingConstants.LEFT);
                                     userLabel.setOpaque(false);
                                     userLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
                                     userLabel.addMouseListener(labelAdapter);
 
-                                    // Value label with currency formatting - larger font
+                                    // Value label with currency formatting - smaller than header
                                     JLabel valueLabel = new JLabel(valueStr);
                                     if (rank <= 3) {
-                                        valueLabel.setFont(new Font("Segoe UI", Font.BOLD, 17));
+                                        valueLabel.setFont(new Font("Segoe UI", Font.BOLD, 14));
                                         valueLabel.setForeground(rankColor);
                                     } else {
-                                        valueLabel.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-                                        valueLabel.setForeground(new Color(144, 238, 144)); // Light green for values
+                                        valueLabel.setFont(new Font("Segoe UI", Font.BOLD, 13));
+                                        valueLabel.setForeground(BRIGHT); // Use same color as other text
                                     }
                                     valueLabel.setHorizontalAlignment(SwingConstants.CENTER);
                                     valueLabel.setOpaque(false);
