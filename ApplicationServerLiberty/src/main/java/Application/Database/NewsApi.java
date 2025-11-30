@@ -53,7 +53,6 @@ public class NewsApi implements NewsDBInterface {
 
             if (root.getString("status").equals("ok")) {
                 for (int i = 0; i < limit; i++) {
-                    System.out.println(newsArray);
                     JSONObject obj = newsArray.getJSONObject(i);
                     String title = obj.getString("title");
                     String author = obj.get("author").equals(null) ? "" : obj.getString("author");

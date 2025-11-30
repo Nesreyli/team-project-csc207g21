@@ -40,6 +40,9 @@ import InterfaceAdapter.stock_price.PriceViewModel;
 import InterfaceAdapter.watchlist.WatchlistController;
 import InterfaceAdapter.watchlist.WatchlistPresenter;
 import InterfaceAdapter.watchlist.WatchlistViewModel;
+import InterfaceAdapter.leaderboard.LeaderboardController;
+import InterfaceAdapter.leaderboard.LeaderboardPresenter;
+import InterfaceAdapter.leaderboard.LeaderboardViewModel;
 import UseCase.Login.LoginInputBoundary;
 import UseCase.Login.LogInInteractor;
 import UseCase.Login.LoginOutputBoundary;
@@ -61,6 +64,9 @@ import UseCase.logout.LogoutOutputBoundary;
 import UseCase.news.NewsInputBoundary;
 import UseCase.news.NewsInteractor;
 import UseCase.news.NewsOutputBoundary;
+import UseCase.leaderboard.LeaderboardInputBoundary;
+import UseCase.leaderboard.LeaderboardInteractor;
+import UseCase.leaderboard.LeaderboardOutputBoundary;
 import UseCase.portfolio.PortfolioInputBoundary;
 import UseCase.portfolio.PortfolioInteractor;
 import UseCase.portfolio.PortfolioOutputBoundary;
@@ -81,8 +87,12 @@ import UseCase.Stock_Search.SearchInteractor;
 import UseCase.Stock_Search.SearchOutputBoundary;
 import View.*;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class AppBuilder {
     private final JPanel cardPanel = new JPanel();
@@ -98,6 +108,7 @@ public class AppBuilder {
     final SearchAccessObject searchDataAccess = new SearchAccessObject();
     final PriceAccessObject priceAccessObject = new PriceAccessObject();
     final WatchlistAccessObject watchlistAccessObject = new WatchlistAccessObject();
+    final LeaderboardAccessObject leaderboardAccessObject = new LeaderboardAccessObject();
     final BuySellAccessObject buySellAccessObject = new BuySellAccessObject();
 
     private AddToWatchlistViewModel addToWatchlistViewModel;
@@ -125,6 +136,8 @@ public class AppBuilder {
     private ReceiptDialog receiptDialog;
     private BuySellViewModel buySellViewModel;
 
+    private LeaderboardViewModel leaderboardViewModel;
+    private LeaderboardView leaderboardView;
 
     private WatchlistController watchlistController;
 
@@ -140,8 +153,9 @@ public class AppBuilder {
     }
 
     public AppBuilder addLoggedInView() {
+        newsViewModel = new NewsViewModel();
         loggedInViewModel = new LoggedInViewModel();
-        loggedInView = new LoggedInView(loggedInViewModel);
+        loggedInView = new LoggedInView(loggedInViewModel, newsViewModel);
         cardPanel.add(loggedInView, loggedInView.getViewName());
         return this;
     }
@@ -173,6 +187,13 @@ public class AppBuilder {
         cardPanel.add(signupView, signupViewModel.getViewName());
         return this;
     }
+
+    public AppBuilder addLeaderboardView() {
+        leaderboardViewModel = new LeaderboardViewModel();
+        leaderboardView = new LeaderboardView(leaderboardViewModel, loggedInViewModel);
+        cardPanel.add(leaderboardView, leaderboardView.getViewName());
+        return this;
+    }
     public AppBuilder addPriceView() {
         priceViewModel = new PriceViewModel();
         stockPriceView = new StockPriceView(
@@ -186,13 +207,6 @@ public class AppBuilder {
                 watchlistController
         );
         stockPriceView.setLocationRelativeTo(searchView);
-        return this;
-    }
-
-    public AppBuilder addNewsView() {
-        newsViewModel = new NewsViewModel();
-        newsPanel = new NewsPanel(newsViewModel);
-        cardPanel.add(newsPanel, newsViewModel.getViewName());
         return this;
     }
 
@@ -252,6 +266,9 @@ public class AppBuilder {
         HomeController homeController = new HomeController(homeInputBoundary);
         portView.setHomeController(homeController);
         watchlistView.setHomeController(homeController);
+        if (leaderboardView != null) {
+            leaderboardView.setHomeController(homeController);
+        }
         return this;
     }
 
@@ -322,9 +339,17 @@ public class AppBuilder {
         return this;
     }
 
+    public AppBuilder addLeaderboardUseCase() {
+        final LeaderboardOutputBoundary leaderboardOutputBoundary = new LeaderboardPresenter(viewManagerModel, leaderboardViewModel);
+        final LeaderboardInputBoundary leaderboardInputBoundary = new LeaderboardInteractor(leaderboardAccessObject, leaderboardOutputBoundary);
+        final LeaderboardController leaderboardController = new LeaderboardController(leaderboardInputBoundary);
+        loggedInView.setLeaderboardController(leaderboardController);
+        return this;
+    }
+
     public JFrame build() {
         final JFrame application = new JFrame("Panic Trade");
-        application.setMinimumSize(new Dimension(540, 360));
+        application.setMinimumSize(new Dimension(600, 400));
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         application.add(cardPanel);
 
