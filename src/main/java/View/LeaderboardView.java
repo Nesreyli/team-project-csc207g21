@@ -45,42 +45,51 @@ public class LeaderboardView extends JPanel implements ActionListener, PropertyC
 
         // Title
         titleLabel = new JLabel("Leaderboard");
-        titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 28));
+        titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 26));
         titleLabel.setForeground(ACCENT_GOLD);
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
         titleLabel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createMatteBorder(0, 0, 3, 0, ACCENT_GOLD),
-                BorderFactory.createEmptyBorder(15, 0, 15, 0)
+                BorderFactory.createEmptyBorder(10, 0, 10, 0)
         ));
 
-        // Small Home button in top-right corner
-        homeButton = new JButton("Home");
-        homeButton.setFont(new Font("Segoe UI", Font.PLAIN, 10));
-        homeButton.setForeground(DARK);
-        homeButton.setBackground(BRIGHT);
-        homeButton.setBorder(BorderFactory.createEmptyBorder(3, 6, 3, 6));
+        // Back arrow button in top-left corner
+        homeButton = new JButton("←");
+        homeButton.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        homeButton.setForeground(BRIGHT);
+        homeButton.setBackground(DARK);
+        homeButton.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
         homeButton.setFocusPainted(false);
         homeButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        homeButton.setContentAreaFilled(false);
         homeButton.addActionListener(this);
 
         // Leaderboard panel (no scrollbar - everything fits)
         leaderboardPanel = new JPanel();
         leaderboardPanel.setLayout(new BoxLayout(leaderboardPanel, BoxLayout.Y_AXIS));
         leaderboardPanel.setBackground(DARK);
-        leaderboardPanel.setBorder(BorderFactory.createEmptyBorder(5, 20, 5, 20));
+        leaderboardPanel.setBorder(BorderFactory.createEmptyBorder(3, 20, 3, 20));
 
-        // Top panel with title and home button in corner
-        JPanel topPanel = new JPanel(new BorderLayout());
+        // Top panel with title centered and arrow overlaid on top
+        JPanel topPanel = new JPanel() {
+            @Override
+            public void doLayout() {
+                super.doLayout();
+                // Position title to span full width and center vertically
+                if (titleLabel.getParent() == this) {
+                    titleLabel.setBounds(0, 0, getWidth(), getHeight());
+                }
+                // Position button in top-left, overlaid on title
+                if (homeButton.getParent() == this) {
+                    homeButton.setBounds(10, 10, 40, 40);
+                }
+            }
+        };
+        topPanel.setLayout(null);
         topPanel.setBackground(DARK);
-        topPanel.add(titleLabel, BorderLayout.CENTER);
-        
-        // Create a small panel for the button in top-right
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 5, 5));
-        buttonPanel.setBackground(DARK);
-        buttonPanel.setOpaque(false);
-        buttonPanel.add(homeButton);
-        topPanel.add(buttonPanel, BorderLayout.EAST);
-        topPanel.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+        topPanel.setPreferredSize(new Dimension(0, 60));
+        topPanel.add(titleLabel);
+        topPanel.add(homeButton);
 
         this.add(topPanel, BorderLayout.NORTH);
         this.add(leaderboardPanel, BorderLayout.CENTER);
@@ -132,38 +141,40 @@ public class LeaderboardView extends JPanel implements ActionListener, PropertyC
                 // Display leaderboard
                 Map<Integer, List<Object>> leaderboard = state.getLeaderboard();
                 if (leaderboard != null && !leaderboard.isEmpty()) {
-                    // Styled Header
-                    JPanel headerPanel = new JPanel(new GridLayout(1, 3, 10, 0));
+                    // Styled Header with custom column widths
+                    JPanel headerPanel = new JPanel(new BorderLayout(15, 0));
                     headerPanel.setBackground(HEADER_BG);
                     headerPanel.setBorder(BorderFactory.createCompoundBorder(
                             BorderFactory.createMatteBorder(0, 0, 3, 0, ACCENT_GOLD),
-                            BorderFactory.createEmptyBorder(8, 20, 8, 20)
+                            BorderFactory.createEmptyBorder(6, 15, 6, 15)
                     ));
 
                     JLabel rankHeader = new JLabel("Rank");
-                    rankHeader.setFont(new Font("Segoe UI", Font.BOLD, 18));
+                    rankHeader.setFont(new Font("Segoe UI", Font.BOLD, 16));
                     rankHeader.setForeground(ACCENT_GOLD);
                     rankHeader.setHorizontalAlignment(SwingConstants.CENTER);
+                    rankHeader.setPreferredSize(new Dimension(60, 0)); // Narrower for rank
 
                     JLabel userHeader = new JLabel("Username");
-                    userHeader.setFont(new Font("Segoe UI", Font.BOLD, 18));
+                    userHeader.setFont(new Font("Segoe UI", Font.BOLD, 17));
                     userHeader.setForeground(ACCENT_GOLD);
                     userHeader.setHorizontalAlignment(SwingConstants.CENTER);
 
                     JLabel valueHeader = new JLabel("Portfolio Value");
-                    valueHeader.setFont(new Font("Segoe UI", Font.BOLD, 18));
+                    valueHeader.setFont(new Font("Segoe UI", Font.BOLD, 17));
                     valueHeader.setForeground(ACCENT_GOLD);
                     valueHeader.setHorizontalAlignment(SwingConstants.CENTER);
 
-                    headerPanel.add(rankHeader);
-                    headerPanel.add(userHeader);
-                    headerPanel.add(valueHeader);
+                    headerPanel.add(rankHeader, BorderLayout.WEST);
+                    headerPanel.add(userHeader, BorderLayout.CENTER);
+                    headerPanel.add(valueHeader, BorderLayout.EAST);
                     leaderboardPanel.add(headerPanel);
-                    leaderboardPanel.add(Box.createVerticalStrut(8));
+                    leaderboardPanel.add(Box.createVerticalStrut(5));
 
-                    // Display entries sorted by rank
+                    // Display entries sorted by rank (limit to top 10 to fit in window)
                     leaderboard.entrySet().stream()
                             .sorted(Map.Entry.comparingByKey())
+                            .limit(10) // Limit to top 10 entries
                             .forEach(entry -> {
                                 Integer rank = entry.getKey();
                                 List<Object> userData = entry.getValue();
@@ -219,19 +230,19 @@ public class LeaderboardView extends JPanel implements ActionListener, PropertyC
                                         rankPrefix = "";
                                     }
 
-                                    // Create styled entry panel (clickable)
-                                    JPanel entryPanel = new JPanel(new GridLayout(1, 3, 10, 0));
+                                    // Create styled entry panel (clickable) with custom column widths
+                                    JPanel entryPanel = new JPanel(new BorderLayout(15, 0));
                                     entryPanel.setBackground(bgColor);
                                     entryPanel.setBorder(BorderFactory.createCompoundBorder(
                                             BorderFactory.createRaisedBevelBorder(),
-                                            BorderFactory.createEmptyBorder(6, 20, 6, 20)
+                                            BorderFactory.createEmptyBorder(5, 15, 5, 15)
                                     ));
                                     entryPanel.setCursor(new Cursor(Cursor.HAND_CURSOR));
                                     // Make panel clickable to show purchases
                                     final String finalUsername = username;
                                     final Color finalBgColor = bgColor;
                                     
-                                    // Panel-specific exit handler that actually checks bounds
+                                    // Simple hover handler - only panel handles exit
                                     entryPanel.addMouseListener(new java.awt.event.MouseAdapter() {
                                         @Override
                                         public void mouseClicked(java.awt.event.MouseEvent e) {
@@ -246,16 +257,11 @@ public class LeaderboardView extends JPanel implements ActionListener, PropertyC
                                         
                                         @Override
                                         public void mouseExited(java.awt.event.MouseEvent e) {
-                                            // Check if mouse is still within panel using screen coordinates
-                                            Point mousePos = java.awt.MouseInfo.getPointerInfo().getLocation();
-                                            SwingUtilities.convertPointFromScreen(mousePos, entryPanel);
-                                            if (!entryPanel.contains(mousePos)) {
-                                                entryPanel.setBackground(finalBgColor);
-                                            }
+                                            entryPanel.setBackground(finalBgColor);
                                         }
                                     });
                                     
-                                    // Labels only handle enter and click, not exit
+                                    // Labels handle click and maintain hover (no exit handling)
                                     java.awt.event.MouseAdapter labelAdapter = new java.awt.event.MouseAdapter() {
                                         @Override
                                         public void mouseClicked(java.awt.event.MouseEvent e) {
@@ -269,7 +275,10 @@ public class LeaderboardView extends JPanel implements ActionListener, PropertyC
                                         }
                                     };
 
-                                    // Rank label with special styling for top 3
+                                    // Rank label with special styling for top 3 - narrower column
+                                    JPanel rankPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+                                    rankPanel.setOpaque(false);
+                                    rankPanel.setPreferredSize(new Dimension(60, 0)); // Narrower for rank
                                     JLabel rankLabel = new JLabel(rankPrefix + rank.toString());
                                     rankLabel.setFont(rankFont);
                                     rankLabel.setForeground(rankColor);
@@ -277,14 +286,15 @@ public class LeaderboardView extends JPanel implements ActionListener, PropertyC
                                     rankLabel.setOpaque(false);
                                     rankLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
                                     rankLabel.addMouseListener(labelAdapter);
+                                    rankPanel.add(rankLabel);
 
-                                    // Username label
+                                    // Username label - larger, more prominent
                                     JLabel userLabel = new JLabel(username);
                                     if (rank <= 3) {
-                                        userLabel.setFont(new Font("Segoe UI", Font.BOLD, 16));
+                                        userLabel.setFont(new Font("Segoe UI", Font.BOLD, 17));
                                         userLabel.setForeground(rankColor);
                                     } else {
-                                        userLabel.setFont(new Font("Segoe UI", Font.PLAIN, 15));
+                                        userLabel.setFont(new Font("Segoe UI", Font.PLAIN, 16));
                                         userLabel.setForeground(BRIGHT);
                                     }
                                     userLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -292,13 +302,13 @@ public class LeaderboardView extends JPanel implements ActionListener, PropertyC
                                     userLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
                                     userLabel.addMouseListener(labelAdapter);
 
-                                    // Value label with currency formatting
+                                    // Value label with currency formatting - larger font
                                     JLabel valueLabel = new JLabel(valueStr);
                                     if (rank <= 3) {
-                                        valueLabel.setFont(new Font("Segoe UI", Font.BOLD, 16));
+                                        valueLabel.setFont(new Font("Segoe UI", Font.BOLD, 17));
                                         valueLabel.setForeground(rankColor);
                                     } else {
-                                        valueLabel.setFont(new Font("Segoe UI", Font.PLAIN, 15));
+                                        valueLabel.setFont(new Font("Segoe UI", Font.PLAIN, 16));
                                         valueLabel.setForeground(new Color(144, 238, 144)); // Light green for values
                                     }
                                     valueLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -306,11 +316,11 @@ public class LeaderboardView extends JPanel implements ActionListener, PropertyC
                                     valueLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
                                     valueLabel.addMouseListener(labelAdapter);
 
-                                    entryPanel.add(rankLabel);
-                                    entryPanel.add(userLabel);
-                                    entryPanel.add(valueLabel);
+                                    entryPanel.add(rankPanel, BorderLayout.WEST);
+                                    entryPanel.add(userLabel, BorderLayout.CENTER);
+                                    entryPanel.add(valueLabel, BorderLayout.EAST);
                                     leaderboardPanel.add(entryPanel);
-                                    leaderboardPanel.add(Box.createVerticalStrut(4));
+                                    leaderboardPanel.add(Box.createVerticalStrut(2));
                                 }
                             });
                 }
