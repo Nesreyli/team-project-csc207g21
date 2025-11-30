@@ -1,6 +1,6 @@
 package interface_adapter.leaderboard;
 
-import UseCase.leaderboard.LeaderboardInputBoundary;
+import use_case.leaderboard.LeaderboardInputBoundary;
 
 public class LeaderboardController {
     private LeaderboardInputBoundary leaderboardInputBoundary;

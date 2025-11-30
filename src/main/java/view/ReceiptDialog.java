@@ -1,8 +1,8 @@
-package View;
+package view;
 
-import InterfaceAdapter.ViewManagerModel;
-import InterfaceAdapter.buySell.BuySellState;
-import InterfaceAdapter.buySell.BuySellViewModel;
+import interface_adapter.ViewManagerModel;
+import interface_adapter.buySell.BuySellState;
+import interface_adapter.buySell.BuySellViewModel;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

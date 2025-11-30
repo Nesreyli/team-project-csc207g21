@@ -1,8 +1,8 @@
-package DataAccess;
+package data_access;
 
-import Entity.*;
-import InterfaceAdapter.stock_price.PriceState;
-import UseCase.buySell.BuySellAccessInterface;
+import entity.*;
+import interface_adapter.stock_price.PriceState;
+import use_case.buySell.BuySellAccessInterface;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import org.json.JSONException;
