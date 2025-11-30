@@ -1,10 +1,10 @@
-package View;
+package view;
 
-import InterfaceAdapter.homebutton.HomeController;
-import InterfaceAdapter.leaderboard.LeaderboardState;
-import InterfaceAdapter.leaderboard.LeaderboardViewModel;
-import InterfaceAdapter.logged_in.LoggedInState;
-import InterfaceAdapter.logged_in.LoggedInViewModel;
+import interface_adapter.homebutton.HomeController;
+import interface_adapter.leaderboard.LeaderboardState;
+import interface_adapter.leaderboard.LeaderboardViewModel;
+import interface_adapter.logged_in.LoggedInState;
+import interface_adapter.logged_in.LoggedInViewModel;
 
 import javax.swing.*;
 import java.awt.*;

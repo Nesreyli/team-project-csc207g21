@@ -1,6 +1,6 @@
-package InterfaceAdapter.leaderboard;
+package interface_adapter.leaderboard;
 
-import InterfaceAdapter.ViewModel;
+import interface_adapter.ViewModel;
 
 public class LeaderboardViewModel extends ViewModel<LeaderboardState> {
     public LeaderboardViewModel() {

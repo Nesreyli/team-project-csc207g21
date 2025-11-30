@@ -1,4 +1,4 @@
-package InterfaceAdapter.leaderboard;
+package interface_adapter.leaderboard;
 
 import java.util.List;
 import java.util.Map;

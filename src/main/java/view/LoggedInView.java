@@ -1,4 +1,4 @@
-package View;
+package view;
 
 import entity.News;
 import interface_adapter.ViewManagerModel;

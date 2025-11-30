@@ -1,6 +1,6 @@
-package InterfaceAdapter.leaderboard;
+package interface_adapter.leaderboard;
 
-import InterfaceAdapter.ViewManagerModel;
+import interface_adapter.ViewManagerModel;
 import UseCase.leaderboard.LeaderboardOutputBoundary;
 import UseCase.leaderboard.LeaderboardOutputData;
 

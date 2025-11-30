@@ -37,9 +37,9 @@ import interface_adapter.stock_price.PriceViewModel;
 import interface_adapter.watchlist.WatchlistController;
 import interface_adapter.watchlist.WatchlistPresenter;
 import interface_adapter.watchlist.WatchlistViewModel;
-import InterfaceAdapter.leaderboard.LeaderboardController;
-import InterfaceAdapter.leaderboard.LeaderboardPresenter;
-import InterfaceAdapter.leaderboard.LeaderboardViewModel;
+import interface_adapter.leaderboard.LeaderboardController;
+import interface_adapter.leaderboard.LeaderboardPresenter;
+import interface_adapter.leaderboard.LeaderboardViewModel;
 import use_case.login.LoginInputBoundary;
 import use_case.login.LogInInteractor;
 import use_case.login.LoginOutputBoundary;
@@ -81,12 +81,8 @@ import use_case.stock_search.SearchInteractor;
 import use_case.stock_search.SearchOutputBoundary;
 import view.*;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
 public class AppBuilder {
     private final JPanel cardPanel = new JPanel();

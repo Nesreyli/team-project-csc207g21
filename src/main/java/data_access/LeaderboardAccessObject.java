@@ -1,7 +1,7 @@
-package DataAccess;
+package data_access;
 
-import Entity.Response;
-import Entity.ResponseFactory;
+import entity.Response;
+import entity.ResponseFactory;
 import UseCase.leaderboard.LeaderboardAccessInterface;
 import okhttp3.*;
 import org.json.JSONArray;
