@@ -49,6 +49,8 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
 //    private final JButton changePassword;
 
     public LoggedInView(LoggedInViewModel loggedInViewModel, NewsViewModel newsViewModel) {
+        Color bright = new Color(214, 216, 220);
+        Color dark = new Color(43, 45, 48);
         this.loggedInViewModel = loggedInViewModel;
         this.loggedInViewModel.addPropertyChangeListener(this);
         this.newsViewModel = newsViewModel;
@@ -59,10 +61,15 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
 //                new JLabel("Password"), passwordInputField);
 
         final JLabel usernameInfo = new JLabel("Currently logged in: ");
+        usernameInfo.setForeground(bright);
         username = new JLabel();
+        username.setBackground(dark);
+        username.setForeground(bright);
+        username.setFont(new Font("Arial", Font.BOLD, 14));
 
         final JPanel buttons = new JPanel();
         logout = new JButton("Logout");
+        logout.setForeground(dark);
         buttons.add(logout);
         logout.addActionListener(
                 new ActionListener() {
@@ -77,6 +84,8 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
         );
 
         portfolio = new JButton("Portfolio");
+
+        portfolio.setForeground(dark);
         buttons.add(portfolio);
         portfolio.addActionListener(
                 new ActionListener() {
@@ -93,6 +102,7 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
         });
 
         watchlist = new JButton("Watchlist");
+        watchlist.setForeground(dark);
         buttons.add(watchlist);
         watchlist.addActionListener(new ActionListener() {
             @Override
@@ -109,6 +119,7 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
         });
       
         stockSearch = new JButton("Stock Search");
+        stockSearch.setForeground(dark);
         buttons.add(stockSearch);
       
         stockSearch.addActionListener(
@@ -118,7 +129,7 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
                     }
                 });      
 
-        buttons.setBackground(Color.LIGHT_GRAY);
+        buttons.setBackground(dark);
 
         this.setAlignmentX(1.0f);
 
@@ -127,12 +138,10 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
         user.add(username);
 
         user.setLayout(new FlowLayout(FlowLayout.LEFT));
-        user.setBackground(new Color(205, 205, 205));
-        buttons.setBackground(new Color(205, 205, 205));
-
+        user.setBackground(dark);
         user.add(buttons, BorderLayout.CENTER);
 
-        this.setBackground(new Color(205, 205, 205));
+        this.setBackground(dark);
         this.add(user);
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.add(newsPanel);
