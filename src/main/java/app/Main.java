@@ -16,6 +16,7 @@ public class Main {
                 .addAddToWatchlistUseCase()
                 .addRemoveFromWatchlistUseCase()
                 .addPriceView()
+                .addLeaderboardView()
                 .addNewsUseCase()
                 .addLoginUseCase()
                 .addLogoutUseCase()
@@ -27,6 +28,7 @@ public class Main {
                 .addSignupUseCase()
                 .addLoggedInUseCase()
                 .addPriceUseCase()
+                .addLeaderboardUseCase()
                 .build();
 
         application.pack();

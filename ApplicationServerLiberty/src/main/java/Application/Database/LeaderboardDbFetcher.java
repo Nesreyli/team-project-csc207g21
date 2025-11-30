@@ -37,9 +37,13 @@ public class LeaderboardDbFetcher {
                 usersVal.add(users.get(id));
                 portfolioValues.put(portDB.getPortfolio(id).getValue(), usersVal);
             }
+            // Clear existing leaderboard data
+            leaderboard.clear();
+            valuations.clear();
+            
             Long value;
             int i = 1;
-            while(i <= 10){
+            while(!portfolioValues.isEmpty()){
                 var descendVal = portfolioValues.descendingKeySet();
                 if(descendVal.isEmpty()){
                     break;
@@ -47,7 +51,8 @@ public class LeaderboardDbFetcher {
                 value = descendVal.getFirst();
                 List<String> usersVal = portfolioValues.get(value);
                 int j = 0;
-                while(j < usersVal.size() && i <= 10){
+                // Process all users with this portfolio value
+                while(j < usersVal.size()){
                     leaderboard.put(i, usersVal.get(j));
                     valuations.put(usersVal.get(j), value);
                     j++;

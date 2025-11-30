@@ -10,6 +10,7 @@ import InterfaceAdapter.news.NewsController;
 import InterfaceAdapter.news.NewsViewModel;
 import InterfaceAdapter.portfolio.PortfolioController;
 import InterfaceAdapter.watchlist.WatchlistController;
+import InterfaceAdapter.leaderboard.LeaderboardController;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -38,8 +39,10 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
     private PortfolioController portfolioController;
     private LogoutController logoutController;
     private NewsController newsController;
+    private LeaderboardController leaderboardController;
 
     private final JButton stockSearch;
+    private final JButton leaderboard;
 //    private final JPanel image;
     private LoggedInController loggedInController;
     private NewsViewModel newsViewModel;
@@ -127,7 +130,20 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
                     public void actionPerformed(ActionEvent evt) {
                         loggedInController.switchToSearch();
                     }
-                });      
+                });
+
+        leaderboard = new JButton("Leaderboard");
+        leaderboard.setForeground(dark);
+        buttons.add(leaderboard);
+
+        leaderboard.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        if (evt.getSource().equals(leaderboard)) {
+                            leaderboardController.execute();
+                        }
+                    }
+                });
 
         buttons.setBackground(dark);
 
@@ -200,5 +216,9 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
     }
     public void setLoggedInController(LoggedInController loggedInController) {
         this.loggedInController = loggedInController;
+    }
+
+    public void setLeaderboardController(LeaderboardController leaderboardController) {
+        this.leaderboardController = leaderboardController;
     }
 }
