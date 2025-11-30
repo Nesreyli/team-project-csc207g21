@@ -1,5 +1,7 @@
-package view;
+package View;
 
+import entity.News;
+import interface_adapter.ViewManagerModel;
 import interface_adapter.logged_in.LoggedInController;
 import interface_adapter.logged_in.LoggedInState;
 import interface_adapter.logged_in.LoggedInViewModel;
@@ -8,8 +10,10 @@ import interface_adapter.news.NewsController;
 import interface_adapter.news.NewsViewModel;
 import interface_adapter.portfolio.PortfolioController;
 import interface_adapter.watchlist.WatchlistController;
+import interface_adapter.leaderboard.LeaderboardController;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -35,8 +39,10 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
     private PortfolioController portfolioController;
     private LogoutController logoutController;
     private NewsController newsController;
+    private LeaderboardController leaderboardController;
 
     private final JButton stockSearch;
+    private final JButton leaderboard;
 //    private final JPanel image;
     private LoggedInController loggedInController;
     private NewsViewModel newsViewModel;
@@ -124,7 +130,20 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
                     public void actionPerformed(ActionEvent evt) {
                         loggedInController.switchToSearch();
                     }
-                });      
+                });
+
+        leaderboard = new JButton("Leaderboard");
+        leaderboard.setForeground(dark);
+        buttons.add(leaderboard);
+
+        leaderboard.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        if (evt.getSource().equals(leaderboard)) {
+                            leaderboardController.execute();
+                        }
+                    }
+                });
 
         buttons.setBackground(dark);
 
@@ -197,5 +216,9 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
     }
     public void setLoggedInController(LoggedInController loggedInController) {
         this.loggedInController = loggedInController;
+    }
+
+    public void setLeaderboardController(LeaderboardController leaderboardController) {
+        this.leaderboardController = leaderboardController;
     }
 }

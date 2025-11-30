@@ -37,6 +37,9 @@ import interface_adapter.stock_price.PriceViewModel;
 import interface_adapter.watchlist.WatchlistController;
 import interface_adapter.watchlist.WatchlistPresenter;
 import interface_adapter.watchlist.WatchlistViewModel;
+import InterfaceAdapter.leaderboard.LeaderboardController;
+import InterfaceAdapter.leaderboard.LeaderboardPresenter;
+import InterfaceAdapter.leaderboard.LeaderboardViewModel;
 import use_case.login.LoginInputBoundary;
 import use_case.login.LogInInteractor;
 import use_case.login.LoginOutputBoundary;
@@ -55,6 +58,9 @@ import use_case.logout.LogoutOutputBoundary;
 import use_case.news.NewsInputBoundary;
 import use_case.news.NewsInteractor;
 import use_case.news.NewsOutputBoundary;
+import UseCase.leaderboard.LeaderboardInputBoundary;
+import UseCase.leaderboard.LeaderboardInteractor;
+import UseCase.leaderboard.LeaderboardOutputBoundary;
 import use_case.portfolio.PortfolioInputBoundary;
 import use_case.portfolio.PortfolioInteractor;
 import use_case.portfolio.PortfolioOutputBoundary;
@@ -75,8 +81,12 @@ import use_case.stock_search.SearchInteractor;
 import use_case.stock_search.SearchOutputBoundary;
 import view.*;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class AppBuilder {
     private final JPanel cardPanel = new JPanel();
@@ -92,6 +102,7 @@ public class AppBuilder {
     final SearchAccessObject searchDataAccess = new SearchAccessObject();
     final PriceAccessObject priceAccessObject = new PriceAccessObject();
     final WatchlistAccessObject watchlistAccessObject = new WatchlistAccessObject();
+    final LeaderboardAccessObject leaderboardAccessObject = new LeaderboardAccessObject();
 
     private AddToWatchlistViewModel addToWatchlistViewModel;
     private AddToWatchlistController addToWatchlistController;
@@ -115,7 +126,8 @@ public class AppBuilder {
     private PriceViewModel priceViewModel;
     private WatchlistViewModel watchlistViewModel;
     private WatchlistView watchlistView;
-
+    private LeaderboardViewModel leaderboardViewModel;
+    private LeaderboardView leaderboardView;
 
     private WatchlistController watchlistController;
 
@@ -163,6 +175,13 @@ public class AppBuilder {
         signupViewModel = new SignupViewModel();
         signupView = new SignupView(signupViewModel);
         cardPanel.add(signupView, signupViewModel.getViewName());
+        return this;
+    }
+
+    public AppBuilder addLeaderboardView() {
+        leaderboardViewModel = new LeaderboardViewModel();
+        leaderboardView = new LeaderboardView(leaderboardViewModel, loggedInViewModel);
+        cardPanel.add(leaderboardView, leaderboardView.getViewName());
         return this;
     }
     public AppBuilder addPriceView() {
@@ -237,6 +256,9 @@ public class AppBuilder {
         HomeController homeController = new HomeController(homeInputBoundary);
         portView.setHomeController(homeController);
         watchlistView.setHomeController(homeController);
+        if (leaderboardView != null) {
+            leaderboardView.setHomeController(homeController);
+        }
         return this;
     }
 
@@ -290,6 +312,14 @@ public class AppBuilder {
         final NewsInputBoundary newsInputBoundary = new NewsInteractor(newsAccessObject, newsOutputBoundary);
         final NewsController newsController = new NewsController(newsInputBoundary);
         loggedInView.setNewsController(newsController);
+        return this;
+    }
+
+    public AppBuilder addLeaderboardUseCase() {
+        final LeaderboardOutputBoundary leaderboardOutputBoundary = new LeaderboardPresenter(viewManagerModel, leaderboardViewModel);
+        final LeaderboardInputBoundary leaderboardInputBoundary = new LeaderboardInteractor(leaderboardAccessObject, leaderboardOutputBoundary);
+        final LeaderboardController leaderboardController = new LeaderboardController(leaderboardInputBoundary);
+        loggedInView.setLeaderboardController(leaderboardController);
         return this;
     }
 

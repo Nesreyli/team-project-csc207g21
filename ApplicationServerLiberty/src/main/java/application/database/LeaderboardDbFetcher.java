@@ -1,6 +1,7 @@
 package application.database;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
@@ -42,17 +43,22 @@ public class LeaderboardDbFetcher {
                 usersVal.add(users.get(id));
                 portfolioValues.put(portDb.getPortfolio(id).getValue(), usersVal);
             }
+            // Clear existing leaderboard data
+            leaderboard.clear();
+            valuations.clear();
+
             Long value;
             int i = 1;
-            while (i <= TOP10) {
-                final var descendVal = portfolioValues.descendingKeySet();
-                if (descendVal.isEmpty()) {
+            while(!portfolioValues.isEmpty()){
+                var descendVal = portfolioValues.descendingKeySet();
+                if(descendVal.isEmpty()){
                     break;
                 }
                 value = descendVal.getFirst();
                 final List<String> usersVal = portfolioValues.get(value);
                 int j = 0;
-                while (j < usersVal.size() && i <= TOP10) {
+                // Process all users with this portfolio value
+                while(j < usersVal.size()){
                     leaderboard.put(i, usersVal.get(j));
                     valuations.put(usersVal.get(j), value);
                     j++;
