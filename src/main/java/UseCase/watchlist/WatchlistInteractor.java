@@ -2,6 +2,8 @@ package UseCase.watchlist;
 
 import Entity.WatchlistEntry;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class WatchlistInteractor implements WatchlistInputBoundary {
@@ -18,11 +20,8 @@ public class WatchlistInteractor implements WatchlistInputBoundary {
         try {
             List<WatchlistEntry> entries = access.getWatchlist(input.getUsername(), input.getPassword());
 
-            System.out.println(entries);
-
             if (entries == null) {
-                output.prepareWatchlistFailView("No watchlist found or incorrect credentials.");
-                return;
+                entries = new ArrayList<>();
             }
 
             WatchlistOutputData outputData = WatchlistOutputDataFactory.create(

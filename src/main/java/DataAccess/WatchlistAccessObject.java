@@ -19,6 +19,8 @@ public class WatchlistAccessObject implements WatchlistAccessInterface {
 
     @Override
     public List<WatchlistEntry> getWatchlist(String username, String password) {
+        List<WatchlistEntry> watchlist = new ArrayList<>();
+
         Request request = new Request.Builder()
                 .url(String.format(url + "/watchlist/get?username=%s&password=%s", username, password))
                 .addHeader("Content-Type", "application/json")
@@ -30,32 +32,31 @@ public class WatchlistAccessObject implements WatchlistAccessInterface {
             httpResponse.close();
 
             JSONObject body = new JSONObject(jsonResponse);
-            List<WatchlistEntry> watchlist = new ArrayList<>();
+            int message = body.optInt("message", 400);
 
-            if (body.getInt("message") == 200) {
-                JSONArray symbolsJson = body.getJSONArray("symbols");
-                JSONObject pricesJson = body.getJSONObject("prices");
+            if (message == 200) {
+                JSONArray symbolsJson = body.optJSONArray("symbols");
+                JSONObject pricesJson = body.optJSONObject("prices");
 
-                for (int i = 0; i < symbolsJson.length(); i++) {
-                    String symbol = symbolsJson.getString(i);
-                    BigDecimal price = BigDecimal.ZERO;
-                    BigDecimal perf = BigDecimal.ZERO;
+                if (symbolsJson != null) {
+                    for (int i = 0; i < symbolsJson.length(); i++) {
+                        String symbol = symbolsJson.getString(i);
+                        BigDecimal price = BigDecimal.ZERO;
+                        BigDecimal perf = BigDecimal.ZERO;
 
-                    if (pricesJson.has(symbol)) {
-                        JSONObject stock = pricesJson.getJSONObject(symbol);
-
-                        if (stock.has("p") && !stock.isNull("p")) {
-                            price = BigDecimal.valueOf(stock.getDouble("p")).setScale(2, BigDecimal.ROUND_HALF_UP);
+                        if (pricesJson != null && pricesJson.has(symbol)) {
+                            JSONObject stock = pricesJson.getJSONObject(symbol);
+                            if (stock.has("p") && !stock.isNull("p")) {
+                                price = BigDecimal.valueOf(stock.getDouble("p")).setScale(2, BigDecimal.ROUND_HALF_UP);
+                            }
+                            if (stock.has("perf") && !stock.isNull("perf")) {
+                                perf = BigDecimal.valueOf(stock.getDouble("perf")).setScale(2, BigDecimal.ROUND_HALF_UP);
+                            }
                         }
 
-                        if (stock.has("perf") && !stock.isNull("perf")) {
-                            perf = BigDecimal.valueOf(stock.getDouble("perf")).setScale(2, BigDecimal.ROUND_HALF_UP);
-                        }
+                        WatchlistEntry entry = new WatchlistEntry(symbol, price, perf);
+                        watchlist.add(entry);
                     }
-
-                    WatchlistEntry entry = new WatchlistEntry(symbol, price, perf);
-                    entry.setPerformance(perf);
-                    watchlist.add(entry);
                 }
             }
 
@@ -79,7 +80,6 @@ public class WatchlistAccessObject implements WatchlistAccessInterface {
 
         try {
             Response response = client.newCall(request).execute();
-            System.out.println("Server response: " + response.code());
             response.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -97,7 +97,6 @@ public class WatchlistAccessObject implements WatchlistAccessInterface {
 
         try {
             Response response = client.newCall(request).execute();
-            System.out.println("Server response (delete): " + response.code());
             response.close();
         } catch (IOException e) {
             throw new RuntimeException(e);

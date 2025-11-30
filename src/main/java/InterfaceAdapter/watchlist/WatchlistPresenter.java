@@ -6,7 +6,7 @@ import InterfaceAdapter.logged_in.LoggedInViewModel;
 import UseCase.watchlist.WatchlistOutputBoundary;
 import UseCase.watchlist.WatchlistOutputData;
 
-import java.util.List;
+import java.util.Collections;
 
 public class WatchlistPresenter implements WatchlistOutputBoundary {
     private final WatchlistViewModel viewModel;
@@ -28,15 +28,11 @@ public class WatchlistPresenter implements WatchlistOutputBoundary {
         newState.setPrices(data.getPrices());
         newState.setPerformance(data.getPerformance());
 
-        System.out.println("Presenter called, switching view to " + viewModel.getViewName());
-
-
         viewModel.setState(newState);
         viewModel.firePropertyChange();
 
         viewManager.setState(viewModel.getViewName());
         viewManager.firePropertyChange();
-
     }
 
     @Override
@@ -44,8 +40,5 @@ public class WatchlistPresenter implements WatchlistOutputBoundary {
         final LoggedInState loginState = loggedInVM.getState();
         loginState.setLoggedInError(error);
         loggedInVM.firePropertyChange();
-
-        viewManager.setState(viewModel.getViewName());
-        viewManager.firePropertyChange();
     }
 }
