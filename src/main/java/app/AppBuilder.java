@@ -131,8 +131,9 @@ public class AppBuilder {
     }
 
     public AppBuilder addLoggedInView() {
+        newsViewModel = new NewsViewModel();
         loggedInViewModel = new LoggedInViewModel();
-        loggedInView = new LoggedInView(loggedInViewModel);
+        loggedInView = new LoggedInView(loggedInViewModel, newsViewModel);
         cardPanel.add(loggedInView, loggedInView.getViewName());
         return this;
     }
@@ -177,13 +178,6 @@ public class AppBuilder {
                 watchlistController
         );
         stockPriceView.setLocationRelativeTo(searchView);
-        return this;
-    }
-
-    public AppBuilder addNewsView() {
-        newsViewModel = new NewsViewModel();
-        newsPanel = new NewsPanel(newsViewModel);
-        cardPanel.add(newsPanel, newsViewModel.getViewName());
         return this;
     }
 
@@ -301,7 +295,7 @@ public class AppBuilder {
 
     public JFrame build() {
         final JFrame application = new JFrame("Panic Trade");
-        application.setMinimumSize(new Dimension(540, 360));
+        application.setMinimumSize(new Dimension(600, 400));
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         application.add(cardPanel);
 

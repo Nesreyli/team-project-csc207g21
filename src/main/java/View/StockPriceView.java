@@ -16,6 +16,7 @@ import javax.swing.border.MatteBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.math.BigDecimal;
@@ -162,13 +163,14 @@ public class StockPriceView extends JFrame implements PropertyChangeListener {
         sell.setPreferredSize(new Dimension(120, 40));
         sell.addActionListener(e -> showSellDialog());
 
+        watchlistButton.setBorder(new MatteBorder(2, 2, 2, 2, new Color(90, 90, 90)));
         watchlistButton.setFocusPainted(false);
         watchlistButton.setFont(new Font("Arial", Font.BOLD, 14));
         watchlistButton.setPreferredSize(new Dimension(160, 40));
         watchlistButton.addActionListener(e -> toggleWatchlist());
 
         JButton closeButton = new JButton("Close");
-        closeButton.setBorder(new MatteBorder(2, 2, 2, 2, new Color(122, 122, 122, 55)));
+        closeButton.setBorder(new MatteBorder(2, 2, 2, 2, new Color(90, 90, 90)));
         closeButton.setFocusPainted(false);
         closeButton.setFont(new Font("Arial", Font.PLAIN, 14));
         closeButton.setPreferredSize(new Dimension(120, 40));
@@ -254,132 +256,279 @@ public class StockPriceView extends JFrame implements PropertyChangeListener {
     }
 
     private void showBuyDialog() {
-        PriceState state = priceViewModel.getState();
-        JDialog dialog = new JDialog(this, "Buy " + state.getSymbol(), true);
-        dialog.setSize(400, 250);
-        dialog.setLocationRelativeTo(this);
-        JPanel panel = new JPanel(new BorderLayout(10, 10));
-        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        panel.setBackground(Color.WHITE);
+        final PriceState state = priceViewModel.getState();
+
+        JDialog buyDialog = new JDialog(this, "Buy " + state.getSymbol(), true);
+        buyDialog.setSize(400, 250);
+        buyDialog.setLocationRelativeTo(this);
+
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BorderLayout(10, 10));
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        mainPanel.setBackground(Color.WHITE);
+
+        // Info Panel
+        JPanel infoPanel = new JPanel();
+        infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
+        infoPanel.setBackground(Color.WHITE);
+
+        JLabel titleLabel = new JLabel("Buy " + state.getSymbol());
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        titleLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
 
         JLabel priceLabel = new JLabel("Delayed Price: " + state.getPrice());
-        JTextField amountField = new JTextField(10);
-        JLabel totalCost = new JLabel();
-        amountField.getDocument().addDocumentListener(new DocumentListener() {
-            private void updateCost() {
-                if (Pattern.matches("[0-9]+", amountField.getText())) {
-                    totalCost.setText(state.getPrice().multiply(
-                            new BigDecimal(Integer.parseInt(amountField.getText()))).toString());
-                }
-            }
-            public void insertUpdate(DocumentEvent e) { updateCost(); }
-            public void removeUpdate(DocumentEvent e) { updateCost(); }
-            public void changedUpdate(DocumentEvent e) { updateCost(); }
-        });
+        priceLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        priceLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        JPanel titlePanel = new JPanel();
+        titlePanel.add(titleLabel);
+        JLabel gap = new JLabel();
+        gap.setText("------");
+        gap.setForeground(Color.WHITE);
+        titlePanel.add(gap);
+        titlePanel.add(priceLabel);
+        titlePanel.setBackground(Color.WHITE);
+        infoPanel.add(titlePanel);
 
+        // Amount Input Panel
         JPanel inputPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        inputPanel.setBackground(Color.WHITE);
+        JLabel amountLabel = new JLabel("Amount (shares):");
+        amountLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        JTextField amountField = new JTextField(10);
+        amountField.setFont(new Font("Arial", Font.PLAIN, 14));
         inputPanel.setBackground(new Color(246, 246, 246));
-        inputPanel.setBorder(new MatteBorder(2, 2, 0, 2, new Color(93, 110, 93)));
-        inputPanel.add(new JLabel("Amount (shares):"));
-        inputPanel.add(amountField);
+        inputPanel.setBorder(new MatteBorder(2,2,0,2,new Color(93, 110, 93)));
 
         JPanel totalPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JLabel totalLabel = new JLabel("Estimated Cost:");
+        amountLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        JLabel totalCost = new JLabel();
         totalPanel.setBackground(new Color(246, 246, 246));
-        totalPanel.setBorder(new MatteBorder(0, 2, 2, 2, new Color(93, 110, 93)));
-        totalPanel.add(new JLabel("Estimated Cost:"));
-        totalPanel.add(totalCost);
+        totalPanel.setBorder(new MatteBorder(0,2,2,2,new Color(93, 110, 93)));
 
+        amountField.getDocument().addDocumentListener(new DocumentListener() {
+
+            private void documentListenerHelper() {
+                final PriceState currentState = priceViewModel.getState();
+                if(Pattern.matches("[0-9]+",amountField.getText())){
+                    totalCost.setText(
+                            currentState.getPrice().multiply(
+                                    new BigDecimal(Integer.parseInt(amountField.getText()))).toString());
+                }
+            }
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+        });
+        inputPanel.add(amountLabel);
+        inputPanel.add(amountField);
+        totalPanel.add(totalLabel);
+        totalPanel.add(totalCost);
+        infoPanel.add(inputPanel);
+        infoPanel.add(totalPanel);
+        // Button Panel
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
         buttonPanel.setBackground(Color.WHITE);
+
         JButton confirmButton = new JButton("Confirm Buy");
         confirmButton.setBackground(new Color(76, 175, 80));
+        confirmButton.setFocusPainted(false);
+        confirmButton.setFont(new Font("Arial", Font.BOLD, 14));
         confirmButton.addActionListener(e -> {
             String amount = amountField.getText().trim();
-            if (!amount.isEmpty()) {
-                dialog.dispose();
+            if (amount.isEmpty()) {
+                JOptionPane.showMessageDialog(buyDialog,
+                        "Please enter an amount", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            try {
+                int shares = Integer.parseInt(amount);
+                if (shares <= 0) {
+                    JOptionPane.showMessageDialog(buyDialog,
+                            "Amount must be greater than 0", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                // TODO: Get username/password from logged in state
+                // executeBuyOrder(state.getSymbol(), amount, username, password, buyDialog);
+                JOptionPane.showMessageDialog(buyDialog,
+                        "Buy functionality: " + shares + " shares of " + state.getSymbol());
+                buyDialog.dispose();
+
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(buyDialog,
+                        "Please enter a valid number", "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
+
         JButton cancelButton = new JButton("Cancel");
         cancelButton.setBackground(Color.LIGHT_GRAY);
-        cancelButton.addActionListener(e -> dialog.dispose());
+        cancelButton.setFocusPainted(false);
+        cancelButton.setFont(new Font("Arial", Font.PLAIN, 14));
+        cancelButton.addActionListener(e -> buyDialog.dispose());
+
         buttonPanel.add(confirmButton);
         buttonPanel.add(cancelButton);
 
-        JPanel infoPanel = new JPanel();
-        infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
-        infoPanel.setBackground(Color.WHITE);
-        infoPanel.add(priceLabel);
-        infoPanel.add(inputPanel);
-        infoPanel.add(totalPanel);
+        mainPanel.add(infoPanel, BorderLayout.CENTER);
+        mainPanel.add(buttonPanel, BorderLayout.SOUTH);
 
-        panel.add(infoPanel, BorderLayout.CENTER);
-        panel.add(buttonPanel, BorderLayout.SOUTH);
-        dialog.add(panel);
-        dialog.setVisible(true);
+        buyDialog.add(mainPanel);
+        buyDialog.setVisible(true);
     }
 
+    /**
+     * Shows sell dialog for the stock
+     */
     private void showSellDialog() {
-        PriceState state = priceViewModel.getState();
-        JDialog dialog = new JDialog(this, "Sell " + state.getSymbol(), true);
-        dialog.setSize(400, 250);
-        dialog.setLocationRelativeTo(this);
-        JPanel panel = new JPanel(new BorderLayout(10, 10));
-        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        panel.setBackground(Color.WHITE);
+        final PriceState state = priceViewModel.getState();
 
-        JLabel priceLabel = new JLabel("Delayed Price: " + state.getPrice());
-        JTextField amountField = new JTextField(10);
-        JLabel totalCost = new JLabel();
-        amountField.getDocument().addDocumentListener(new DocumentListener() {
-            private void updateCost() {
-                if (Pattern.matches("[0-9]+", amountField.getText())) {
-                    totalCost.setText(state.getPrice().multiply(
-                            new BigDecimal(Integer.parseInt(amountField.getText()))).toString());
-                }
-            }
-            public void insertUpdate(DocumentEvent e) { updateCost(); }
-            public void removeUpdate(DocumentEvent e) { updateCost(); }
-            public void changedUpdate(DocumentEvent e) { updateCost(); }
-        });
+        JDialog sellDialog = new JDialog(this, "Sell " + state.getSymbol(), true);
+        sellDialog.setSize(400, 250);
+        sellDialog.setLocationRelativeTo(this);
 
-        JPanel inputPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        inputPanel.setBackground(new Color(246, 246, 246));
-        inputPanel.setBorder(new MatteBorder(2, 2, 0, 2, new Color(62, 0, 0)));
-        inputPanel.add(new JLabel("Amount (shares):"));
-        inputPanel.add(amountField);
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BorderLayout(10, 10));
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        mainPanel.setBackground(Color.WHITE);
 
-        JPanel totalPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        totalPanel.setBackground(new Color(246, 246, 246));
-        totalPanel.setBorder(new MatteBorder(0, 2, 2, 2, new Color(62, 0, 0)));
-        totalPanel.add(new JLabel("Estimated Cost:"));
-        totalPanel.add(totalCost);
-
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
-        buttonPanel.setBackground(Color.WHITE);
-        JButton confirmButton = new JButton("Confirm Sell");
-        confirmButton.setBackground(new Color(244, 67, 54));
-        confirmButton.addActionListener(e -> {
-            String amount = amountField.getText().trim();
-            if (!amount.isEmpty()) {
-                dialog.dispose();
-            }
-        });
-        JButton cancelButton = new JButton("Cancel");
-        cancelButton.setBackground(Color.LIGHT_GRAY);
-        cancelButton.addActionListener(e -> dialog.dispose());
-        buttonPanel.add(confirmButton);
-        buttonPanel.add(cancelButton);
-
+        // Info Panel
         JPanel infoPanel = new JPanel();
         infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
         infoPanel.setBackground(Color.WHITE);
-        infoPanel.add(priceLabel);
+
+        JLabel titleLabel = new JLabel("Sell " + state.getSymbol());
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        titleLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        JLabel priceLabel = new JLabel("Delayed Price: " + state.getPrice());
+        priceLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        priceLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        JPanel titlePanel = new JPanel();
+        titlePanel.add(titleLabel);
+        JLabel gap = new JLabel();
+        gap.setText("------");
+        gap.setForeground(Color.WHITE);
+        titlePanel.add(gap);
+        titlePanel.add(priceLabel);
+        titlePanel.setBackground(Color.WHITE);
+        infoPanel.add(titlePanel);
+
+        // Amount Input Panel
+        JPanel inputPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        inputPanel.setBackground(Color.WHITE);
+        JLabel amountLabel = new JLabel("Amount (shares):");
+        amountLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        JTextField amountField = new JTextField(10);
+        amountField.setFont(new Font("Arial", Font.PLAIN, 14));
+        inputPanel.setBackground(new Color(246, 246, 246));
+        inputPanel.setBorder(new MatteBorder(2,2,0,2,new Color(62, 0, 0)));
+
+        JPanel totalPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JLabel totalLabel = new JLabel("Estimated Cost:");
+        amountLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        JLabel totalCost = new JLabel();
+        totalPanel.setBackground(new Color(246, 246, 246));
+        totalPanel.setBorder(new MatteBorder(0,2,2,2,new Color(62, 0, 0)));
+
+        amountField.getDocument().addDocumentListener(new DocumentListener() {
+
+            private void documentListenerHelper() {
+                final PriceState currentState = priceViewModel.getState();
+                if(Pattern.matches("[0-9]+",amountField.getText())){
+                    totalCost.setText(
+                            currentState.getPrice().multiply(
+                                    new BigDecimal(Integer.parseInt(amountField.getText()))).toString());
+                }
+            }
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+        });
+
+        inputPanel.add(amountLabel);
+        inputPanel.add(amountField);
+        totalPanel.add(totalLabel);
+        totalPanel.add(totalCost);
         infoPanel.add(inputPanel);
         infoPanel.add(totalPanel);
 
-        panel.add(infoPanel, BorderLayout.CENTER);
-        panel.add(buttonPanel, BorderLayout.SOUTH);
-        dialog.add(panel);
-        dialog.setVisible(true);
+
+        // Button Panel
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
+        buttonPanel.setBackground(Color.WHITE);
+
+        JButton confirmButton = new JButton("Confirm Sell");
+        confirmButton.setBackground(new Color(244, 67, 54));
+        confirmButton.setFocusPainted(false);
+        confirmButton.setFont(new Font("Arial", Font.BOLD, 14));
+        confirmButton.addActionListener(e -> {
+            String amount = amountField.getText().trim();
+            if (amount.isEmpty()) {
+                JOptionPane.showMessageDialog(sellDialog,
+                        "Please enter an amount", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            try {
+                int shares = Integer.parseInt(amount);
+                if (shares <= 0) {
+                    JOptionPane.showMessageDialog(sellDialog,
+                            "Amount must be greater than 0", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                // TODO: Get username/password from logged in state
+                // executeSellOrder(state.getSymbol(), amount, username, password, sellDialog);
+                JOptionPane.showMessageDialog(sellDialog,
+                        "Sell functionality: " + shares + " shares of " + state.getSymbol());
+                sellDialog.dispose();
+
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(sellDialog,
+                        "Please enter a valid number", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+        JButton cancelButton = new JButton("Cancel");
+        cancelButton.setBackground(Color.LIGHT_GRAY);
+        cancelButton.setFocusPainted(false);
+        cancelButton.setFont(new Font("Arial", Font.PLAIN, 14));
+        cancelButton.addActionListener(e -> sellDialog.dispose());
+
+        buttonPanel.add(confirmButton);
+        buttonPanel.add(cancelButton);
+
+        mainPanel.add(infoPanel, BorderLayout.CENTER);
+        mainPanel.add(buttonPanel, BorderLayout.SOUTH);
+
+        sellDialog.add(mainPanel);
+        sellDialog.setVisible(true);
     }
 }

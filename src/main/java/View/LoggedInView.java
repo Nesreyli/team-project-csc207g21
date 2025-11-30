@@ -1,15 +1,18 @@
 package View;
 
+import Entity.News;
 import InterfaceAdapter.ViewManagerModel;
 import InterfaceAdapter.logged_in.LoggedInController;
 import InterfaceAdapter.logged_in.LoggedInState;
 import InterfaceAdapter.logged_in.LoggedInViewModel;
 import InterfaceAdapter.logout.LogoutController;
 import InterfaceAdapter.news.NewsController;
+import InterfaceAdapter.news.NewsViewModel;
 import InterfaceAdapter.portfolio.PortfolioController;
 import InterfaceAdapter.watchlist.WatchlistController;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -31,7 +34,6 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
     private final JLabel username;
     private final JButton logout;
     private final JButton portfolio;
-    private final JButton news;
 //    private final JPanel image;
     private PortfolioController portfolioController;
     private LogoutController logoutController;
@@ -40,14 +42,18 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
     private final JButton stockSearch;
 //    private final JPanel image;
     private LoggedInController loggedInController;
+    private NewsViewModel newsViewModel;
+    private NewsPanel newsPanel;
 
 //    private final JTextField passwordInputField = new JTextField(15);
 //    private final JButton changePassword;
 
-    public LoggedInView(LoggedInViewModel loggedInViewModel) {
+    public LoggedInView(LoggedInViewModel loggedInViewModel, NewsViewModel newsViewModel) {
         this.loggedInViewModel = loggedInViewModel;
         this.loggedInViewModel.addPropertyChangeListener(this);
+        this.newsViewModel = newsViewModel;
 
+        newsPanel = new NewsPanel(newsViewModel);
 
 //        final LabelTextPanel passwordInfo = new LabelTextPanel(
 //                new JLabel("Password"), passwordInputField);
@@ -112,17 +118,6 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
                     }
                 });      
 
-
-        news = new JButton("Top News");
-        buttons.add(news);
-        news.addActionListener(
-            new ActionListener(){
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    newsController.execute();
-                }
-            }
-        );
         buttons.setBackground(Color.LIGHT_GRAY);
 
         this.setAlignmentX(1.0f);
@@ -130,12 +125,17 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
         JPanel user = new JPanel();
         user.add(usernameInfo);
         user.add(username);
-        user.setLayout(new BoxLayout(user, BoxLayout.X_AXIS));
-        user.setBackground(Color.LIGHT_GRAY);
+
+        user.setLayout(new FlowLayout(FlowLayout.LEFT));
+        user.setBackground(new Color(205, 205, 205));
+        buttons.setBackground(new Color(205, 205, 205));
+
+        user.add(buttons, BorderLayout.CENTER);
+
+        this.setBackground(new Color(205, 205, 205));
         this.add(user);
-        this.setBackground(Color.LIGHT_GRAY);
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        this.add(buttons, BorderLayout.CENTER);
+        this.add(newsPanel);
 //        JLabel pic = new JLabel(new ImageIcon(Toolkit.getDefaultToolkit().getImage("Image/buffet1.png")));
 //        pic.setPreferredSize(new Dimension(130,100));
 //        image.add(pic);
@@ -155,6 +155,7 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
         if (evt.getPropertyName().equals("state")) {
             final LoggedInState state = (LoggedInState) evt.getNewValue();
             username.setText(state.getUsername());
+            newsController.execute();
         }
         // for multiple porpery change
 //        else if (evt.getPropertyName().equals("password")) {

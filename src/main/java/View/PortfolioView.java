@@ -29,7 +29,7 @@ public class PortfolioView extends JPanel implements ActionListener, PropertyCha
         this.portfolioViewModel.addPropertyChangeListener(this);
 
         final JLabel user = new JLabel("Portfolio: ");
-        user.setFont(new Font("SansSerif", Font.BOLD, 20));
+        user.setFont(new Font("Arial", Font.BOLD, 17));
         username = new JButton();
         value = new JLabel();
         cash = new JLabel();

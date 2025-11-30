@@ -28,7 +28,7 @@ public class HomePresenter implements HomeOutputBoundary {
         loggedInState.setPassword(output.getPassword());
         loggedViewModel.firePropertyChange();
 
-        portViewModel.setState(new PortfolioState());
+//        portViewModel.setState(new PortfolioState());
 
         viewManagerModel.setState(loggedViewModel.getViewName());
         viewManagerModel.firePropertyChange();
