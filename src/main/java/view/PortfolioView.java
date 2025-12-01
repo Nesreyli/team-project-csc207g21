@@ -1,16 +1,17 @@
 package view;
 
-import interface_adapter.homebutton.HomeController;
-import interface_adapter.portfolio.PortfolioState;
-import interface_adapter.portfolio.PortfolioViewModel;
-
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Map;
+
+import javax.swing.*;
+
+import interface_adapter.homebutton.HomeController;
+import interface_adapter.portfolio.PortfolioState;
+import interface_adapter.portfolio.PortfolioViewModel;
 
 public class PortfolioView extends JPanel implements ActionListener, PropertyChangeListener {
     private final String viewName = "portfolio";
@@ -23,7 +24,7 @@ public class PortfolioView extends JPanel implements ActionListener, PropertyCha
 
     private HomeController homeController;
 
-    public PortfolioView(PortfolioViewModel portfolioViewModel){
+    public PortfolioView(PortfolioViewModel portfolioViewModel) {
         this.portfolioViewModel = portfolioViewModel;
         this.portfolioViewModel.addPropertyChangeListener(this);
 
@@ -37,10 +38,10 @@ public class PortfolioView extends JPanel implements ActionListener, PropertyCha
 
         username.addActionListener(this::actionPerformed);
 
-        JPanel portUser = new JPanel();
-        JPanel perf = new JPanel();
-        JPanel userCash = new JPanel();
-        JPanel val = new JPanel();
+        final JPanel portUser = new JPanel();
+        final JPanel perf = new JPanel();
+        final JPanel userCash = new JPanel();
+        final JPanel val = new JPanel();
 
         perf.add(new JLabel("Total return since inception: "));
         perf.add(performance);
@@ -64,10 +65,10 @@ public class PortfolioView extends JPanel implements ActionListener, PropertyCha
         holdings.setBackground(Color.LIGHT_GRAY);
         holdings.add(new JLabel("Positions:"));
         holdings.setLayout(new BoxLayout(holdings, BoxLayout.Y_AXIS));
-        JScrollPane positions = new JScrollPane(holdings);
+        final JScrollPane positions = new JScrollPane(holdings);
         positions.setBackground(Color.LIGHT_GRAY);
 
-        JPanel box = new JPanel();
+        final JPanel box = new JPanel();
         box.setBackground(Color.LIGHT_GRAY.brighter());
 
         portUser.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -78,13 +79,19 @@ public class PortfolioView extends JPanel implements ActionListener, PropertyCha
         box.add(userCash);
         box.setLayout(new BoxLayout(box, BoxLayout.Y_AXIS));
 
-        this.setLayout(new GridLayout(1,2));
+        this.setLayout(new GridLayout(1, 2));
         this.add(box);
         this.add(positions);
         this.setBackground(Color.LIGHT_GRAY);
     }
 
-    // Action listener for home button
+    /**
+     * Handles actions triggered by the Home button.
+     * When the Home button is clicked, this method retrieves the current portfolio
+     * state (username and password) from the view model and calls the home controller
+     * to navigate back to the home view.
+     * @param evt the  ActionEvent triggered by user interaction
+     */
     public void actionPerformed(ActionEvent evt) {
         if (evt.getSource().equals(username)) {
             final PortfolioState currentState = portfolioViewModel.getState();
@@ -102,37 +109,28 @@ public class PortfolioView extends JPanel implements ActionListener, PropertyCha
             username.setText(state.getUsername());
             value.setText(state.getValue());
             cash.setText(state.getCash());
-            String tempPerf = state.getPerformance();
+            final String tempPerf = state.getPerformance();
             performance.setText(tempPerf);
-            if(Integer.parseInt(tempPerf.substring(0,tempPerf.length() - 1).replace(".","")) >= 0){
+            if (Integer.parseInt(tempPerf.substring(0, tempPerf.length() - 1).replace(".", "")) >= 0) {
                 performance.setForeground(Color.GREEN.darker());
             }
-            else{
+            else {
                 performance.setForeground(Color.RED.darker());
             }
 
-            Map<String, Object> positions = state.getHoldings();
+            final Map<String, Object> positions = state.getHoldings();
             // without remove all this thing just stacks again again again has memory of previous inputs.
             holdings.removeAll();
-            for(String symbol: positions.keySet()){
-                JPanel owning = new JPanel();
+            for (String symbol: positions.keySet()) {
+                final JPanel owning = new JPanel();
                 owning.add(new JLabel(symbol));
                 owning.add(new JLabel(positions.get(symbol).toString()));
                 owning.setBackground(Color.LIGHT_GRAY);
                 holdings.add(owning);
             }
         }
-//        else if (evt.getPropertyName().equals("password")) {
-//            final LoggedInState state = (LoggedInState) evt.getNewValue();
-//            if (state.getPasswordError() == null) {
-//                JOptionPane.showMessageDialog(this, "password updated for " + state.getUsername());
-//                passwordInputField.setText("");
-//            }
-//            else {
-//                JOptionPane.showMessageDialog(this, state.getPasswordError());
-//            }
-//        }
     }
+
     public String getViewName() {
         return viewName;
     }

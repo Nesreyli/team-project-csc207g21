@@ -4,15 +4,15 @@ import java.math.BigDecimal;
 import java.util.Map;
 
 public class PortfolioOutputData {
-    private String username;
-    private String password;
-    private BigDecimal cash;
-    private Map<String, Object> holdings;
-    private BigDecimal value;
-    private BigDecimal performance;
+    private final String username;
+    private final String password;
+    private final BigDecimal cash;
+    private final Map<String, Object> holdings;
+    private final BigDecimal value;
+    private final BigDecimal performance;
 
     public PortfolioOutputData(String username, String password, BigDecimal cash,
-                               Map<String, Object> holdings, BigDecimal value, BigDecimal perf){
+                               Map<String, Object> holdings, BigDecimal value, BigDecimal perf) {
         this.username = username;
         this.password = password;
         this.cash = cash;

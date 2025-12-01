@@ -1,12 +1,12 @@
 package use_case.homebutton;
 
 public class HomeOutputData {
-    private String username;
-    private String password;
+    private final String username;
+    private final String password;
 
-    public HomeOutputData(String u, String p){
-        username = u;
-        password = p;
+    public HomeOutputData(String user, String pass) {
+        username = user;
+        password = pass;
     }
 
     public String getUsername() {

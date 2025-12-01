@@ -1,7 +1,14 @@
 package app;
 
+import java.awt.*;
+
+import javax.swing.*;
+
 import data_access.*;
 import entity.UserFactory;
+import interface_adapter.Stock_Search.SearchController;
+import interface_adapter.Stock_Search.SearchPresenter;
+import interface_adapter.Stock_Search.SearchViewModel;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.add_watchlist.AddToWatchlistController;
 import interface_adapter.add_watchlist.AddToWatchlistPresenter;
@@ -11,23 +18,23 @@ import interface_adapter.buySell.BuySellPresenter;
 import interface_adapter.buySell.BuySellViewModel;
 import interface_adapter.homebutton.HomeController;
 import interface_adapter.homebutton.HomePresenter;
+import interface_adapter.leaderboard.LeaderboardController;
+import interface_adapter.leaderboard.LeaderboardPresenter;
+import interface_adapter.leaderboard.LeaderboardViewModel;
 import interface_adapter.logged_in.LoggedInController;
 import interface_adapter.logged_in.LoggedInPresenter;
+import interface_adapter.logged_in.LoggedInViewModel;
+import interface_adapter.login.LoginController;
+import interface_adapter.login.LoginPresenter;
+import interface_adapter.login.LoginViewModel;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.logout.LogoutPresenter;
 import interface_adapter.news.NewsController;
 import interface_adapter.news.NewsPresenter;
 import interface_adapter.news.NewsViewModel;
-import interface_adapter.portfolio.PortfolioPresenter;
-import interface_adapter.logged_in.LoggedInViewModel;
-import interface_adapter.login.LoginController;
-import interface_adapter.login.LoginPresenter;
-import interface_adapter.login.LoginViewModel;
 import interface_adapter.portfolio.PortfolioController;
+import interface_adapter.portfolio.PortfolioPresenter;
 import interface_adapter.portfolio.PortfolioViewModel;
-import interface_adapter.Stock_Search.SearchController;
-import interface_adapter.Stock_Search.SearchPresenter;
-import interface_adapter.Stock_Search.SearchViewModel;
 import interface_adapter.remove_watchlist.RemoveFromWatchlistController;
 import interface_adapter.remove_watchlist.RemoveFromWatchlistPresenter;
 import interface_adapter.remove_watchlist.RemoveFromWatchlistViewModel;
@@ -40,12 +47,6 @@ import interface_adapter.stock_price.PriceViewModel;
 import interface_adapter.watchlist.WatchlistController;
 import interface_adapter.watchlist.WatchlistPresenter;
 import interface_adapter.watchlist.WatchlistViewModel;
-import interface_adapter.leaderboard.LeaderboardController;
-import interface_adapter.leaderboard.LeaderboardPresenter;
-import interface_adapter.leaderboard.LeaderboardViewModel;
-import use_case.login.LoginInputBoundary;
-import use_case.login.LogInInteractor;
-import use_case.login.LoginOutputBoundary;
 import use_case.add_watchlist.AddToWatchlistInputBoundary;
 import use_case.add_watchlist.AddToWatchlistInteractor;
 import use_case.add_watchlist.AddToWatchlistOutputBoundary;
@@ -55,18 +56,21 @@ import use_case.buySell.BuySellOutputBoundary;
 import use_case.homebutton.HomeInputBoundary;
 import use_case.homebutton.HomeInteractor;
 import use_case.homebutton.HomeOutputBoundary;
+import use_case.leaderboard.LeaderboardInputBoundary;
+import use_case.leaderboard.LeaderboardInteractor;
+import use_case.leaderboard.LeaderboardOutputBoundary;
 import use_case.loggedIn.LoggedInInputBoundary;
 import use_case.loggedIn.LoggedInInteractor;
 import use_case.loggedIn.LoggedInOutputBoundary;
+import use_case.login.LogInInteractor;
+import use_case.login.LoginInputBoundary;
+import use_case.login.LoginOutputBoundary;
 import use_case.logout.LogoutInputBoundary;
 import use_case.logout.LogoutInteractor;
 import use_case.logout.LogoutOutputBoundary;
 import use_case.news.NewsInputBoundary;
 import use_case.news.NewsInteractor;
 import use_case.news.NewsOutputBoundary;
-import use_case.leaderboard.LeaderboardInputBoundary;
-import use_case.leaderboard.LeaderboardInteractor;
-import use_case.leaderboard.LeaderboardOutputBoundary;
 import use_case.portfolio.PortfolioInputBoundary;
 import use_case.portfolio.PortfolioInteractor;
 import use_case.portfolio.PortfolioOutputBoundary;
@@ -79,33 +83,29 @@ import use_case.signup.SignupOutputBoundary;
 import use_case.stock_price.PriceInputBoundary;
 import use_case.stock_price.PriceOutputBoundary;
 import use_case.stock_price.StockPriceInteractor;
-import use_case.watchlist.WatchlistInputBoundary;
-import use_case.watchlist.WatchlistInteractor;
-import use_case.watchlist.WatchlistOutputBoundary;
 import use_case.stock_search.SearchInputBoundary;
 import use_case.stock_search.SearchInteractor;
 import use_case.stock_search.SearchOutputBoundary;
+import use_case.watchlist.WatchlistInputBoundary;
+import use_case.watchlist.WatchlistInteractor;
+import use_case.watchlist.WatchlistOutputBoundary;
 import view.*;
-
-import javax.swing.*;
-import java.awt.*;
 
 public class AppBuilder {
     private final JPanel cardPanel = new JPanel();
     private final CardLayout cardLayout = new CardLayout();
-    final UserFactory userFactory = new UserFactory();
-    final ViewManagerModel viewManagerModel = new ViewManagerModel();
-    ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
+    private final UserFactory userFactory = new UserFactory();
+    private final ViewManagerModel viewManagerModel = new ViewManagerModel();
+    private final ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
 
-
-    final UserDataAccessObject userDataAccessObject = new UserDataAccessObject(userFactory);
-    final PortfolioAccessObject portfolioAccessObject = new PortfolioAccessObject();
-    final NewsAccessObject newsAccessObject = new NewsAccessObject();
-    final SearchAccessObject searchDataAccess = new SearchAccessObject();
-    final PriceAccessObject priceAccessObject = new PriceAccessObject();
-    final WatchlistAccessObject watchlistAccessObject = new WatchlistAccessObject();
-    final LeaderboardAccessObject leaderboardAccessObject = new LeaderboardAccessObject();
-    final BuySellAccessObject buySellAccessObject = new BuySellAccessObject();
+    private final UserDataAccessObject userDataAccessObject = new UserDataAccessObject(userFactory);
+    private final PortfolioAccessObject portfolioAccessObject = new PortfolioAccessObject();
+    private final NewsAccessObject newsAccessObject = new NewsAccessObject();
+    private final SearchAccessObject searchDataAccess = new SearchAccessObject();
+    private final PriceAccessObject priceAccessObject = new PriceAccessObject();
+    private final WatchlistAccessObject watchlistAccessObject = new WatchlistAccessObject();
+    private final LeaderboardAccessObject leaderboardAccessObject = new LeaderboardAccessObject();
+    private final BuySellAccessObject buySellAccessObject = new BuySellAccessObject();
 
     private AddToWatchlistViewModel addToWatchlistViewModel;
     private AddToWatchlistController addToWatchlistController;
@@ -141,6 +141,10 @@ public class AppBuilder {
         cardPanel.setLayout(cardLayout);
     }
 
+    /**
+     * Adds the login view to the application.
+     * @return the current AppBuilder instance
+     */
     public AppBuilder addLoginView() {
         loginViewModel = new LoginViewModel();
         loginView = new LoginView(loginViewModel);
@@ -148,6 +152,10 @@ public class AppBuilder {
         return this;
     }
 
+    /**
+     * Adds the logged-in view, including the news view model, to the application.
+     * @return the current AppBuilder instance
+     */
     public AppBuilder addLoggedInView() {
         newsViewModel = new NewsViewModel();
         loggedInViewModel = new LoggedInViewModel();
@@ -156,6 +164,10 @@ public class AppBuilder {
         return this;
     }
 
+    /**
+     * Adds the portfolio view to the application.
+     * @return the current AppBuilder instance
+     */
     public AppBuilder addPortfolioView() {
         portViewModel = new PortfolioViewModel();
         portView = new PortfolioView(portViewModel);
@@ -163,6 +175,10 @@ public class AppBuilder {
         return this;
     }
 
+    /**
+     * Adds the watchlist view to the application.
+     * @return the current AppBuilder instance
+     */
     public AppBuilder addWatchlistView() {
         watchlistViewModel = new WatchlistViewModel();
         watchlistView = new WatchlistView(watchlistViewModel);
@@ -170,6 +186,10 @@ public class AppBuilder {
         return this;
     }
 
+    /**
+     * Adds the search view to the application.
+     * @return the current AppBuilder instance
+     */
     public AppBuilder addSearchView() {
         searchViewModel = new SearchViewModel();
         searchView = new SearchView(searchViewModel);
@@ -177,6 +197,10 @@ public class AppBuilder {
         return this;
     }
 
+    /**
+     * Adds the signup view to the application.
+     * @return the current AppBuilder instance
+     */
     public AppBuilder addSignupView() {
         signupViewModel = new SignupViewModel();
         signupView = new SignupView(signupViewModel);
@@ -184,12 +208,21 @@ public class AppBuilder {
         return this;
     }
 
+    /**
+     * Adds the leaderboard view to the application.
+     * @return the current AppBuilder instance
+     */
     public AppBuilder addLeaderboardView() {
         leaderboardViewModel = new LeaderboardViewModel();
         leaderboardView = new LeaderboardView(leaderboardViewModel, loggedInViewModel);
         cardPanel.add(leaderboardView, leaderboardView.getViewName());
         return this;
     }
+
+    /**
+     * Adds the stock price view to the application.
+     * @return the current AppBuilder instance
+     */
     public AppBuilder addPriceView() {
         priceViewModel = new PriceViewModel();
         stockPriceView = new StockPriceView(
@@ -206,25 +239,40 @@ public class AppBuilder {
         return this;
     }
 
+    /**
+     * Adds the login use case to the application.
+     * Sets up the interactor, presenter, and controller for login functionality.
+     * @return the current AppBuilder instance
+     */
     public AppBuilder addLoginUseCase() {
         final LoginOutputBoundary loginOutputBoundary = new LoginPresenter(viewManagerModel,
                 loggedInViewModel, loginViewModel, signupViewModel);
         final LoginInputBoundary loginInteractor = new LogInInteractor(userDataAccessObject, loginOutputBoundary);
-        LoginController loginController = new LoginController(loginInteractor);
+        final LoginController loginController = new LoginController(loginInteractor);
         loginView.setLoginController(loginController);
         return this;
     }
 
+    /**
+     * Adds the portfolio use case to the application.
+     * Sets up the interactor, presenter, and controller for portfolio functionality.
+     * @return the current AppBuilder instance
+     */
     public AppBuilder addPortfolioUseCase() {
         final PortfolioOutputBoundary portfolioOutputBoundary = new PortfolioPresenter(viewManagerModel,
                 portViewModel, loggedInViewModel);
         final PortfolioInputBoundary portfolioInputBoundary = new PortfolioInteractor(portfolioAccessObject,
                 portfolioOutputBoundary);
-        PortfolioController portfolioController = new PortfolioController(portfolioInputBoundary);
+        final PortfolioController portfolioController = new PortfolioController(portfolioInputBoundary);
         loggedInView.setPortfolioController(portfolioController);
         return this;
     }
 
+    /**
+     * Adds the watchlist use case to the application.
+     * Sets up the interactor, presenter, and controller for watchlist functionality.
+     * @return the current AppBuilder instance
+     */
     public AppBuilder addWatchlistUseCase() {
         final WatchlistOutputBoundary watchlistOutputBoundary = new WatchlistPresenter(viewManagerModel,
                 watchlistViewModel, loggedInViewModel);
@@ -235,31 +283,46 @@ public class AppBuilder {
         return this;
     }
 
+    /**
+     * Adds the search use case to the application.
+     * Sets up the interactor, presenter, and controller for search functionality.
+     * @return the current AppBuilder instance
+     */
     public AppBuilder addSearchUseCase() {
         final SearchOutputBoundary searchOutputBoundary = new SearchPresenter(searchViewModel,
                 viewManagerModel, loggedInViewModel);
         final SearchInputBoundary searchInteractor = new SearchInteractor(searchDataAccess, searchOutputBoundary);
-        final HomeOutputBoundary homeOutputBoundary = (HomeOutputBoundary) searchOutputBoundary; // Optional cast
+        final HomeOutputBoundary homeOutputBoundary = (HomeOutputBoundary) searchOutputBoundary;
         final HomeInputBoundary homeInputBoundary = new HomeInteractor(homeOutputBoundary);
-        SearchController searchController = new SearchController(searchInteractor, homeInputBoundary);
+        final SearchController searchController = new SearchController(searchInteractor, homeInputBoundary);
         searchView.setSearchController(searchController);
         return this;
     }
 
+    /**
+     * Adds the stock price use case to the application.
+     * Sets up the interactor, presenter, and controller for stock price functionality.
+     * @return the current AppBuilder instance
+     */
     public AppBuilder addPriceUseCase() {
         final PriceOutputBoundary priceOutputBoundary = new PricePresenter(viewManagerModel,
                 searchViewModel, priceViewModel);
         final PriceInputBoundary priceInputBoundary = new StockPriceInteractor(priceAccessObject, priceOutputBoundary);
-        PriceController priceController = new PriceController(priceInputBoundary);
+        final PriceController priceController = new PriceController(priceInputBoundary);
         searchView.setPriceController(priceController);
         return this;
     }
 
+    /**
+     * Adds the home navigation use case to the application.
+     * Sets up the interactor, presenter, and controller for home button navigation.
+     * @return the current AppBuilder instance
+     */
     public AppBuilder addHomeUseCase() {
         final HomeOutputBoundary homeOutputBoundary = new HomePresenter(portViewModel,
                 viewManagerModel, loggedInViewModel);
         final HomeInputBoundary homeInputBoundary = new HomeInteractor(homeOutputBoundary);
-        HomeController homeController = new HomeController(homeInputBoundary);
+        final HomeController homeController = new HomeController(homeInputBoundary);
         portView.setHomeController(homeController);
         watchlistView.setHomeController(homeController);
         if (leaderboardView != null) {
@@ -268,6 +331,11 @@ public class AppBuilder {
         return this;
     }
 
+    /**
+     * Adds the logout use case to the application.
+     * Sets up the interactor, presenter, and controller for logout functionality.
+     * @return the current AppBuilder instance
+     */
     public AppBuilder addLogoutUseCase() {
         final LogoutOutputBoundary logoutOutputBoundary = new LogoutPresenter(viewManagerModel,
                 loggedInViewModel, loginViewModel);
@@ -277,6 +345,11 @@ public class AppBuilder {
         return this;
     }
 
+    /**
+     * Adds the logged-in use case to the application.
+     * Sets up the interactor, presenter, and controller for logged-in view functionality.
+     * @return the current AppBuilder instance
+     */
     public AppBuilder addLoggedInUseCase() {
         final LoggedInOutputBoundary loggedInOutputBoundary = new LoggedInPresenter(loggedInViewModel,
                 viewManagerModel, searchViewModel);
@@ -286,6 +359,11 @@ public class AppBuilder {
         return this;
     }
 
+    /**
+     * Adds the signup use case to the application.
+     * Sets up the interactor, presenter, and controller for signup functionality.
+     * @return the current AppBuilder instance
+     */
     public AppBuilder addSignupUseCase() {
         final SignupOutputBoundary signupOutputBoundary = new SignupPresenter(viewManagerModel,
                 signupViewModel, loginViewModel);
@@ -296,23 +374,40 @@ public class AppBuilder {
         return this;
     }
 
+    /**
+     * Adds the "Add to Watchlist" use case to the application.
+     * Sets up the interactor, presenter, and controller for adding stocks to the watchlist.
+     * @return the current AppBuilder instance
+     */
     public AppBuilder addAddToWatchlistUseCase() {
         addToWatchlistViewModel = new AddToWatchlistViewModel();
-        AddToWatchlistOutputBoundary addOutput = new AddToWatchlistPresenter(addToWatchlistViewModel, watchlistViewModel);
-        AddToWatchlistInputBoundary addInput = new AddToWatchlistInteractor(watchlistAccessObject, addOutput);
+        final AddToWatchlistOutputBoundary addOutput = new AddToWatchlistPresenter(addToWatchlistViewModel,
+                watchlistViewModel);
+        final AddToWatchlistInputBoundary addInput = new AddToWatchlistInteractor(watchlistAccessObject, addOutput);
         addToWatchlistController = new AddToWatchlistController(addInput);
         return this;
     }
 
+    /**
+     * Adds the "Remove from Watchlist" use case to the application.
+     * Sets up the interactor, presenter, and controller for removing stocks from the watchlist.
+     * @return the current AppBuilder instance
+     */
     public AppBuilder addRemoveFromWatchlistUseCase() {
         removeFromWatchlistViewModel = new RemoveFromWatchlistViewModel();
-        RemoveFromWatchlistOutputBoundary removeOutput = new RemoveFromWatchlistPresenter(removeFromWatchlistViewModel, watchlistViewModel);
-        RemoveFromWatchlistInputBoundary removeInput = new RemoveFromWatchlistInteractor(watchlistAccessObject, removeOutput);
+        final RemoveFromWatchlistOutputBoundary removeOutput = new RemoveFromWatchlistPresenter(
+                        removeFromWatchlistViewModel, watchlistViewModel);
+        final RemoveFromWatchlistInputBoundary removeInput = new RemoveFromWatchlistInteractor(watchlistAccessObject,
+                removeOutput);
         removeFromWatchlistController = new RemoveFromWatchlistController(removeInput);
         return this;
     }
 
-
+    /**
+     * Adds the news use case to the application.
+     * Sets up the interactor, presenter, and controller for news functionality.
+     * @return the current AppBuilder instance
+     */
     public AppBuilder addNewsUseCase() {
         final NewsOutputBoundary newsOutputBoundary = new NewsPresenter(viewManagerModel, newsViewModel);
         final NewsInputBoundary newsInputBoundary = new NewsInteractor(newsAccessObject, newsOutputBoundary);
@@ -321,11 +416,22 @@ public class AppBuilder {
         return this;
     }
 
-    public AppBuilder addBuySellView(){
+    /**
+     * Adds the Buy/Sell view to the application.
+     * Initializes the receipt dialog for trading operations.
+     * @return the current AppBuilder instance
+     */
+    public AppBuilder addBuySellView() {
         buySellViewModel = new BuySellViewModel();
         receiptDialog = new ReceiptDialog(stockPriceView, buySellViewModel);
         return this;
     }
+
+    /**
+     * Adds the Buy/Sell use case to the application.
+     * Sets up the interactor, presenter, and controller for buying and selling stocks.
+     * @return the current AppBuilder instance
+     */
     public AppBuilder addBuySellUseCase() {
         final BuySellOutputBoundary bsOutputBoundary = new BuySellPresenter(buySellViewModel, viewManagerModel);
         final BuySellInputBoundary bsInputBoundary = new BuySellInteractor(buySellAccessObject, bsOutputBoundary);
@@ -334,14 +440,26 @@ public class AppBuilder {
         return this;
     }
 
+    /**
+     * Adds the leaderboard use case to the application.
+     * Sets up the interactor, presenter, and controller for leaderboard functionality.
+     * @return the current AppBuilder instance
+     */
     public AppBuilder addLeaderboardUseCase() {
-        final LeaderboardOutputBoundary leaderboardOutputBoundary = new LeaderboardPresenter(viewManagerModel, leaderboardViewModel);
-        final LeaderboardInputBoundary leaderboardInputBoundary = new LeaderboardInteractor(leaderboardAccessObject, leaderboardOutputBoundary);
+        final LeaderboardOutputBoundary leaderboardOutputBoundary = new LeaderboardPresenter(viewManagerModel,
+                leaderboardViewModel);
+        final LeaderboardInputBoundary leaderboardInputBoundary = new LeaderboardInteractor(leaderboardAccessObject,
+                leaderboardOutputBoundary);
         final LeaderboardController leaderboardController = new LeaderboardController(leaderboardInputBoundary);
         loggedInView.setLeaderboardController(leaderboardController);
         return this;
     }
 
+    /**
+     * Builds the JFrame for the application, sets minimum size and default close operation,
+     * adds the card panel containing all views, and initializes the view manager model.
+     * @return the constructed  JFrame instance
+     */
     public JFrame build() {
         final JFrame application = new JFrame("Panic Trade");
         application.setMinimumSize(new Dimension(600, 400));

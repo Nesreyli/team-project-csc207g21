@@ -30,9 +30,9 @@ public class SignupInteractor implements SignupInputBoundary {
             userPresenter.prepareFailView("Username cannot be empty");
         }
         else {
-            Response response = userDataAccessObject.signUp(signupInputData.getUsername(),
+            final Response response = userDataAccessObject.signUp(signupInputData.getUsername(),
                     signupInputData.getPassword());
-            switch(response.getStatus_code()){
+            switch (response.getStatus_code()) {
                 case 200:
                     userPresenter.prepareSuccessView();
                     break;

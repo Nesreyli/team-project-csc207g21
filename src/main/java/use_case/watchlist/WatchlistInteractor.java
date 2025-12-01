@@ -1,9 +1,9 @@
 package use_case.watchlist;
 
-import entity.WatchlistEntry;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import entity.WatchlistEntry;
 
 public class WatchlistInteractor implements WatchlistInputBoundary {
     private final WatchlistAccessInterface access;
@@ -23,14 +23,15 @@ public class WatchlistInteractor implements WatchlistInputBoundary {
                 entries = new ArrayList<>();
             }
 
-            WatchlistOutputData outputData = WatchlistOutputDataFactory.create(
+            final WatchlistOutputData outputData = WatchlistOutputDataFactory.create(
                     input.getUsername(),
                     input.getPassword(),
                     entries
             );
             output.prepareWatchlistSuccessView(outputData);
-        } catch (Exception e) {
-            output.prepareWatchlistFailView("Server error: " + e.getMessage());
+        }
+        catch (Exception error) {
+            output.prepareWatchlistFailView("Server error: " + error.getMessage());
         }
     }
 }
