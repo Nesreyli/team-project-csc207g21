@@ -2,10 +2,10 @@ package interface_adapter.Stock_Search;
 
 import interface_adapter.ViewManagerModel;
 import interface_adapter.logged_in.LoggedInViewModel;
-import use_case.stock_search.SearchOutputBoundary;
-import use_case.stock_search.SearchOutputData;
 import use_case.homebutton.HomeOutputBoundary;
 import use_case.homebutton.HomeOutputData;
+import use_case.stock_search.SearchOutputBoundary;
+import use_case.stock_search.SearchOutputData;
 
 public class SearchPresenter implements SearchOutputBoundary, HomeOutputBoundary {
     private final SearchViewModel searchViewModel;
@@ -21,7 +21,7 @@ public class SearchPresenter implements SearchOutputBoundary, HomeOutputBoundary
     }
 
     @Override
-    public void prepareSuccessView(SearchOutputData outputData){
+    public void prepareSuccessView(SearchOutputData outputData) {
         final SearchState state = searchViewModel.getState();
         state.setSearchResults(outputData.getStocks());
         state.setSearchQuery(outputData.getQuery());
@@ -33,7 +33,7 @@ public class SearchPresenter implements SearchOutputBoundary, HomeOutputBoundary
     }
 
     @Override
-    public void prepareFailView(String errorMessage){
+    public void prepareFailView(String errorMessage) {
         final SearchState state = searchViewModel.getState();
         state.setSearchError(errorMessage);
         state.setLoading(false);
@@ -43,7 +43,7 @@ public class SearchPresenter implements SearchOutputBoundary, HomeOutputBoundary
     }
 
     @Override
-    public void preparePreviousView(HomeOutputData output){
+    public void preparePreviousView(HomeOutputData output) {
         searchViewModel.setState(new SearchState());
         searchViewModel.firePropertyChange();
 

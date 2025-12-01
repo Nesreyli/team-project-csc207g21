@@ -2,8 +2,9 @@ package interface_adapter.Stock_Search;
 
 import entity.Stock_Search;
 
-import java.util.HashMap;
 import java.util.Map;
+
+import java.util.HashMap;
 
 /**
  * The State information for the Stock Search View.
@@ -25,23 +26,41 @@ public class SearchState {
         password = copy.password;
     }
 
-    public SearchState() {}
+    public SearchState() {
 
-    public String getUsername() { return username; }
+    }
 
-    public void setUsername(String username) { this.username = username; }
+    public String getUsername() {
+        return username;
+    }
 
-    public String getPassword() { return password; }
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-    public void setPassword(String password) { this.password = password; }
+    public String getPassword() {
+        return password;
+    }
 
-    public String getSearchQuery() { return searchQuery; }
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-    public void setSearchQuery(String searchQuery) { this.searchQuery = searchQuery; }
+    public String getSearchQuery() {
+        return searchQuery;
+    }
 
-    public String getSearchError() { return searchError; }
+    public void setSearchQuery(String searchQuery) {
+        this.searchQuery = searchQuery;
+    }
 
-    public void setSearchError(String searchError) { this.searchError = searchError; }
+    public String getSearchError() {
+        return searchError;
+    }
+
+    public void setSearchError(String searchError) {
+        this.searchError = searchError;
+    }
 
     public Map<String, Stock_Search> getSearchResults() {
         return searchResults;
@@ -51,8 +70,8 @@ public class SearchState {
         this.searchResults = searchResults;
     }
 
-    public boolean isLoading() { return isLoading; }
-
-    public void setLoading(boolean isLoading) { this.isLoading = isLoading; }
+    public void setLoading(boolean isLoading) {
+        this.isLoading = isLoading;
+    }
 
 }

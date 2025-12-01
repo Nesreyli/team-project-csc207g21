@@ -1,6 +1,5 @@
 package use_case.stock_search;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import data_access.SearchAccessObject;
@@ -37,7 +36,7 @@ public class SearchInteractor implements SearchInputBoundary {
     @Override
     public void executeLoadAll() {
         try {
-            final HashMap<String, Stock_Search> allStocks = searchAccessObject.getAllStocks();
+            final Map<String, Stock_Search> allStocks = searchAccessObject.getAllStocks();
             final SearchOutputData outputData = new SearchOutputData(allStocks, "", true);
             searchOutputBoundary.prepareSuccessView(outputData);
         }
