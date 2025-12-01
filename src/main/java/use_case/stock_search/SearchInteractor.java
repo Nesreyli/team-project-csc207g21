@@ -1,6 +1,7 @@
 package use_case.stock_search;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import data_access.SearchAccessObject;
 import entity.Stock_Search;
@@ -23,7 +24,7 @@ public class SearchInteractor implements SearchInputBoundary {
         }
 
         try {
-            final HashMap<String, Stock_Search> results = searchAccessObject.searchStocks(query);
+            final Map<String, Stock_Search> results = searchAccessObject.searchStocks(query);
 
             final SearchOutputData outputData = new SearchOutputData(results, query, true);
             searchOutputBoundary.prepareSuccessView(outputData);

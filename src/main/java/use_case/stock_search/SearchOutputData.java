@@ -1,21 +1,21 @@
 package use_case.stock_search;
 
-import java.util.HashMap;
+import java.util.Map;
 
 import entity.Stock_Search;
 
 public class SearchOutputData {
-    private final HashMap<String, Stock_Search> stocks;
+    private final Map<String, Stock_Search> stocks;
     private final String query;
     private final boolean isSuccess;
 
-    public SearchOutputData(HashMap<String, Stock_Search> stocks, String query, boolean isSuccess) {
+    public SearchOutputData(Map<String, Stock_Search> stocks, String query, boolean isSuccess) {
         this.stocks = stocks;
         this.query = query;
         this.isSuccess = isSuccess;
     }
 
-    public HashMap<String, Stock_Search> getStocks() {
+    public Map<String, Stock_Search> getStocks() {
         return stocks;
     }
 
