@@ -63,7 +63,7 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
 //        final LabelTextPanel passwordInfo = new LabelTextPanel(
 //                new JLabel("Password"), passwordInputField);
 
-        final JLabel usernameInfo = new JLabel("Currently logged in: ");
+        final JLabel usernameInfo = new JLabel("Welcome, ");
         usernameInfo.setForeground(bright);
         username = new JLabel();
         username.setBackground(dark);
