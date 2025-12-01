@@ -4,6 +4,10 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The Output Data for the Watchlist Use Case.
+ */
+
 public class WatchlistOutputData {
     private final String username;
     private final String password;

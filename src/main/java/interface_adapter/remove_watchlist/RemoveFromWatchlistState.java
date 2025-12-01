@@ -1,5 +1,9 @@
 package interface_adapter.remove_watchlist;
 
+/**
+ * The State for the Remove from Watchlist Use Case.
+ */
+
 public class RemoveFromWatchlistState {
     private String lastRemovedSymbol;
     private String lastMessage;

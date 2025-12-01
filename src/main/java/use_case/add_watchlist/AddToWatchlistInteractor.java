@@ -6,6 +6,10 @@ import java.util.stream.Collectors;
 import data_access.WatchlistAccessObject;
 import entity.WatchlistEntry;
 
+/**
+ * The Interactor for the Add to Watchlist Use Case.
+ */
+
 public class AddToWatchlistInteractor implements AddToWatchlistInputBoundary {
 
     private final WatchlistAccessObject access;

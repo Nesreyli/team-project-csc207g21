@@ -3,6 +3,10 @@ package interface_adapter.add_watchlist;
 import use_case.add_watchlist.AddToWatchlistInputBoundary;
 import use_case.add_watchlist.AddToWatchlistInputData;
 
+/**
+ * The Controller for the Add to Watchlist Use Case.
+ */
+
 public class AddToWatchlistController {
     private final AddToWatchlistInputBoundary inputBoundary;
 

@@ -4,6 +4,10 @@ import java.util.List;
 
 import entity.WatchlistEntry;
 
+/**
+ * The Access Interface for the Watchlist Use Case.
+ */
+
 public interface WatchlistAccessInterface {
     /**
      * Retrieves the watchlist for a given user.

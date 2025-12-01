@@ -1,5 +1,9 @@
 package use_case.watchlist;
 
+/**
+ * The Output Boundary for the Watchlist Use Case.
+ */
+
 public interface WatchlistOutputBoundary {
     /**
      * Prepares the view for a successful retrieval of the watchlist.

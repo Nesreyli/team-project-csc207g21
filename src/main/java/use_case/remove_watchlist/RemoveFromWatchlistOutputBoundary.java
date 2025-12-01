@@ -1,5 +1,9 @@
 package use_case.remove_watchlist;
 
+/**
+ * The Output Boundary for the Remove From Watchlist Use Case.
+ */
+
 public interface RemoveFromWatchlistOutputBoundary {
     /**
      * Prepares the view for a successful removal from the watchlist.

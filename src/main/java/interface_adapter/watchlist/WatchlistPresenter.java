@@ -6,20 +6,24 @@ import interface_adapter.logged_in.LoggedInViewModel;
 import use_case.watchlist.WatchlistOutputBoundary;
 import use_case.watchlist.WatchlistOutputData;
 
+/**
+ * The Presenter for the Watchlist Use Case.
+ */
+
 public class WatchlistPresenter implements WatchlistOutputBoundary {
     private final WatchlistViewModel viewModel;
     private final ViewManagerModel viewManager;
-    private final LoggedInViewModel loggedInVM;
+    private final LoggedInViewModel loggedInViewModel;
 
-    public WatchlistPresenter(ViewManagerModel viewManager, WatchlistViewModel viewModel, LoggedInViewModel loggedInVM) {
+    public WatchlistPresenter(ViewManagerModel viewManager, WatchlistViewModel viewModel, LoggedInViewModel loggedInViewModel) {
         this.viewModel = viewModel;
         this.viewManager = viewManager;
-        this.loggedInVM = loggedInVM;
+        this.loggedInViewModel = loggedInViewModel;
     }
 
     @Override
     public void prepareWatchlistSuccessView(WatchlistOutputData data) {
-        WatchlistState newState = new WatchlistState();
+        final WatchlistState newState = new WatchlistState();
         newState.setUsername(data.getUsername());
         newState.setPassword(data.getPassword());
         newState.setSymbols(data.getSymbols());
@@ -35,8 +39,8 @@ public class WatchlistPresenter implements WatchlistOutputBoundary {
 
     @Override
     public void prepareWatchlistFailView(String error) {
-        final LoggedInState loginState = loggedInVM.getState();
+        final LoggedInState loginState = loggedInViewModel.getState();
         loginState.setLoggedInError(error);
-        loggedInVM.firePropertyChange();
+        loggedInViewModel.firePropertyChange();
     }
 }

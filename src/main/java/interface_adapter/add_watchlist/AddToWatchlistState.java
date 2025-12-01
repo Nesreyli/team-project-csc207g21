@@ -1,5 +1,9 @@
 package interface_adapter.add_watchlist;
 
+/**
+ * The State for the Add to Watchlist Use Case.
+ */
+
 public class AddToWatchlistState {
     private String lastAddedSymbol;
     private String lastMessage;

@@ -4,6 +4,10 @@ import org.json.JSONObject;
 
 import java.util.List;
 
+/**
+ * A simple Entity representing the Watchlist.
+ */
+
 public class Watchlist {
     private String username;
     private List<String> symbols;

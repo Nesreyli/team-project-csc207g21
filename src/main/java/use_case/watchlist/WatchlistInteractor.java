@@ -5,6 +5,10 @@ import java.util.List;
 
 import entity.WatchlistEntry;
 
+/**
+ * The Interactor for the Watchlist Use Case.
+ */
+
 public class WatchlistInteractor implements WatchlistInputBoundary {
     private final WatchlistAccessInterface access;
     private final WatchlistOutputBoundary output;

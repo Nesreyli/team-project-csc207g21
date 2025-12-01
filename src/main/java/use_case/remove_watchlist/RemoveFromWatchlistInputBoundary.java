@@ -1,5 +1,9 @@
 package use_case.remove_watchlist;
 
+/**
+ * The Input Boundary for the Remove From Watchlist Use Case.
+ */
+
 public interface RemoveFromWatchlistInputBoundary {
     /**
      * Executes the removal of a symbol from a watchlist using the provided input data.
