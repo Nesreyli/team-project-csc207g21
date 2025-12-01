@@ -4,6 +4,9 @@ import interface_adapter.ViewManagerModel;
 import use_case.buySell.BuySellOutputBoundary;
 import use_case.buySell.BuySellOutputData;
 
+/**
+ * The Presenter of the buy/sell use case, which tells the View Model which view to prepare (success/failure).
+ */
 public class BuySellPresenter implements BuySellOutputBoundary {
     private final BuySellViewModel buySellViewModel;
     private final ViewManagerModel viewMan;

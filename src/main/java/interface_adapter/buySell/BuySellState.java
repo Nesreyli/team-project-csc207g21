@@ -2,6 +2,9 @@ package interface_adapter.buySell;
 
 import java.math.BigDecimal;
 
+/**
+ * The State information representing the receipt of a buy/sell transaction.
+ */
 public class BuySellState {
     private Character order;
     private String symbol;
