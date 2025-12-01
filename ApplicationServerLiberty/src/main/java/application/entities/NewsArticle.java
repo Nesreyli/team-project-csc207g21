@@ -8,7 +8,9 @@ public class NewsArticle {
     private String date;
     private String image;
 
-    public NewsArticle(){}
+    public NewsArticle() {
+
+    }
 
     public NewsArticle(String title, String content, String news_url,
                        String author, String date, String image) {
@@ -20,13 +22,20 @@ public class NewsArticle {
         this.image = image;
     }
 
-    public String getTitle() { return title; }
+    public String getTitle() {
+        return title;
+    }
 
-    public String getContent() { return content; }
+    public String getContent() {
+        return content;
+    }
 
-    public String getNews_url() { return news_url; }
+    public String getNews_url() {
+        return news_url;
+    }
 
     public String getAuthor() {
+
         return author;
     }
 
@@ -38,4 +47,3 @@ public class NewsArticle {
         return image;
     }
 }
-//

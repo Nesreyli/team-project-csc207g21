@@ -21,20 +21,14 @@ import interface_adapter.login.LoginViewModel;
  */
 
 public class LoginView extends JPanel implements ActionListener, PropertyChangeListener {
-
-    private final String viewName = "log in";
-    private final LoginViewModel loginViewModel;
-
     private final JTextField usernameField = new JTextField(20);
     private final JPasswordField passwordField = new JPasswordField(20);
     private final JLabel errorLabel = new JLabel();
     private final JButton logIn;
     private LoginController loginController;
-    private final JButton signup;
 
     public LoginView(LoginViewModel loginViewModel) {
-        this.loginViewModel = loginViewModel;
-        this.loginViewModel.addPropertyChangeListener(this);
+        loginViewModel.addPropertyChangeListener(this);
 
         // Set layout and background
         this.setLayout(new GridBagLayout());
@@ -124,7 +118,8 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         dividerGbc.fill = GridBagConstraints.HORIZONTAL;
         dividerPanel.add(separator2, dividerGbc);
 
-        signup = createStyledButton("Create Account", new Color(226, 234, 234), new Color(0, 123, 255));
+        JButton signup = createStyledButton("Create Account", new Color(226, 234, 234),
+                new Color(0, 123, 255));
         signup.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(0, 123, 255), 2),
                 new EmptyBorder(12, 0, 12, 0)
@@ -339,7 +334,7 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
     }
 
     public String getViewName() {
-        return viewName;
+        return "log in";
     }
 
     public void setLoginController(LoginController loginController) {

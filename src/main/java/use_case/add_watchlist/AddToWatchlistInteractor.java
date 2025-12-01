@@ -35,8 +35,8 @@ public class AddToWatchlistInteractor implements AddToWatchlistInputBoundary {
             );
             output.prepareAddToWatchlistSuccessView(out);
         }
-        catch (Exception e) {
-            output.prepareAddToWatchlistFailView("Failed to add symbol: " + e.getMessage());
+        catch (Exception error) {
+            output.prepareAddToWatchlistFailView("Failed to add symbol: " + error.getMessage());
         }
     }
 }
