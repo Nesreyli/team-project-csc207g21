@@ -1,4 +1,4 @@
-package UseCase.leaderboard;
+package use_case.leaderboard;
 
 public interface LeaderboardOutputBoundary {
     void prepareSuccessView(LeaderboardOutputData leaderboardOutputData);

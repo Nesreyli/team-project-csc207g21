@@ -11,12 +11,13 @@ public class Main {
                 .addSignupView()
                 .addPortfolioView()
                 .addWatchlistView()
-                .addWatchlistUseCase()
                 .addSearchView()
+                .addBuySellView()
+                .addLeaderboardView()
+                .addWatchlistUseCase()
                 .addAddToWatchlistUseCase()
                 .addRemoveFromWatchlistUseCase()
                 .addPriceView()
-                .addLeaderboardView()
                 .addNewsUseCase()
                 .addLoginUseCase()
                 .addLogoutUseCase()
@@ -29,6 +30,7 @@ public class Main {
                 .addLoggedInUseCase()
                 .addPriceUseCase()
                 .addLeaderboardUseCase()
+                .addBuySellUseCase()
                 .build();
 
         application.pack();

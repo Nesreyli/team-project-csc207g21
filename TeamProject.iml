@@ -5,6 +5,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/src/main/java/Presenter" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
+      <excludeFolder url="file://$MODULE_DIR$/src/main/java/interface_adapter/ignore" />
     </content>
   </component>
   <component name="CheckStyle-IDEA-Module" serialisationVersion="2">

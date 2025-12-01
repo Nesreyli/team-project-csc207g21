@@ -1,8 +1,8 @@
 package interface_adapter.leaderboard;
 
 import interface_adapter.ViewManagerModel;
-import UseCase.leaderboard.LeaderboardOutputBoundary;
-import UseCase.leaderboard.LeaderboardOutputData;
+import use_case.leaderboard.LeaderboardOutputBoundary;
+import use_case.leaderboard.LeaderboardOutputData;
 
 public class LeaderboardPresenter implements LeaderboardOutputBoundary {
     private ViewManagerModel viewManagerModel;
