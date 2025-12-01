@@ -1,13 +1,5 @@
 package view;
 
-import interface_adapter.login.LoginController;
-import interface_adapter.login.LoginState;
-import interface_adapter.login.LoginViewModel;
-
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,9 +8,18 @@ import java.awt.event.FocusEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
+import interface_adapter.login.LoginController;
+import interface_adapter.login.LoginState;
+import interface_adapter.login.LoginViewModel;
 /**
  * The View for when the user is logging into the program.
  */
+
 public class LoginView extends JPanel implements ActionListener, PropertyChangeListener {
 
     private final String viewName = "log in";
@@ -28,7 +29,7 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
     private final JPasswordField passwordField = new JPasswordField(20);
     private final JLabel errorLabel = new JLabel();
     private final JButton logIn;
-    private LoginController loginController = null;
+    private LoginController loginController;
     private final JButton signup;
 
     public LoginView(LoginViewModel loginViewModel) {
@@ -39,12 +40,12 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         this.setLayout(new GridBagLayout());
         this.setBackground(new Color(240, 242, 245));
 
-        GridBagConstraints gbc = new GridBagConstraints();
+        final GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
         // Create main card panel
-        JPanel cardPanel = new JPanel();
+        final JPanel cardPanel = new JPanel();
         cardPanel.setLayout(new BoxLayout(cardPanel, BoxLayout.Y_AXIS));
         cardPanel.setBackground(Color.WHITE);
         cardPanel.setBorder(BorderFactory.createCompoundBorder(
@@ -53,73 +54,30 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         ));
 
         // Logo/Icon area
-        JPanel logoPanel = new JPanel();
+        final JPanel logoPanel = new JPanel();
         logoPanel.setBackground(Color.WHITE);
         logoPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 
-        JLabel logoLabel = null;
-        try {
-            // Try to load the logo image
-            ImageIcon logoIcon = null;
-            String[] possiblePaths = {
-                "src/image/panictraderpic.png",
-                "image/panictraderpic.png"
-            };
-            
-            for (String path : possiblePaths) {
-                java.io.File iconFile = new java.io.File(path);
-                if (iconFile.exists() && iconFile.isFile()) {
-                    logoIcon = new ImageIcon(iconFile.getAbsolutePath());
-                    if (logoIcon.getIconWidth() > 0) {
-                        break;
-                    }
-                    logoIcon = null;
-                }
-            }
-            
-            // Try as resource if file path didn't work
-            if (logoIcon == null) {
-                java.net.URL imageURL = LoginView.class.getResource("/image/panictraderpic.png");
-                if (imageURL == null) {
-                    imageURL = LoginView.class.getClassLoader().getResource("image/panictraderpic.png");
-                }
-                if (imageURL != null) {
-                    logoIcon = new ImageIcon(imageURL);
-                }
-            }
-            
-            if (logoIcon != null && logoIcon.getIconWidth() > 0) {
-                // Scale the image to a reasonable size for the logo area
-                java.awt.Image originalImage = logoIcon.getImage();
-                int targetSize = 80; // Size for logo display
-                java.awt.Image scaledImage = originalImage.getScaledInstance(
-                    targetSize, targetSize, java.awt.Image.SCALE_SMOOTH);
-                logoIcon = new ImageIcon(scaledImage);
-                logoLabel = new JLabel(logoIcon);
-            }
-        } catch (Exception e) {
-            // If image loading fails, fall back to emoji
-            logoLabel = new JLabel("📈");
-            logoLabel.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 48));
-        }
+        final JLabel logoLabel = new JLabel("📈");
+        logoLabel.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 48));
         logoPanel.add(logoLabel);
 
         // Title
-        JLabel title = new JLabel("Welcome to Panic Trade!");
+        final JLabel title = new JLabel("Panic Trade");
         title.setFont(new Font("Segoe UI", Font.BOLD, 32));
         title.setForeground(new Color(51, 51, 51));
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JLabel subtitle = new JLabel("Sign in to your account");
+        final JLabel subtitle = new JLabel("Sign in to your account");
         subtitle.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         subtitle.setForeground(new Color(120, 120, 120));
         subtitle.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Username field with custom styling
-        JPanel usernamePanel = createStyledInputPanel("Username", usernameField, "👤");
+        final JPanel usernamePanel = createStyledInputPanel("Username", usernameField, "👤");
 
         // Password field with custom styling
-        JPanel passwordPanel = createStyledInputPanel("Password", passwordField, "🔒");
+        final JPanel passwordPanel = createStyledInputPanel("Password", passwordField, "🔒");
 
         // Error label
         errorLabel.setForeground(new Color(220, 53, 69));
@@ -128,7 +86,7 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         errorLabel.setVisible(false);
 
         // Buttons panel
-        JPanel buttonsPanel = new JPanel();
+        final JPanel buttonsPanel = new JPanel();
         buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.Y_AXIS));
         buttonsPanel.setBackground(Color.WHITE);
         buttonsPanel.setBorder(new EmptyBorder(10, 0, 0, 0));
@@ -137,22 +95,22 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         logIn.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Divider
-        JPanel dividerPanel = new JPanel();
+        final JPanel dividerPanel = new JPanel();
         dividerPanel.setLayout(new GridBagLayout());
         dividerPanel.setBackground(Color.WHITE);
         dividerPanel.setBorder(new EmptyBorder(15, 0, 15, 0));
         dividerPanel.setMaximumSize(new Dimension(400, 40));
 
-        GridBagConstraints dividerGbc = new GridBagConstraints();
+        final GridBagConstraints dividerGbc = new GridBagConstraints();
         dividerGbc.fill = GridBagConstraints.HORIZONTAL;
         dividerGbc.insets = new Insets(0, 5, 0, 5);
 
-        JSeparator separator1 = new JSeparator();
+        final JSeparator separator1 = new JSeparator();
         dividerGbc.gridx = 0;
         dividerGbc.weightx = 1.0;
         dividerPanel.add(separator1, dividerGbc);
 
-        JLabel orLabel = new JLabel("or");
+        final JLabel orLabel = new JLabel("or");
         orLabel.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         orLabel.setForeground(new Color(120, 120, 120));
         dividerGbc.gridx = 1;
@@ -160,13 +118,13 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         dividerGbc.fill = GridBagConstraints.NONE;
         dividerPanel.add(orLabel, dividerGbc);
 
-        JSeparator separator2 = new JSeparator();
+        final JSeparator separator2 = new JSeparator();
         dividerGbc.gridx = 2;
         dividerGbc.weightx = 1.0;
         dividerGbc.fill = GridBagConstraints.HORIZONTAL;
         dividerPanel.add(separator2, dividerGbc);
 
-        signup = createStyledButton("Create Account", Color.WHITE, new Color(0, 123, 255));
+        signup = createStyledButton("Create Account", new Color(226, 234, 234), new Color(0, 123, 255));
         signup.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(0, 123, 255), 2),
                 new EmptyBorder(12, 0, 12, 0)
@@ -240,7 +198,7 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         });
 
         // Add Enter key support
-        passwordField.addActionListener(e -> logIn.doClick());
+        passwordField.addActionListener(event -> logIn.doClick());
 
         // Add components to card panel
         cardPanel.add(logoPanel);
@@ -266,23 +224,23 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
     }
 
     private JPanel createStyledInputPanel(String labelText, JTextField textField, String icon) {
-        JPanel panel = new JPanel();
+        final JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout(10, 5));
         panel.setBackground(Color.WHITE);
         panel.setMaximumSize(new Dimension(400, 70));
 
-        JLabel label = new JLabel(labelText);
+        final JLabel label = new JLabel(labelText);
         label.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         label.setForeground(new Color(80, 80, 80));
 
-        JPanel inputPanel = new JPanel(new BorderLayout(10, 0));
+        final JPanel inputPanel = new JPanel(new BorderLayout(10, 0));
         inputPanel.setBackground(Color.WHITE);
         inputPanel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(206, 212, 218), 1, true),
                 new EmptyBorder(10, 12, 10, 12)
         ));
 
-        JLabel iconLabel = new JLabel(icon);
+        final JLabel iconLabel = new JLabel(icon);
         iconLabel.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 16));
 
         textField.setBorder(null);
@@ -317,11 +275,11 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         return panel;
     }
 
-    private JButton createStyledButton(String text, Color bg, Color fg) {
-        JButton button = new JButton(text);
+    private JButton createStyledButton(String text, Color background, Color foreground) {
+        final JButton button = new JButton(text);
         button.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        button.setForeground(fg);
-        button.setBackground(bg);
+        button.setForeground(foreground);
+        button.setBackground(background);
         button.setFocusPainted(false);
         button.setBorderPainted(false);
         button.setOpaque(true);
@@ -332,15 +290,16 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         // Hover effect
         button.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                if (bg.equals(Color.WHITE)) {
+                if (background.equals(Color.WHITE)) {
                     button.setBackground(new Color(248, 249, 250));
-                } else {
-                    button.setBackground(bg.darker());
+                }
+                else {
+                    button.setBackground(background.darker());
                 }
             }
 
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                button.setBackground(bg);
+                button.setBackground(background);
             }
         });
 
@@ -362,7 +321,8 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         if (state.getLoginError() != null && !state.getLoginError().isEmpty()) {
             errorLabel.setText("⚠ " + state.getLoginError());
             errorLabel.setVisible(true);
-        } else {
+        }
+        else {
             errorLabel.setVisible(false);
         }
     }
@@ -372,7 +332,7 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         passwordField.setText(state.getPassword());
     }
 
-    private void resetFields(){
+    private void resetFields() {
         usernameField.setText("");
         passwordField.setText("");
         errorLabel.setVisible(false);

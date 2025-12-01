@@ -1,10 +1,10 @@
 package use_case.add_watchlist;
 
-import data_access.WatchlistAccessObject;
-import entity.WatchlistEntry;
-
 import java.util.List;
 import java.util.stream.Collectors;
+
+import data_access.WatchlistAccessObject;
+import entity.WatchlistEntry;
 
 public class AddToWatchlistInteractor implements AddToWatchlistInputBoundary {
 
@@ -20,17 +20,18 @@ public class AddToWatchlistInteractor implements AddToWatchlistInputBoundary {
     public void execute(AddToWatchlistInputData inputData) {
         try {
             access.addToWatchlist(inputData.getUsername(), inputData.getPassword(), inputData.getSymbol());
-            List<WatchlistEntry> entries = access.getWatchlist(inputData.getUsername(), inputData.getPassword());
-            List<String> updatedSymbols = entries.stream()
+            final List<WatchlistEntry> entries = access.getWatchlist(inputData.getUsername(), inputData.getPassword());
+            final List<String> updatedSymbols = entries.stream()
                     .map(WatchlistEntry::getSymbol)
                     .collect(Collectors.toList());
-            AddToWatchlistOutputData out = new AddToWatchlistOutputData(
+            final AddToWatchlistOutputData out = new AddToWatchlistOutputData(
                     "200",
                     inputData.getSymbol(),
                     updatedSymbols
             );
             output.prepareAddToWatchlistSuccessView(out);
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             output.prepareAddToWatchlistFailView("Failed to add symbol: " + e.getMessage());
         }
     }

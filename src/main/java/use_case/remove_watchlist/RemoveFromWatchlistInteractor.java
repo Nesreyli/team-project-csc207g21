@@ -1,15 +1,17 @@
 package use_case.remove_watchlist;
 
-import use_case.watchlist.WatchlistAccessInterface;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import use_case.watchlist.WatchlistAccessInterface;
 
 public class RemoveFromWatchlistInteractor implements RemoveFromWatchlistInputBoundary {
 
     private final WatchlistAccessInterface watchlistAccess;
     private final RemoveFromWatchlistOutputBoundary output;
 
-    public RemoveFromWatchlistInteractor(WatchlistAccessInterface watchlistAccess, RemoveFromWatchlistOutputBoundary output) {
+    public RemoveFromWatchlistInteractor(WatchlistAccessInterface watchlistAccess,
+                                         RemoveFromWatchlistOutputBoundary output) {
         this.watchlistAccess = watchlistAccess;
         this.output = output;
     }
@@ -17,18 +19,22 @@ public class RemoveFromWatchlistInteractor implements RemoveFromWatchlistInputBo
     @Override
     public void execute(RemoveFromWatchlistInputData inputData) {
         try {
-            watchlistAccess.removeFromWatchlist(inputData.getUsername(), inputData.getPassword(), inputData.getSymbol());
+            watchlistAccess.removeFromWatchlist(inputData.getUsername(), inputData.getPassword(),
+                    inputData.getSymbol());
 
-            List<String> updatedSymbols = watchlistAccess.getWatchlist(inputData.getUsername(), inputData.getPassword())
+            final List<String> updatedSymbols = watchlistAccess.getWatchlist(inputData.getUsername(),
+                            inputData.getPassword())
                     .stream()
-                    .map(e -> e.getSymbol())
+                    .map(entry -> entry.getSymbol())
                     .collect(Collectors.toList());
 
-            RemoveFromWatchlistOutputData out = new RemoveFromWatchlistOutputData("Successfully removed", inputData.getSymbol(), updatedSymbols);
+            final RemoveFromWatchlistOutputData out = new RemoveFromWatchlistOutputData("Successfully removed",
+                    inputData.getSymbol(), updatedSymbols);
             output.prepareRemoveFromWatchlistSuccessView(out);
 
-        } catch (Exception e) {
-            output.prepareRemoveFromWatchlistFailView("Failed to remove symbol: " + e.getMessage());
+        }
+        catch (Exception error) {
+            output.prepareRemoveFromWatchlistFailView("Failed to remove symbol: " + error.getMessage());
         }
     }
 }

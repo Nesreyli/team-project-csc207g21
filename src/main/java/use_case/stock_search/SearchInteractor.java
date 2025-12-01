@@ -1,9 +1,9 @@
 package use_case.stock_search;
 
+import java.util.HashMap;
+
 import data_access.SearchAccessObject;
 import entity.Stock_Search;
-
-import java.util.HashMap;
 
 public class SearchInteractor implements SearchInputBoundary {
     private final SearchAccessObject searchAccessObject;
@@ -22,24 +22,26 @@ public class SearchInteractor implements SearchInputBoundary {
             searchOutputBoundary.prepareFailView("Search Query cannot be Empty");
         }
 
-        try{
-            HashMap<String, Stock_Search> results = searchAccessObject.searchStocks(query);
+        try {
+            final HashMap<String, Stock_Search> results = searchAccessObject.searchStocks(query);
 
-            SearchOutputData outputData = new SearchOutputData(results, query, true);
+            final SearchOutputData outputData = new SearchOutputData(results, query, true);
             searchOutputBoundary.prepareSuccessView(outputData);
-        } catch (Exception e){
-            searchOutputBoundary.prepareFailView("Failure to search stocks: " + e.getMessage());
+        }
+        catch (Exception error) {
+            searchOutputBoundary.prepareFailView("Failure to search stocks: " + error.getMessage());
         }
     }
 
     @Override
-    public void executeLoadAll(){
+    public void executeLoadAll() {
         try {
-            HashMap<String, Stock_Search> allStocks = searchAccessObject.getAllStocks();
-            SearchOutputData outputData = new SearchOutputData(allStocks, "", true);
+            final HashMap<String, Stock_Search> allStocks = searchAccessObject.getAllStocks();
+            final SearchOutputData outputData = new SearchOutputData(allStocks, "", true);
             searchOutputBoundary.prepareSuccessView(outputData);
-        } catch (Exception e){
-            searchOutputBoundary.prepareFailView("Failure to load all stocks: " + e.getMessage());
+        }
+        catch (Exception error) {
+            searchOutputBoundary.prepareFailView("Failure to load all stocks: " + error.getMessage());
         }
     }
 

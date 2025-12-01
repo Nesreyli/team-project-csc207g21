@@ -2,7 +2,7 @@ package use_case.login;
 
 import entity.User;
 
-public class LogInInteractor implements LoginInputBoundary{
+public class LogInInteractor implements LoginInputBoundary {
     private final LogInAccessInterface userAccessObject;
     private final LoginOutputBoundary loginOutputBoundary;
 
@@ -12,12 +12,20 @@ public class LogInInteractor implements LoginInputBoundary{
         this.loginOutputBoundary = loginOutputBoundary;
     }
 
-    public void execute(LoginInputData input){
-        entity.Response response = userAccessObject.logIn(input.getUsername(), input.getPassword());
-        switch(response.getStatus_code()){
+    /**
+     * Executes the Login use case using the provided input data.
+     * <p>
+     * The interactor validates the username and password through the
+     * data access interface and communicates the result via the output boundary.
+     *
+     * @param input the data containing the username and password for login
+     */
+    public void execute(LoginInputData input) {
+        final entity.Response response = userAccessObject.logIn(input.getUsername(), input.getPassword());
+        switch (response.getStatus_code()) {
             case 200:
-                LoginOutputData loginOutputData = new LoginOutputData(((User)response.getEntity()).getName(),
-                        ((User)response.getEntity()).getPassword());
+                final LoginOutputData loginOutputData = new LoginOutputData(((User) response.getEntity()).getName(),
+                        ((User) response.getEntity()).getPassword());
                 loginOutputBoundary.prepareSuccessView(loginOutputData);
                 break;
             case 400:

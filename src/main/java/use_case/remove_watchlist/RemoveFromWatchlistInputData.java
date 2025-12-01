@@ -11,7 +11,15 @@ public class RemoveFromWatchlistInputData {
         this.symbol = symbol;
     }
 
-    public String getUsername() { return username; }
-    public String getPassword() { return password; }
-    public String getSymbol() { return symbol; }
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getSymbol() {
+        return symbol;
+    }
 }

@@ -1,39 +1,44 @@
 package use_case.buySell;
 
 import entity.BuySellReceipt;
-import entity.Portfolio;
 import entity.Response;
-import use_case.portfolio.PortfolioAccessInterface;
-import use_case.portfolio.PortfolioOutputData;
-import use_case.portfolio.PortfolioOutputDataFactory;
 
 public class BuySellInteractor implements BuySellInputBoundary {
-    private final BuySellAccessInterface buySellDB;
-    private final BuySellOutputBoundary buySellOB;
+    private final BuySellAccessInterface buySellDb;
+    private final BuySellOutputBoundary buySellOb;
 
-    public BuySellInteractor(BuySellAccessInterface buySellDB, BuySellOutputBoundary buySellOB) {
-        this.buySellDB = buySellDB;
-        this.buySellOB = buySellOB;
+    public BuySellInteractor(BuySellAccessInterface buySellDb, BuySellOutputBoundary buySellOb) {
+        this.buySellDb = buySellDb;
+        this.buySellOb = buySellOb;
     }
 
+    /**
+     * Executes the Buy/Sell use case using the provided input data.
+     * The interactor sends the request to the data access layer, interprets the
+     * Response status code, and routes control to the appropriate
+     * output boundary method.
+     *
+     * @param input the data representing the buy or sell request
+     */
     public void execute(BuySellInputData input) {
-        Response buySellResponse = buySellDB.setStockData(input.getPriceState(), input.getAmount(), input.getIsBuy());
-        BuySellReceipt receipt = (BuySellReceipt) buySellResponse.getEntity();
+        final Response buySellResponse = buySellDb.setStockData(input.getPriceState(),
+                input.getAmount(), input.getIsBuy());
+        final BuySellReceipt receipt = (BuySellReceipt) buySellResponse.getEntity();
 
-        switch(buySellResponse.getStatus_code()){
+        switch (buySellResponse.getStatus_code()) {
             case 200:
-                BuySellOutputData buySellOutputData =
+                final BuySellOutputData buySellOutputData =
                         BuySellOutputDataFactory.create(receipt);
-                buySellOB.prepareSuccessView(buySellOutputData);
+                buySellOb.prepareSuccessView(buySellOutputData);
                 break;
             case 400:
-                buySellOB.prepareFailView("Inadequate balance/shares");
+                buySellOb.prepareFailView("Inadequate balance/shares");
                 break;
             case 500:
-                buySellOB.prepareFailView("Server Error");
+                buySellOb.prepareFailView("Server Error");
                 break;
             default:
-                throw new RuntimeException();
+                throw new RuntimeException("Unhandled status code in BuySellInteractor");
         }
     }
 }

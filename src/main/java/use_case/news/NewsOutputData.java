@@ -1,13 +1,13 @@
 package use_case.news;
 
-import entity.News;
-
 import java.util.List;
 
-public class NewsOutputData {
-    List<News> newsList;
+import entity.News;
 
-    public NewsOutputData(List<News> newsList){
+public class NewsOutputData {
+    private List<News> newsList;
+
+    public NewsOutputData(List<News> newsList) {
         this.newsList = newsList;
     }
 

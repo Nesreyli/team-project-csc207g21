@@ -3,9 +3,9 @@ package use_case.add_watchlist;
 import java.util.List;
 
 public class AddToWatchlistOutputData {
-    private String message;
-    private String symbol;
-    private List<String> symbols;
+    private final String message;
+    private final String symbol;
+    private final List<String> symbols;
 
     public AddToWatchlistOutputData(String message, String symbol, List<String> symbols) {
         this.message = message;
@@ -13,7 +13,15 @@ public class AddToWatchlistOutputData {
         this.symbols = symbols;
     }
 
-    public String getMessage() { return message; }
-    public String getSymbol() { return symbol; }
-    public List<String> getUpdatedSymbols() { return symbols; }
+    public String getMessage() {
+        return message;
+    }
+
+    public String getSymbol() {
+        return symbol;
+    }
+
+    public List<String> getUpdatedSymbols() {
+        return symbols;
+    }
 }

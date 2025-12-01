@@ -1,23 +1,29 @@
 package use_case.news;
 
-import entity.News;
-
 import java.util.List;
 
-public class NewsInteractor implements NewsInputBoundary{
-    NewsAccessInterface newsAccessInterface;
-    NewsOutputBoundary newsOutputBoundary;
+import entity.News;
+
+public class NewsInteractor implements NewsInputBoundary {
+    private NewsAccessInterface newsAccessInterface;
+    private NewsOutputBoundary newsOutputBoundary;
 
     public NewsInteractor(NewsAccessInterface newsAccessInterface,
-                          NewsOutputBoundary newsOutputBoundary){
+                          NewsOutputBoundary newsOutputBoundary) {
         this.newsAccessInterface = newsAccessInterface;
         this.newsOutputBoundary = newsOutputBoundary;
     }
-    public void execute(){
+
+    /**
+     * Executes the News use case.
+     * Fetches news data through the data access interface and passes
+     * the results to the output boundary. Handles both success and failure scenarios.
+     */
+    public void execute() {
         try {
             switch (newsAccessInterface.getNews().getStatus_code()) {
                 case 200:
-                    NewsOutputData newsOutputData = new NewsOutputData(
+                    final NewsOutputData newsOutputData = new NewsOutputData(
                             (List<News>) newsAccessInterface.getNews().getEntity());
                     newsOutputBoundary.prepareSuccessView(newsOutputData);
                     break;
@@ -25,7 +31,8 @@ public class NewsInteractor implements NewsInputBoundary{
                     newsOutputBoundary.prepareFailView("News error");
                     break;
             }
-        } catch (RuntimeException e) {
+        }
+        catch (RuntimeException error) {
             newsOutputBoundary.prepareFailView("Server Error");
         }
     }

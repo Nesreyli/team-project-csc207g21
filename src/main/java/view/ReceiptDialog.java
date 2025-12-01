@@ -1,33 +1,33 @@
 package view;
 
-import interface_adapter.ViewManagerModel;
-import interface_adapter.buySell.BuySellState;
-import interface_adapter.buySell.BuySellViewModel;
-
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+
+import interface_adapter.buySell.BuySellState;
+import interface_adapter.buySell.BuySellViewModel;
+
 public class ReceiptDialog extends JFrame implements PropertyChangeListener {
 
-    JLabel introLabel = new JLabel();
-    JLabel descLabel = new JLabel();
-    JLabel priceLabel = new JLabel();
-    JLabel totalPriceLabel = new JLabel();
-    JButton closeButton = new JButton("Close");
-    JLabel titleLabel = new JLabel();
-    JLabel errorLabel = new JLabel();
+    private final JLabel introLabel = new JLabel();
+    private final JLabel descLabel = new JLabel();
+    private final JLabel priceLabel = new JLabel();
+    private final JLabel totalPriceLabel = new JLabel();
+    private final JButton closeButton = new JButton("Close");
+    private final JLabel titleLabel = new JLabel();
+    private final JLabel errorLabel = new JLabel();
 
     public ReceiptDialog(Frame parentFrame, BuySellViewModel buySellViewModel) {
         setVisible(false);
         this.setAlwaysOnTop(true);
         setLocationRelativeTo(parentFrame);
-        setMinimumSize(new Dimension(300,200));
+        setMinimumSize(new Dimension(300, 200));
         buySellViewModel.addPropertyChangeListener(this);
 
-        JPanel detailsBox = new JPanel();
+        final JPanel detailsBox = new JPanel();
         detailsBox.setLayout(new BoxLayout(detailsBox, BoxLayout.Y_AXIS));
         detailsBox.setBorder(new EmptyBorder(0, 20, 0, 0));
         detailsBox.add(descLabel);
@@ -46,19 +46,20 @@ public class ReceiptDialog extends JFrame implements PropertyChangeListener {
             this.setVisible(true);
             titleLabel.setText("Order Filled");
             final BuySellState state = (BuySellState) evt.getNewValue();
-            String symbol = state.getSymbol();
-            String amount = String.valueOf(state.getAmount());
-            String price = "$" + state.getPrice();
-            String totalPrice = "$" + state.getTotalPrice();
+            final String symbol = state.getSymbol();
+            final String amount = String.valueOf(state.getAmount());
+            final String price = "$" + state.getPrice();
+            final String totalPrice = "$" + state.getTotalPrice();
 
-            String orderNoun;
-            String orderVerb;
-            String orderState;
+            final String orderNoun;
+            final String orderVerb;
+            final String orderState;
             if (state.getOrder().equals('b')) {
                 orderNoun = "Purchase";
                 orderVerb = "bought";
                 orderState = "cost";
-            } else {
+            }
+            else {
                 orderNoun = "Sale";
                 orderVerb = "sold";
                 orderState = "revenue";
@@ -69,11 +70,11 @@ public class ReceiptDialog extends JFrame implements PropertyChangeListener {
             priceLabel.setText("Price per share: " + price);
             errorLabel.setText(state.getErrorMessage());
             totalPriceLabel.setText("Total " + orderState + ": " + totalPrice);
-            closeButton.addActionListener(e -> {
+            closeButton.addActionListener(event -> {
                 dispose();
             });
         }
-        if (evt.getPropertyName().equals("error")){
+        if (evt.getPropertyName().equals("error")) {
             this.setVisible(true);
             final BuySellState state = (BuySellState) evt.getNewValue();
             introLabel.setText("");

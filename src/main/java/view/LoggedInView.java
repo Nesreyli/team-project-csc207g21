@@ -1,7 +1,14 @@
 package view;
 
-import entity.News;
-import interface_adapter.ViewManagerModel;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
+import javax.swing.*;
+
+import interface_adapter.leaderboard.LeaderboardController;
 import interface_adapter.logged_in.LoggedInController;
 import interface_adapter.logged_in.LoggedInState;
 import interface_adapter.logged_in.LoggedInViewModel;
@@ -10,15 +17,6 @@ import interface_adapter.news.NewsController;
 import interface_adapter.news.NewsViewModel;
 import interface_adapter.portfolio.PortfolioController;
 import interface_adapter.watchlist.WatchlistController;
-import interface_adapter.leaderboard.LeaderboardController;
-
-import javax.swing.*;
-import javax.swing.border.Border;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 /**
  * The View for when the user is logged into the program.
@@ -27,7 +25,6 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
 
     private final String viewName = "logged in";
     private final LoggedInViewModel loggedInViewModel;
-    private final JLabel passwordErrorField = new JLabel();
 
     private final JButton watchlist;
     private WatchlistController watchlistController;
@@ -35,7 +32,6 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
     private final JLabel username;
     private final JButton logout;
     private final JButton portfolio;
-//    private final JPanel image;
     private PortfolioController portfolioController;
     private LogoutController logoutController;
     private NewsController newsController;
@@ -43,27 +39,20 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
 
     private final JButton stockSearch;
     private final JButton leaderboard;
-//    private final JPanel image;
     private LoggedInController loggedInController;
     private NewsViewModel newsViewModel;
     private NewsPanel newsPanel;
 
-//    private final JTextField passwordInputField = new JTextField(15);
-//    private final JButton changePassword;
-
     public LoggedInView(LoggedInViewModel loggedInViewModel, NewsViewModel newsViewModel) {
-        Color bright = new Color(214, 216, 220);
-        Color dark = new Color(43, 45, 48);
+        final Color bright = new Color(214, 216, 220);
+        final Color dark = new Color(43, 45, 48);
         this.loggedInViewModel = loggedInViewModel;
         this.loggedInViewModel.addPropertyChangeListener(this);
         this.newsViewModel = newsViewModel;
 
         newsPanel = new NewsPanel(newsViewModel);
 
-//        final LabelTextPanel passwordInfo = new LabelTextPanel(
-//                new JLabel("Password"), passwordInputField);
-
-        final JLabel usernameInfo = new JLabel("Welcome, ");
+        final JLabel usernameInfo = new JLabel("Currently logged in: ");
         usernameInfo.setForeground(bright);
         username = new JLabel();
         username.setBackground(dark);
@@ -79,9 +68,6 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
                     @Override
                     public void actionPerformed(ActionEvent evt) {
                         logoutController.execute();
-//                        if (evt.getSource().equals(logout)){
-//
-//                        }
                     }
                 }
         );
@@ -92,17 +78,19 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
         buttons.add(portfolio);
         portfolio.addActionListener(
                 new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                if (evt.getSource().equals(portfolio)) {
-                    final LoggedInState currentState = loggedInViewModel.getState();
+                    @Override
+                    public void actionPerformed(ActionEvent evt) {
+                        if (evt.getSource().equals(portfolio)) {
+                            final LoggedInState currentState = loggedInViewModel.getState();
 
-                    portfolioController.portExecute(
-                            currentState.getUsername(),
-                            currentState.getPassword()
-                    );
+                            portfolioController.portExecute(
+                                    currentState.getUsername(),
+                                    currentState.getPassword()
+                            );
+                        }
+                    }
                 }
-            }
-        });
+        );
 
         watchlist = new JButton("Watchlist");
         watchlist.setForeground(dark);
@@ -149,7 +137,7 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
 
         this.setAlignmentX(1.0f);
 
-        JPanel user = new JPanel();
+        final JPanel user = new JPanel();
         user.add(usernameInfo);
         user.add(username);
 
@@ -161,10 +149,6 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
         this.add(user);
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.add(newsPanel);
-//        JLabel pic = new JLabel(new ImageIcon(Toolkit.getDefaultToolkit().getImage("Image/buffet1.png")));
-//        pic.setPreferredSize(new Dimension(130,100));
-//        image.add(pic);
-//        this.add(image);
     }
 
     /**
@@ -172,7 +156,7 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
      * @param evt the ActionEvent to react to
      */
     public void actionPerformed(ActionEvent evt) {
-            logoutController.execute();
+        logoutController.execute();
     }
 
     @Override
@@ -182,17 +166,6 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
             username.setText(state.getUsername());
             newsController.execute();
         }
-        // for multiple porpery change
-//        else if (evt.getPropertyName().equals("password")) {
-//            final LoggedInState state = (LoggedInState) evt.getNewValue();
-//            if (state.getPasswordError() == null) {
-//                JOptionPane.showMessageDialog(this, "password updated for " + state.getUsername());
-//                passwordInputField.setText("");
-//            }
-//            else {
-//                JOptionPane.showMessageDialog(this, state.getPasswordError());
-//            }
-//        }
     }
 
     public String getViewName() {
@@ -203,7 +176,7 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
         this.portfolioController = portfolioController;
     }
 
-    public void setWatchlistController(WatchlistController controller){
+    public void setWatchlistController(WatchlistController controller) {
         this.watchlistController = controller;
     }
 
@@ -214,6 +187,7 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
     public void setNewsController(NewsController newsController) {
         this.newsController = newsController;
     }
+
     public void setLoggedInController(LoggedInController loggedInController) {
         this.loggedInController = loggedInController;
     }

@@ -1,13 +1,8 @@
 package interface_adapter.buySell;
 
-import entity.Stock_Search;
-import interface_adapter.Stock_Search.SearchState;
 import interface_adapter.ViewManagerModel;
-import interface_adapter.logged_in.LoggedInState;
-import interface_adapter.logged_in.LoggedInViewModel;
 import use_case.buySell.BuySellOutputBoundary;
 import use_case.buySell.BuySellOutputData;
-import use_case.portfolio.PortfolioOutputData;
 
 public class BuySellPresenter implements BuySellOutputBoundary {
     private final BuySellViewModel buySellViewModel;
@@ -19,13 +14,13 @@ public class BuySellPresenter implements BuySellOutputBoundary {
     }
 
     @Override
-    public void prepareSuccessView(BuySellOutputData buySellOD) {
+    public void prepareSuccessView(BuySellOutputData buySellOd) {
         BuySellState bsState = buySellViewModel.getState();
-        bsState.setOrder(buySellOD.getOrder());
-        bsState.setSymbol(buySellOD.getSymbol());
-        bsState.setPrice(buySellOD.getPrice());
-        bsState.setAmount(buySellOD.getAmount());
-        bsState.setTotalPrice(buySellOD.getTotalPrice());
+        bsState.setOrder(buySellOd.getOrder());
+        bsState.setSymbol(buySellOd.getSymbol());
+        bsState.setPrice(buySellOd.getPrice());
+        bsState.setAmount(buySellOd.getAmount());
+        bsState.setTotalPrice(buySellOd.getTotalPrice());
         bsState.setErrorMessage("");
         buySellViewModel.firePropertyChange();
     }

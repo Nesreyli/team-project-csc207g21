@@ -13,7 +13,15 @@ public class RemoveFromWatchlistOutputData {
         this.updatedSymbols = updatedSymbols;
     }
 
-    public String getSymbol() { return symbol; }
-    public String getMessage() { return message; }
-    public List<String> getUpdatedSymbols() { return updatedSymbols; }
+    public String getSymbol() {
+        return symbol;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public List<String> getUpdatedSymbols() {
+        return updatedSymbols;
+    }
 }

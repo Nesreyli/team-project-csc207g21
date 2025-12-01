@@ -9,7 +9,6 @@ public class BuySellOutputData {
     private final BigDecimal price;
     private final BigDecimal totalPrice;
 
-
     public BuySellOutputData(Character order, String symbol, Integer amount, BigDecimal price, BigDecimal totalPrice) {
         this.order = order;
         this.symbol = symbol;
