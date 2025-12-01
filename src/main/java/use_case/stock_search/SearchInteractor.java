@@ -29,7 +29,7 @@ public class SearchInteractor implements SearchInputBoundary {
             searchOutputBoundary.prepareSuccessView(outputData);
         }
         catch (Exception error) {
-            searchOutputBoundary.prepareFailView("Failure to search stocks: " + error.getMessage());
+            searchOutputBoundary.prepareFailView("Please enter a valid company name or symbol");
         }
     }
 
