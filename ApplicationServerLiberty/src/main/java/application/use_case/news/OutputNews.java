@@ -1,18 +1,22 @@
 package application.use_case.news;
-import application.entities.NewsArticle;
 
 import java.util.List;
+
+import application.entities.NewsArticle;
+
 public class OutputNews {
     private List<NewsArticle> articles;
     private int message;
 
-    public OutputNews(){}
+    public OutputNews() {
 
-    public OutputNews(int code){
+    }
+
+    public OutputNews(int code) {
         message = code;
     }
 
-    public OutputNews(int code, List<NewsArticle> articles){
+    public OutputNews(int code, List<NewsArticle> articles) {
         message = code;
         this.articles = articles;
     }

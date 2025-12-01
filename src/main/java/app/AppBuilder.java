@@ -183,9 +183,9 @@ public class AppBuilder {
         watchlistViewModel = new WatchlistViewModel();
         removeFromWatchlistViewModel = new RemoveFromWatchlistViewModel();
 
-        RemoveFromWatchlistOutputBoundary removeOutput =
+        final RemoveFromWatchlistOutputBoundary removeOutput =
                 new RemoveFromWatchlistPresenter(removeFromWatchlistViewModel, watchlistViewModel);
-        RemoveFromWatchlistInputBoundary removeInput =
+        final RemoveFromWatchlistInputBoundary removeInput =
                 new RemoveFromWatchlistInteractor(watchlistAccessObject, removeOutput);
         removeFromWatchlistController = new RemoveFromWatchlistController(removeInput);
 
@@ -477,17 +477,17 @@ public class AppBuilder {
         // Set application icon
         try {
             ImageIcon icon = null;
-            String[] possiblePaths = {
+            final String[] possiblePaths = {
                 "src/image/panictraderpic.png",
-                "image/panictraderpic.png"
+                "image/panictraderpic.png",
             };
             
             // Try file paths first
             for (String path : possiblePaths) {
-                java.io.File iconFile = new java.io.File(path);
+                final java.io.File iconFile = new java.io.File(path);
                 if (iconFile.exists() && iconFile.isFile()) {
                     icon = new ImageIcon(iconFile.getAbsolutePath());
-                    if (icon.getIconWidth() > 0) { // Verify image loaded
+                    if (icon.getIconWidth() > 0) {
                         break;
                     }
                     icon = null;
@@ -496,28 +496,32 @@ public class AppBuilder {
             
             // Try as resource if file path didn't work
             if (icon == null) {
-                java.net.URL imageURL = AppBuilder.class.getResource("/image/panictraderpic.png");
-                if (imageURL == null) {
-                    imageURL = AppBuilder.class.getClassLoader().getResource("image/panictraderpic.png");
+                java.net.URL imageUrl = AppBuilder.class.getResource("/image/panictraderpic.png");
+                if (imageUrl == null) {
+                    imageUrl = AppBuilder.class.getClassLoader().getResource("image/panictraderpic.png");
                 }
-                if (imageURL != null) {
-                    icon = new ImageIcon(imageURL);
+                if (imageUrl != null) {
+                    icon = new ImageIcon(imageUrl);
                 }
             }
             
             if (icon != null && icon.getIconWidth() > 0) {
                 // Scale the image to a larger size for better visibility
-                java.awt.Image originalImage = icon.getImage();
-                int targetSize = 128; // Larger size for better visibility
+                final java.awt.Image originalImage = icon.getImage();
+                // Larger size for better visibility
+                final int targetSize = 128;
                 java.awt.Image scaledImage = originalImage.getScaledInstance(
                     targetSize, targetSize, java.awt.Image.SCALE_SMOOTH);
                 application.setIconImage(scaledImage);
-            } else {
-                System.err.println("App icon not found or could not be loaded. Tried: " + String.join(", ", possiblePaths));
             }
-        } catch (Exception e) {
+            else {
+                System.err.println("App icon not found or could not be loaded. Tried: "
+                        + String.join(", ", possiblePaths));
+            }
+        }
+        catch (Exception error) {
             // Icon not found, continue without it
-            System.err.println("Could not load app icon: " + e.getMessage());
+            System.err.println("Could not load app icon: " + error.getMessage());
         }
         
         application.add(cardPanel);

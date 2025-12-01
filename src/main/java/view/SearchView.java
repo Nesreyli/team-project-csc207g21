@@ -30,7 +30,7 @@ import interface_adapter.stock_price.PriceController;
 public class SearchView extends JPanel implements  ActionListener, PropertyChangeListener {
     private final String viewName = "Stock Search";
     private final SearchViewModel searchViewModel;
-    private SearchController SearchController;
+    private SearchController searchController;
     private PriceController priceController;
 
     // UI Stuff
@@ -200,7 +200,7 @@ public class SearchView extends JPanel implements  ActionListener, PropertyChang
         }
         else if (evt.getSource().equals(previous)) {
             final SearchState state = searchViewModel.getState();
-            SearchController.goBack(state.getUsername(), state.getPassword());
+            searchController.goBack(state.getUsername(), state.getPassword());
         }
     }
 
@@ -214,13 +214,13 @@ public class SearchView extends JPanel implements  ActionListener, PropertyChang
 
         errorLabel.setText("");
         statusLabel.setText("Searching for: " + query);
-        SearchController.executeSearch(query);
+        searchController.executeSearch(query);
     }
 
     private void performLoadAll() {
         errorLabel.setText("");
         statusLabel.setText("Loading all results");
-        SearchController.executeLoadAll();
+        searchController.executeLoadAll();
     }
 
     @Override
@@ -265,7 +265,7 @@ public class SearchView extends JPanel implements  ActionListener, PropertyChang
     }
 
     public void setSearchController(SearchController SearchController) {
-        this.SearchController = SearchController;
+        this.searchController = SearchController;
     }
 
     public void setPriceController(PriceController priceController) {

@@ -1,7 +1,6 @@
 package application.database;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
@@ -49,16 +48,16 @@ public class LeaderboardDbFetcher {
 
             Long value;
             int i = 1;
-            while(!portfolioValues.isEmpty()){
-                var descendVal = portfolioValues.descendingKeySet();
-                if(descendVal.isEmpty()){
+            while (!portfolioValues.isEmpty()) {
+                final var descendVal = portfolioValues.descendingKeySet();
+                if (descendVal.isEmpty()) {
                     break;
                 }
                 value = descendVal.getFirst();
                 final List<String> usersVal = portfolioValues.get(value);
                 int j = 0;
                 // Process all users with this portfolio value
-                while(j < usersVal.size()){
+                while (j < usersVal.size()) {
                     leaderboard.put(i, usersVal.get(j));
                     valuations.put(usersVal.get(j), value);
                     j++;
