@@ -464,6 +464,53 @@ public class AppBuilder {
         final JFrame application = new JFrame("Panic Trade");
         application.setMinimumSize(new Dimension(600, 400));
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        
+        // Set application icon
+        try {
+            ImageIcon icon = null;
+            String[] possiblePaths = {
+                "src/image/panictraderpic.png",
+                "image/panictraderpic.png"
+            };
+            
+            // Try file paths first
+            for (String path : possiblePaths) {
+                java.io.File iconFile = new java.io.File(path);
+                if (iconFile.exists() && iconFile.isFile()) {
+                    icon = new ImageIcon(iconFile.getAbsolutePath());
+                    if (icon.getIconWidth() > 0) { // Verify image loaded
+                        break;
+                    }
+                    icon = null;
+                }
+            }
+            
+            // Try as resource if file path didn't work
+            if (icon == null) {
+                java.net.URL imageURL = AppBuilder.class.getResource("/image/panictraderpic.png");
+                if (imageURL == null) {
+                    imageURL = AppBuilder.class.getClassLoader().getResource("image/panictraderpic.png");
+                }
+                if (imageURL != null) {
+                    icon = new ImageIcon(imageURL);
+                }
+            }
+            
+            if (icon != null && icon.getIconWidth() > 0) {
+                // Scale the image to a larger size for better visibility
+                java.awt.Image originalImage = icon.getImage();
+                int targetSize = 128; // Larger size for better visibility
+                java.awt.Image scaledImage = originalImage.getScaledInstance(
+                    targetSize, targetSize, java.awt.Image.SCALE_SMOOTH);
+                application.setIconImage(scaledImage);
+            } else {
+                System.err.println("App icon not found or could not be loaded. Tried: " + String.join(", ", possiblePaths));
+            }
+        } catch (Exception e) {
+            // Icon not found, continue without it
+            System.err.println("Could not load app icon: " + e.getMessage());
+        }
+        
         application.add(cardPanel);
 
         viewManagerModel.setState(loginView.getViewName());
