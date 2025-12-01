@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="c0ecb16f-2758-4b66-b29c-602f4b35797b" name="Changes" comment="Minor UI changes">
+      <change afterPath="$PROJECT_DIR$/src/image/panictraderpic.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ApplicationServerLiberty/portfolios.db" beforeDir="false" afterPath="$PROJECT_DIR$/ApplicationServerLiberty/portfolios.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/app/AppBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/AppBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/LoggedInView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/LoggedInView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/LoginView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/LoginView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/SignupView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/SignupView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/app/AppBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/AppBuilder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/view/LeaderboardView$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/view/LeaderboardView$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/view/LeaderboardView$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/view/LeaderboardView$3.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/view/LeaderboardView.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/view/LeaderboardView.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/view/LoggedInView$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/view/LoggedInView$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/view/LoggedInView$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/view/LoggedInView$3.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/view/LoggedInView.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/view/LoggedInView.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/view/LoginView$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/view/LoginView$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/view/LoginView$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/view/LoginView$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/view/LoginView$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/view/LoginView$3.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/view/LoginView$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/view/LoginView$4.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/view/LoginView$5.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/view/LoginView$5.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/view/LoginView$6.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/view/LoginView$6.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/view/LoginView.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/view/LoginView.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/view/SearchView$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/view/SearchView$4.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/view/SignupView$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/view/SignupView$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/view/SignupView$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/view/SignupView$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/view/SignupView$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/view/SignupView$3.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/view/SignupView$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/view/SignupView$4.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/view/SignupView$5.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/view/SignupView$5.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/view/SignupView$6.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/view/SignupView$6.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/view/SignupView$7.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/view/SignupView$7.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/view/SignupView.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/view/SignupView.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/view/StockPriceView$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/view/StockPriceView$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/view/StockPriceView$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/view/StockPriceView$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/view/StockPriceView.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/view/StockPriceView.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/view/UserPurchasesView.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/view/UserPurchasesView.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/view/WatchlistView.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/view/WatchlistView.class" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="leaderboard" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;pranavpatnaik1&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Nesreyli/team-project-csc207g21.git&quot;,
+    &quot;accountId&quot;: &quot;dd69fbc1-7c9f-43d8-8181-eac189d95961&quot;
+  }
+}</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 6
+}</component>
+  <component name="ProjectId" id="34DhoJKcsVeALm3o6HZEYt8MmHE" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Main.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "leaderboard",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/prana/Documents/GitHub/team-project-csc207g21/src/image",
+    "project.structure.last.edited": "SDKs",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\prana\Documents\GitHub\team-project-csc207g21\src\image" />
+      <recent name="C:\Users\prana\Documents\GitHub\team-project-csc207g21\ApplicationServerLiberty\src\main\liberty\config" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\prana\Documents\GitHub\team-project-csc207g21\src\image" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="app.Main" />
+      <module name="TeamProject" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="app.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="team-project-csc207g21" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="team-project-csc207g21" />
+      <option name="filePath" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Main" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.25557.131" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="c0ecb16f-2758-4b66-b29c-602f4b35797b" name="Changes" comment="" />
+      <created>1760754227351</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1760754227351</updated>
+      <workItem from="1760754230025" duration="13000" />
+    </task>
+    <task id="LOCAL-00001" summary="Pranav signature">
+      <option name="closed" value="true" />
+      <created>1760754341492</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1760754341492</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Leaderboard updates">
+      <option name="closed" value="true" />
+      <created>1764482956349</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1764482956349</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Leaderboard update: Hover fix, purchase history">
+      <option name="closed" value="true" />
+      <created>1764486125523</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1764486125523</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Further UI changes">
+      <option name="closed" value="true" />
+      <created>1764486986493</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1764486986493</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Home button fix">
+      <option name="closed" value="true" />
+      <created>1764487190417</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1764487190417</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Implement purchase history">
+      <option name="closed" value="true" />
+      <created>1764487702794</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1764487702794</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Minor UI changes">
+      <option name="closed" value="true" />
+      <created>1764523339084</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1764523339084</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
+    <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Pranav signature" />
+    <MESSAGE value="Leaderboard updates" />
+    <MESSAGE value="Leaderboard update: Hover fix, purchase history" />
+    <MESSAGE value="Further UI changes" />
+    <MESSAGE value="Home button fix" />
+    <MESSAGE value="Implement purchase history" />
+    <MESSAGE value="Minor UI changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Minor UI changes" />
+  </component>
+</project>
