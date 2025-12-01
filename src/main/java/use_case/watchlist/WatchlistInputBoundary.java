@@ -1,5 +1,9 @@
 package use_case.watchlist;
 
+/**
+ * The Input Boundary for the Watchlist Use Case.
+ */
+
 public interface WatchlistInputBoundary {
     /**
      * Executes the Watchlist use case using the provided input data.

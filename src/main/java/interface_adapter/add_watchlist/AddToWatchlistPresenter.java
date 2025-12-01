@@ -5,6 +5,10 @@ import interface_adapter.watchlist.WatchlistViewModel;
 import use_case.add_watchlist.AddToWatchlistOutputBoundary;
 import use_case.add_watchlist.AddToWatchlistOutputData;
 
+/**
+ * The Presenter for the Add to Watchlist Use Case.
+ */
+
 public class AddToWatchlistPresenter implements AddToWatchlistOutputBoundary {
 
     private final AddToWatchlistViewModel addVM;

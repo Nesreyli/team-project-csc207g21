@@ -5,6 +5,10 @@ import java.util.stream.Collectors;
 
 import use_case.watchlist.WatchlistAccessInterface;
 
+/**
+ * The Interactor for the Remove From Watchlist Use Case.
+ */
+
 public class RemoveFromWatchlistInteractor implements RemoveFromWatchlistInputBoundary {
 
     private final WatchlistAccessInterface watchlistAccess;

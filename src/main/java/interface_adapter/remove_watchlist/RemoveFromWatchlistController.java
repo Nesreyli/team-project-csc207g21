@@ -3,6 +3,10 @@ package interface_adapter.remove_watchlist;
 import use_case.remove_watchlist.RemoveFromWatchlistInputBoundary;
 import use_case.remove_watchlist.RemoveFromWatchlistInputData;
 
+/**
+ * The Controller for the Remove from Watchlist Use Case.
+ */
+
 public class RemoveFromWatchlistController {
     private final RemoveFromWatchlistInputBoundary inputBoundary;
 

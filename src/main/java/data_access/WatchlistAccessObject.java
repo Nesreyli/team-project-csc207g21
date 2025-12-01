@@ -11,9 +11,13 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A Access Object handling the Watchlist functionalities.
+ */
+
 public class WatchlistAccessObject implements WatchlistAccessInterface {
 
-    private static final String url = "http://localhost:4848/rest";
+    private static final String url = "http://localhost:8080/rest";
     private final OkHttpClient client = new OkHttpClient();
 
     @Override

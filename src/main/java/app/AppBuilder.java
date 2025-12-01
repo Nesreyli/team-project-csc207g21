@@ -181,8 +181,17 @@ public class AppBuilder {
      */
     public AppBuilder addWatchlistView() {
         watchlistViewModel = new WatchlistViewModel();
-        watchlistView = new WatchlistView(watchlistViewModel);
-        cardPanel.add(watchlistView, watchlistViewModel.getViewName());
+        removeFromWatchlistViewModel = new RemoveFromWatchlistViewModel();
+
+        RemoveFromWatchlistOutputBoundary removeOutput =
+                new RemoveFromWatchlistPresenter(removeFromWatchlistViewModel, watchlistViewModel);
+        RemoveFromWatchlistInputBoundary removeInput =
+                new RemoveFromWatchlistInteractor(watchlistAccessObject, removeOutput);
+        removeFromWatchlistController = new RemoveFromWatchlistController(removeInput);
+
+        watchlistView = new WatchlistView(watchlistViewModel, removeFromWatchlistController);
+        cardPanel.add(watchlistView, watchlistView.getViewName());
+
         return this;
     }
 

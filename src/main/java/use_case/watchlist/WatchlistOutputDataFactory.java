@@ -7,6 +7,10 @@ import java.util.stream.Collectors;
 
 import entity.WatchlistEntry;
 
+/**
+ * The Output Data Factory for the Watchlist Use Case.
+ */
+
 public class WatchlistOutputDataFactory {
     /**
      * Creates a {@link WatchlistOutputData} object based on the provided user

@@ -1,5 +1,9 @@
 package use_case.watchlist;
 
+/**
+ * The Input Data for the Watchlist Use Case.
+ */
+
 public class WatchlistInputData {
     private final String username;
     private final String password;

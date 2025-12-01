@@ -2,6 +2,10 @@ package use_case.remove_watchlist;
 
 import java.util.List;
 
+/**
+ * The Output Data for the Remove From Watchlist Use Case.
+ */
+
 public class RemoveFromWatchlistOutputData {
     private final String symbol;
     private final String message;

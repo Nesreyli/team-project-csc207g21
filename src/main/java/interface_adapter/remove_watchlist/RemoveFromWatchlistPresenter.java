@@ -5,6 +5,10 @@ import interface_adapter.watchlist.WatchlistViewModel;
 import use_case.remove_watchlist.RemoveFromWatchlistOutputBoundary;
 import use_case.remove_watchlist.RemoveFromWatchlistOutputData;
 
+/**
+ * The Presenter for the Remove from Watchlist Use Case.
+ */
+
 public class RemoveFromWatchlistPresenter implements RemoveFromWatchlistOutputBoundary {
 
     private final RemoveFromWatchlistViewModel removeVM;

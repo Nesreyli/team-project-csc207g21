@@ -1,7 +1,7 @@
 package use_case.add_watchlist;
 
 /**
- * The output boundary for the Watchlist Use Case.
+ * The Input Boundary for the Add to Watchlist Use Case.
  */
 
 public interface AddToWatchlistInputBoundary {

@@ -2,6 +2,10 @@ package entity;
 
 import java.math.BigDecimal;
 
+/**
+ * A simple Entity representing the Watchlist Entries.
+ */
+
 public class WatchlistEntry {
     private String symbol;
     private BigDecimal price;
