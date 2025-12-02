@@ -1,12 +1,10 @@
 package view;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 
 import interface_adapter.leaderboard.LeaderboardController;
 import interface_adapter.logged_in.LoggedInController;
@@ -17,182 +15,194 @@ import interface_adapter.news.NewsController;
 import interface_adapter.news.NewsViewModel;
 import interface_adapter.portfolio.PortfolioController;
 import interface_adapter.watchlist.WatchlistController;
+import interface_adapter.watchlist.WatchlistViewModel;
+
+import static view.theme.StyledButton.createOutlineButton;
+import static view.theme.StyledButton.createPrimaryButton;
+import static view.theme.UITheme.*;
 
 /**
- * The View for when the user is logged into the program.
+ * LoggedInView represents the main dashboard screen after a user logs in.
+ * It displays navigation buttons, a welcome header, the latest news panel,
+ * and a preview of the user's watchlist. It listens to changes in the
+ * LoggedInViewModel to update the username and trigger news/watchlist refresh.
  */
-public class LoggedInView extends JPanel implements ActionListener, PropertyChangeListener {
+public class LoggedInView extends JPanel implements PropertyChangeListener {
 
     private final String viewName = "logged in";
+
     private final LoggedInViewModel loggedInViewModel;
+    private final NewsViewModel newsViewModel;
+    private final WatchlistViewModel watchlistViewModel;
 
-    private final JButton watchlist;
-    private WatchlistController watchlistController;
+    private JLabel usernameLabel;
 
-    private final JLabel username;
-    private final JButton logout;
-    private final JButton portfolio;
+    private JButton logoutButton;
+    private JButton portfolioButton;
+    private JButton watchlistButton;
+    private JButton stockSearchButton;
+    private JButton leaderboardButton;
+
+    private NewsPanel newsPanel;
+    private WatchlistPreviewPanel watchlistPanel;
+
     private PortfolioController portfolioController;
+    private WatchlistController watchlistController;
     private LogoutController logoutController;
     private NewsController newsController;
     private LeaderboardController leaderboardController;
-
-    private final JButton stockSearch;
-    private final JButton leaderboard;
     private LoggedInController loggedInController;
-    private NewsViewModel newsViewModel;
-    private NewsPanel newsPanel;
+    /**
+     * Constructs the LoggedInView with required ViewModels.
+     */
+    public LoggedInView(LoggedInViewModel vm, NewsViewModel nvm, WatchlistViewModel wvm) {
+        this.loggedInViewModel = vm;
+        this.newsViewModel = nvm;
+        this.watchlistViewModel = wvm;
 
-    public LoggedInView(LoggedInViewModel loggedInViewModel, NewsViewModel newsViewModel) {
-        final Color bright = new Color(214, 216, 220);
-        final Color dark = new Color(43, 45, 48);
-        this.loggedInViewModel = loggedInViewModel;
         this.loggedInViewModel.addPropertyChangeListener(this);
-        this.newsViewModel = newsViewModel;
 
-        newsPanel = new NewsPanel(newsViewModel);
+        setBackground(BG);
+        setLayout(new GridBagLayout());
 
-        final JLabel usernameInfo = new JLabel("Currently logged in: ");
-        usernameInfo.setForeground(bright);
-        username = new JLabel();
-        username.setBackground(dark);
-        username.setForeground(bright);
-        username.setFont(new Font("Arial", Font.BOLD, 14));
-
-        final JPanel buttons = new JPanel();
-        logout = new JButton("Logout");
-        logout.setForeground(dark);
-        buttons.add(logout);
-        logout.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent evt) {
-                        logoutController.execute();
-                    }
-                }
-        );
-
-        portfolio = new JButton("Portfolio");
-
-        portfolio.setForeground(dark);
-        buttons.add(portfolio);
-        portfolio.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent evt) {
-                        if (evt.getSource().equals(portfolio)) {
-                            final LoggedInState currentState = loggedInViewModel.getState();
-
-                            portfolioController.portExecute(
-                                    currentState.getUsername(),
-                                    currentState.getPassword()
-                            );
-                        }
-                    }
-                }
-        );
-
-        watchlist = new JButton("Watchlist");
-        watchlist.setForeground(dark);
-        buttons.add(watchlist);
-        watchlist.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                if (evt.getSource().equals(watchlist)) {
-                    final LoggedInState currentState = loggedInViewModel.getState();
-
-                    watchlistController.execute(
-                            currentState.getUsername(),
-                            currentState.getPassword()
-                    );
-                }
-            }
-        });
-      
-        stockSearch = new JButton("Stock Search");
-        stockSearch.setForeground(dark);
-        buttons.add(stockSearch);
-      
-        stockSearch.addActionListener(
-                new ActionListener() {
-                    public void actionPerformed(ActionEvent evt) {
-                        loggedInController.switchToSearch();
-                    }
-                });
-
-        leaderboard = new JButton("Leaderboard");
-        leaderboard.setForeground(dark);
-        buttons.add(leaderboard);
-
-        leaderboard.addActionListener(
-                new ActionListener() {
-                    public void actionPerformed(ActionEvent evt) {
-                        if (evt.getSource().equals(leaderboard)) {
-                            leaderboardController.execute();
-                        }
-                    }
-                });
-
-        buttons.setBackground(dark);
-
-        this.setAlignmentX(1.0f);
-
-        final JPanel user = new JPanel();
-        user.add(usernameInfo);
-        user.add(username);
-
-        user.setLayout(new FlowLayout(FlowLayout.LEFT));
-        user.setBackground(dark);
-        user.add(buttons, BorderLayout.CENTER);
-
-        this.setBackground(dark);
-        this.add(user);
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        this.add(newsPanel);
+        initUI();
     }
 
     /**
-     * React to a button click that results in evt.
-     * @param evt the ActionEvent to react to
+     * Initializes and lays out all UI components inside the dashboard card.
      */
-    public void actionPerformed(ActionEvent evt) {
-        logoutController.execute();
+    private void initUI() {
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+
+        JPanel card = new JPanel();
+        card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
+        card.setBackground(CARD_BG);
+        card.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(220, 220, 220), 1),
+                new EmptyBorder(30, 40, 30, 40)
+        ));
+
+        JLabel title = new JLabel("Welcome Back");
+        title.setFont(new Font(FONT_NAME, Font.BOLD, 28));
+        title.setForeground(TEXT_DARK);
+
+        JLabel subtitle = new JLabel("Logged in as:");
+        subtitle.setFont(new Font(FONT_NAME, Font.PLAIN, 14));
+        subtitle.setForeground(new Color(120, 120, 120));
+
+        usernameLabel = new JLabel();
+        usernameLabel.setFont(new Font(FONT_NAME, Font.BOLD, 16));
+        usernameLabel.setForeground(TEXT_DARK);
+
+        JPanel header = new JPanel();
+        header.setLayout(new BoxLayout(header, BoxLayout.Y_AXIS));
+        header.setBackground(CARD_BG);
+        header.add(title);
+        header.add(Box.createVerticalStrut(5));
+        header.add(subtitle);
+        header.add(usernameLabel);
+        card.add(header);
+
+        card.add(Box.createVerticalStrut(25));
+
+        JPanel navPanel = new JPanel(new GridLayout(2, 3, 10, 10));
+        navPanel.setBackground(CARD_BG);
+
+        portfolioButton = createPrimaryButton("Portfolio");
+        watchlistButton = createPrimaryButton("Watchlist");
+        stockSearchButton = createPrimaryButton("Stock Search");
+        leaderboardButton = createPrimaryButton("Leaderboard");
+        logoutButton = createOutlineButton("Logout");
+
+        navPanel.add(portfolioButton);
+        navPanel.add(watchlistButton);
+        navPanel.add(stockSearchButton);
+        navPanel.add(leaderboardButton);
+        navPanel.add(logoutButton);
+
+        addHeaderListeners();
+        card.add(navPanel);
+
+        card.add(Box.createVerticalStrut(30));
+
+        JLabel newsLabel = new JLabel("📰 Latest Market News");
+        newsLabel.setFont(new Font(FONT_NAME, Font.BOLD, 18));
+        newsLabel.setForeground(TEXT_DARK);
+
+        newsPanel = new NewsPanel(newsViewModel);
+        newsPanel.setMinimumSize(new Dimension(400, 200));
+        newsPanel.setPreferredSize(new Dimension(400, 200));
+
+        card.add(newsLabel);
+        card.add(Box.createVerticalStrut(10));
+        card.add(newsPanel);
+        card.add(Box.createVerticalStrut(20));
+
+        JLabel watchlistLabel = new JLabel("📋 Your Watchlist");
+        watchlistLabel.setFont(new Font(FONT_NAME, Font.BOLD, 18));
+        watchlistLabel.setForeground(TEXT_DARK);
+
+        watchlistPanel = new WatchlistPreviewPanel(watchlistViewModel);
+        watchlistPanel.setMinimumSize(new Dimension(400, 200));
+        watchlistPanel.setPreferredSize(new Dimension(400, 200));
+
+        card.add(watchlistLabel);
+        card.add(Box.createVerticalStrut(10));
+        card.add(watchlistPanel);
+
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        add(card, gbc);
     }
 
+    /**
+     * Wires all navigation buttons to their respective controllers.
+     */
+    private void addHeaderListeners() {
+        logoutButton.addActionListener(e -> logoutController.execute());
+
+        portfolioButton.addActionListener(e -> {
+            LoggedInState s = loggedInViewModel.getState();
+            portfolioController.portExecute(s.getUsername(), s.getPassword());
+        });
+
+        watchlistButton.addActionListener(e -> {
+            LoggedInState s = loggedInViewModel.getState();
+            watchlistController.openWatchlist(s.getUsername(), s.getPassword());
+        });
+
+        stockSearchButton.addActionListener(e -> {
+            loggedInController.switchToSearch();
+        });
+
+
+        leaderboardButton.addActionListener(e -> leaderboardController.execute());
+    }
+
+    /**
+     * Responds to LoggedInViewModel state updates by refreshing
+     * the displayed username and triggering news/watchlist updates.
+     */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().equals("state")) {
-            final LoggedInState state = (LoggedInState) evt.getNewValue();
-            username.setText(state.getUsername());
+            LoggedInState s = (LoggedInState) evt.getNewValue();
+            usernameLabel.setText(s.getUsername());
+
             newsController.execute();
+            watchlistController.fetchSilently(s.getUsername(), s.getPassword());
         }
     }
 
-    public String getViewName() {
-        return viewName;
-    }
+    public String getViewName() { return viewName; }
+    public void setPortfolioController(PortfolioController c) { portfolioController = c; }
+    public void setWatchlistController(WatchlistController c) { watchlistController = c; }
+    public void setLogoutController(LogoutController c) { logoutController = c; }
+    public void setNewsController(NewsController c) { newsController = c; }
+    public void setLoggedInController(LoggedInController c) { loggedInController = c; }
+    public void setLeaderboardController(LeaderboardController c) { leaderboardController = c; }
 
-    public void setPortfolioController(PortfolioController portfolioController) {
-        this.portfolioController = portfolioController;
-    }
-
-    public void setWatchlistController(WatchlistController controller) {
-        this.watchlistController = controller;
-    }
-
-    public void setLogoutController(LogoutController logoutController) {
-        this.logoutController = logoutController;
-    }
-
-    public void setNewsController(NewsController newsController) {
-        this.newsController = newsController;
-    }
-
-    public void setLoggedInController(LoggedInController loggedInController) {
-        this.loggedInController = loggedInController;
-    }
-
-    public void setLeaderboardController(LeaderboardController leaderboardController) {
-        this.leaderboardController = leaderboardController;
-    }
+    public WatchlistPreviewPanel getWatchlistPreviewPanel() { return watchlistPanel; }
 }

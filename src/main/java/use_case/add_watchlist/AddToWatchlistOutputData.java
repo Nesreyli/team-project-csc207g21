@@ -11,6 +11,13 @@ public class AddToWatchlistOutputData {
     private final String symbol;
     private final List<String> symbols;
 
+    /**
+     * Constructs AddToWatchlistOutputData.
+     *
+     * @param message a status message indicating the result of the operation
+     * @param symbol  the symbol that was added
+     * @param symbols the updated list of symbols in the watchlist
+     */
     public AddToWatchlistOutputData(String message, String symbol, List<String> symbols) {
         this.message = message;
         this.symbol = symbol;

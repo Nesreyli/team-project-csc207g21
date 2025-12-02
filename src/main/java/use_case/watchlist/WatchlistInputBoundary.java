@@ -11,4 +11,5 @@ public interface WatchlistInputBoundary {
      *              parameters needed to retrieve the watchlist
      */
     void execute(WatchlistInputData input);
+    void executeAndNavigate(WatchlistInputData input);
 }

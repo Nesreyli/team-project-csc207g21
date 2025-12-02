@@ -25,8 +25,8 @@ public class RemoveFromWatchlistPresenter implements RemoveFromWatchlistOutputBo
         removeVM.getState().setLastMessage(outputData.getMessage());
         removeVM.firePropertyChange();
 
-        WatchlistState watchlistState = watchlistVM.getState();
-        watchlistState.setSymbols(outputData.getUpdatedSymbols());
+        WatchlistState state = watchlistVM.getState();
+        state.setSymbols(outputData.getUpdatedSymbols());
         watchlistVM.firePropertyChange();
     }
 

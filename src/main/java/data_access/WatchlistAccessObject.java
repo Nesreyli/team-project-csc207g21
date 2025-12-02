@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A Access Object handling the Watchlist functionalities.
+ * An Access Object handling the Watchlist functionalities.
  */
 
 public class WatchlistAccessObject implements WatchlistAccessInterface {
