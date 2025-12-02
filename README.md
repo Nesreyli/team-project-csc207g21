@@ -248,7 +248,12 @@ _Add screenshots of your application here to demonstrate functionality_
 
 ## Team
 
-_Add team member names and their responsibilities here_
+Jerry: worked on News Feed feature
+Marko: worked on the Search Function feature
+Pranav: worked on the Leaderboard feature
+Lucas: worked on the Buy/Sell feature
+Aeriz: worked on the Watchlist feature
+Alex: worked on the Portfolio feature
 
 ---
 
