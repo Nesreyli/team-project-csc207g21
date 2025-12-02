@@ -17,7 +17,7 @@ import java.util.List;
 
 public class WatchlistAccessObject implements WatchlistAccessInterface {
 
-    private static final String url = "http://localhost:8080/rest";
+    private static final String url = "http://100.67.4.80:4848/rest";
     private final OkHttpClient client = new OkHttpClient();
 
     @Override

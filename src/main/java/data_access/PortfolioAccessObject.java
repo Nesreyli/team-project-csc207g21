@@ -53,9 +53,11 @@ public class PortfolioAccessObject implements PortfolioAccessInterface {
                 JSONObject holdings = responseBody.getJSONObject("holdings");
                 BigDecimal performance = responseBody.getBigDecimal("performance");
 
-                Portfolio port = new Portfolio.Builder().user(UserFactory.create(name, pass)).
-                        cash(cash).holdings(holdings.toMap()).value(value).performance(performance).
-                        build();
+                Portfolio port = new Portfolio.Builder()
+                        .user(UserFactory.create(name, pass))
+                        .cash(cash).holdings(holdings.toMap())
+                        .value(value).performance(performance)
+                        .build();
 
                 return entity.ResponseFactory.create(SUCCESS_CODE, port);
             }
