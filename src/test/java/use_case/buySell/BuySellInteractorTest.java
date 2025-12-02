@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class BuySellInteractorTest {
     /**
@@ -215,5 +216,30 @@ class BuySellInteractorTest {
 
         // Assert correct error message displayed
         assertEquals("Server Error", testBuySellOB.getResponseMessage());
+    }
+
+    @Test
+    void testDefaultStatusCode() {
+
+        // Sample price state
+        PriceState priceState = new PriceState();
+
+        // Set values for BuySellAccessObject double
+        TestBuySellAccessObject testBuySellDB = new TestBuySellAccessObject();
+        testBuySellDB.setValues('b', "MSFT", 2, new BigDecimal(150),
+                new BigDecimal(300), 999);
+
+        // Set input data
+        BuySellInputData inputData = new BuySellInputData(priceState, 2, true);
+
+        // Initialize output boundary
+        TestBuySellOutputBoundary testBuySellOB = new TestBuySellOutputBoundary();
+
+        // Interactor call
+        BuySellInteractor interactor = new BuySellInteractor(testBuySellDB, testBuySellOB);
+
+        // Test exception
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> { interactor.execute(inputData);});
+        assertEquals("Unhandled status code in BuySellInteractor", exception.getMessage());
     }
 }
