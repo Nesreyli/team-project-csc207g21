@@ -50,7 +50,8 @@ public class PortfolioInteractor implements PortfolioInputBoundary {
                 portfolioOutput.preparePortFailView("Server Error");
                 break;
             default:
-                throw new RuntimeException();
+                portfolioOutput.preparePortFailView("Unkown Error");
+                break;
         }
     }
 
