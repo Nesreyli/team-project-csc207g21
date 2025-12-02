@@ -1,6 +1,5 @@
 package use_case.buySell;
 
-import data_access.BuySellAccessObject;
 import entity.BuySellReceipt;
 import entity.Response;
 import entity.ResponseFactory;
