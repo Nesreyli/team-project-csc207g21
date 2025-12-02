@@ -52,8 +52,55 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         logoPanel.setBackground(Color.WHITE);
         logoPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 
-        final JLabel logoLabel = new JLabel("📈");
-        logoLabel.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 48));
+        JLabel logoLabel = null;
+        try {
+            // Try to load the logo image
+            ImageIcon logoIcon = null;
+            String[] possiblePaths = {
+                "src/image/panictraderpic.png",
+                "image/panictraderpic.png"
+            };
+            
+            for (String path : possiblePaths) {
+                java.io.File iconFile = new java.io.File(path);
+                if (iconFile.exists() && iconFile.isFile()) {
+                    logoIcon = new ImageIcon(iconFile.getAbsolutePath());
+                    if (logoIcon.getIconWidth() > 0) {
+                        break;
+                    }
+                    logoIcon = null;
+                }
+            }
+            
+            // Try as resource if file path didn't work
+            if (logoIcon == null) {
+                java.net.URL imageURL = LoginView.class.getResource("/image/panictraderpic.png");
+                if (imageURL == null) {
+                    imageURL = LoginView.class.getClassLoader().getResource("image/panictraderpic.png");
+                }
+                if (imageURL != null) {
+                    logoIcon = new ImageIcon(imageURL);
+                }
+            }
+            
+            if (logoIcon != null && logoIcon.getIconWidth() > 0) {
+                // Scale the image to a reasonable size for the logo area
+                java.awt.Image originalImage = logoIcon.getImage();
+                int targetSize = 80; // Size for logo display
+                java.awt.Image scaledImage = originalImage.getScaledInstance(
+                    targetSize, targetSize, java.awt.Image.SCALE_SMOOTH);
+                logoIcon = new ImageIcon(scaledImage);
+                logoLabel = new JLabel(logoIcon);
+            }
+        } catch (Exception e) {
+            // If image loading fails, fall back to emoji
+            logoLabel = new JLabel("📈");
+            logoLabel.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 48));
+        }
+        if (logoLabel == null) {
+            logoLabel = new JLabel("📈");
+            logoLabel.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 48));
+        }
         logoPanel.add(logoLabel);
 
         // Title

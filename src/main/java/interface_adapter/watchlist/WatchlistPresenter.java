@@ -11,30 +11,27 @@ import use_case.watchlist.WatchlistOutputData;
  */
 
 public class WatchlistPresenter implements WatchlistOutputBoundary {
-    private final WatchlistViewModel viewModel;
+    private final WatchlistViewModel watchlistViewModel;
     private final ViewManagerModel viewManager;
     private final LoggedInViewModel loggedInViewModel;
 
-    public WatchlistPresenter(ViewManagerModel viewManager, WatchlistViewModel viewModel, LoggedInViewModel loggedInViewModel) {
-        this.viewModel = viewModel;
+    public WatchlistPresenter(ViewManagerModel viewManager, WatchlistViewModel watchlistViewModel, LoggedInViewModel loggedInViewModel) {
+        this.watchlistViewModel = watchlistViewModel;
         this.viewManager = viewManager;
         this.loggedInViewModel = loggedInViewModel;
     }
 
     @Override
     public void prepareWatchlistSuccessView(WatchlistOutputData data) {
-        final WatchlistState newState = new WatchlistState();
+        WatchlistState newState = watchlistViewModel.getState();
         newState.setUsername(data.getUsername());
         newState.setPassword(data.getPassword());
         newState.setSymbols(data.getSymbols());
         newState.setPrices(data.getPrices());
         newState.setPerformance(data.getPerformance());
 
-        viewModel.setState(newState);
-        viewModel.firePropertyChange();
-
-        viewManager.setState(viewModel.getViewName());
-        viewManager.firePropertyChange();
+        watchlistViewModel.setState(newState);
+        watchlistViewModel.firePropertyChange();
     }
 
     @Override
@@ -42,5 +39,11 @@ public class WatchlistPresenter implements WatchlistOutputBoundary {
         final LoggedInState loginState = loggedInViewModel.getState();
         loginState.setLoggedInError(error);
         loggedInViewModel.firePropertyChange();
+    }
+
+    @Override
+    public void switchToWatchlistView() {
+        viewManager.setState(watchlistViewModel.getViewName());
+        viewManager.firePropertyChange();
     }
 }

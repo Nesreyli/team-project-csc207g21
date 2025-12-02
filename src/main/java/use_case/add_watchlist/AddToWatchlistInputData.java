@@ -9,6 +9,13 @@ public class AddToWatchlistInputData {
     private final String password;
     private final String symbol;
 
+    /**
+     * Constructs AddToWatchlistInputData.
+     *
+     * @param username the username of the user
+     * @param password the password of the user
+     * @param symbol   the stock symbol to add
+     */
     public AddToWatchlistInputData(String username, String password, String symbol) {
         this.username = username;
         this.password = password;

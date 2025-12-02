@@ -1,9 +1,7 @@
 package app;
 
 import java.awt.*;
-
 import javax.swing.*;
-
 import data_access.*;
 import entity.Portfolio;
 import entity.UserFactory;
@@ -11,7 +9,6 @@ import interface_adapter.Stock_Search.SearchController;
 import interface_adapter.Stock_Search.SearchPresenter;
 import interface_adapter.Stock_Search.SearchViewModel;
 import interface_adapter.ViewManagerModel;
-import interface_adapter.add_watchlist.AddToWatchlistController;
 import interface_adapter.add_watchlist.AddToWatchlistPresenter;
 import interface_adapter.add_watchlist.AddToWatchlistViewModel;
 import interface_adapter.buySell.BuySellController;
@@ -36,7 +33,6 @@ import interface_adapter.news.NewsViewModel;
 import interface_adapter.portfolio.PortfolioController;
 import interface_adapter.portfolio.PortfolioPresenter;
 import interface_adapter.portfolio.PortfolioViewModel;
-import interface_adapter.remove_watchlist.RemoveFromWatchlistController;
 import interface_adapter.remove_watchlist.RemoveFromWatchlistPresenter;
 import interface_adapter.remove_watchlist.RemoveFromWatchlistViewModel;
 import interface_adapter.signup.SignupController;
@@ -108,12 +104,6 @@ public class AppBuilder {
     private final LeaderboardAccessObject leaderboardAccessObject = new LeaderboardAccessObject();
     private final BuySellAccessObject buySellAccessObject = new BuySellAccessObject();
 
-    private AddToWatchlistViewModel addToWatchlistViewModel;
-    private AddToWatchlistController addToWatchlistController;
-
-    private RemoveFromWatchlistViewModel removeFromWatchlistViewModel;
-    private RemoveFromWatchlistController removeFromWatchlistController;
-
     private LoginViewModel loginViewModel;
     private LoggedInViewModel loggedInViewModel;
     private LoggedInView loggedInView;
@@ -130,13 +120,13 @@ public class AppBuilder {
     private PriceViewModel priceViewModel;
     private WatchlistViewModel watchlistViewModel;
     private WatchlistView watchlistView;
+    private RemoveFromWatchlistViewModel removeFromWatchlistViewModel;
+    private AddToWatchlistViewModel addToWatchlistViewModel;
     private ReceiptDialog receiptDialog;
     private BuySellViewModel buySellViewModel;
 
     private LeaderboardViewModel leaderboardViewModel;
     private LeaderboardView leaderboardView;
-
-    private WatchlistController watchlistController;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -159,8 +149,9 @@ public class AppBuilder {
      */
     public AppBuilder addLoggedInView() {
         newsViewModel = new NewsViewModel();
+        watchlistViewModel = new WatchlistViewModel();
         loggedInViewModel = new LoggedInViewModel();
-        loggedInView = new LoggedInView(loggedInViewModel, newsViewModel);
+        loggedInView = new LoggedInView(loggedInViewModel, newsViewModel, watchlistViewModel);
         cardPanel.add(loggedInView, loggedInView.getViewName());
         return this;
     }
@@ -181,18 +172,9 @@ public class AppBuilder {
      * @return the current AppBuilder instance
      */
     public AppBuilder addWatchlistView() {
-        watchlistViewModel = new WatchlistViewModel();
         removeFromWatchlistViewModel = new RemoveFromWatchlistViewModel();
-
-        final RemoveFromWatchlistOutputBoundary removeOutput =
-                new RemoveFromWatchlistPresenter(removeFromWatchlistViewModel, watchlistViewModel);
-        final RemoveFromWatchlistInputBoundary removeInput =
-                new RemoveFromWatchlistInteractor(watchlistAccessObject, removeOutput);
-        removeFromWatchlistController = new RemoveFromWatchlistController(removeInput);
-
-        watchlistView = new WatchlistView(watchlistViewModel, removeFromWatchlistController);
+        watchlistView = new WatchlistView(watchlistViewModel);
         cardPanel.add(watchlistView, watchlistView.getViewName());
-
         return this;
     }
 
@@ -234,17 +216,9 @@ public class AppBuilder {
      * @return the current AppBuilder instance
      */
     public AppBuilder addPriceView() {
+        addToWatchlistViewModel = new AddToWatchlistViewModel();
         priceViewModel = new PriceViewModel();
-        stockPriceView = new StockPriceView(
-                priceViewModel,
-                addToWatchlistViewModel,
-                addToWatchlistController,
-                removeFromWatchlistViewModel,
-                removeFromWatchlistController,
-                watchlistViewModel,
-                loggedInViewModel,
-                watchlistController
-        );
+        stockPriceView = new StockPriceView(priceViewModel, watchlistViewModel, loggedInViewModel);
         stockPriceView.setLocationRelativeTo(searchView);
         return this;
     }
@@ -284,12 +258,28 @@ public class AppBuilder {
      * @return the current AppBuilder instance
      */
     public AppBuilder addWatchlistUseCase() {
-        final WatchlistOutputBoundary watchlistOutputBoundary = new WatchlistPresenter(viewManagerModel,
-                watchlistViewModel, loggedInViewModel);
-        final WatchlistInputBoundary watchlistInputBoundary = new WatchlistInteractor(watchlistAccessObject,
-                watchlistOutputBoundary);
-        watchlistController = new WatchlistController(watchlistInputBoundary);
+        final WatchlistOutputBoundary fetchOutputBoundary =
+                new WatchlistPresenter(viewManagerModel, watchlistViewModel, loggedInViewModel);
+        final AddToWatchlistOutputBoundary addOutputBoundary =
+                new AddToWatchlistPresenter(addToWatchlistViewModel, watchlistViewModel);
+        final RemoveFromWatchlistOutputBoundary removeOutputBoundary =
+                new RemoveFromWatchlistPresenter(removeFromWatchlistViewModel, watchlistViewModel);
+
+        final WatchlistInputBoundary fetchInputBoundary =
+                new WatchlistInteractor(watchlistAccessObject, fetchOutputBoundary);
+        final AddToWatchlistInputBoundary addInputBoundary =
+                new AddToWatchlistInteractor(watchlistAccessObject, addOutputBoundary);
+        final RemoveFromWatchlistInputBoundary removeInputBoundary =
+                new RemoveFromWatchlistInteractor(watchlistAccessObject, removeOutputBoundary);
+
+        final WatchlistController watchlistController =
+                new WatchlistController(fetchInputBoundary, addInputBoundary, removeInputBoundary);
+
         loggedInView.setWatchlistController(watchlistController);
+        loggedInView.getWatchlistPreviewPanel().setWatchlistController(watchlistController);
+        watchlistView.setWatchlistController(watchlistController);
+        stockPriceView.setWatchlistController(watchlistController);
+
         return this;
     }
 
@@ -386,35 +376,6 @@ public class AppBuilder {
     }
 
     /**
-     * Adds the "Add to Watchlist" use case to the application.
-     * Sets up the interactor, presenter, and controller for adding stocks to the watchlist.
-     * @return the current AppBuilder instance
-     */
-    public AppBuilder addAddToWatchlistUseCase() {
-        addToWatchlistViewModel = new AddToWatchlistViewModel();
-        final AddToWatchlistOutputBoundary addOutput = new AddToWatchlistPresenter(addToWatchlistViewModel,
-                watchlistViewModel);
-        final AddToWatchlistInputBoundary addInput = new AddToWatchlistInteractor(watchlistAccessObject, addOutput);
-        addToWatchlistController = new AddToWatchlistController(addInput);
-        return this;
-    }
-
-    /**
-     * Adds the "Remove from Watchlist" use case to the application.
-     * Sets up the interactor, presenter, and controller for removing stocks from the watchlist.
-     * @return the current AppBuilder instance
-     */
-    public AppBuilder addRemoveFromWatchlistUseCase() {
-        removeFromWatchlistViewModel = new RemoveFromWatchlistViewModel();
-        final RemoveFromWatchlistOutputBoundary removeOutput = new RemoveFromWatchlistPresenter(
-                        removeFromWatchlistViewModel, watchlistViewModel);
-        final RemoveFromWatchlistInputBoundary removeInput = new RemoveFromWatchlistInteractor(watchlistAccessObject,
-                removeOutput);
-        removeFromWatchlistController = new RemoveFromWatchlistController(removeInput);
-        return this;
-    }
-
-    /**
      * Adds the news use case to the application.
      * Sets up the interactor, presenter, and controller for news functionality.
      * @return the current AppBuilder instance
@@ -479,17 +440,17 @@ public class AppBuilder {
         // Set application icon
         try {
             ImageIcon icon = null;
-            final String[] possiblePaths = {
+            String[] possiblePaths = {
                 "src/image/panictraderpic.png",
-                "image/panictraderpic.png",
+                "image/panictraderpic.png"
             };
             
             // Try file paths first
             for (String path : possiblePaths) {
-                final java.io.File iconFile = new java.io.File(path);
+                java.io.File iconFile = new java.io.File(path);
                 if (iconFile.exists() && iconFile.isFile()) {
                     icon = new ImageIcon(iconFile.getAbsolutePath());
-                    if (icon.getIconWidth() > 0) {
+                    if (icon.getIconWidth() > 0) { // Verify image loaded
                         break;
                     }
                     icon = null;
@@ -498,32 +459,28 @@ public class AppBuilder {
             
             // Try as resource if file path didn't work
             if (icon == null) {
-                java.net.URL imageUrl = AppBuilder.class.getResource("/image/panictraderpic.png");
-                if (imageUrl == null) {
-                    imageUrl = AppBuilder.class.getClassLoader().getResource("image/panictraderpic.png");
+                java.net.URL imageURL = AppBuilder.class.getResource("/image/panictraderpic.png");
+                if (imageURL == null) {
+                    imageURL = AppBuilder.class.getClassLoader().getResource("image/panictraderpic.png");
                 }
-                if (imageUrl != null) {
-                    icon = new ImageIcon(imageUrl);
+                if (imageURL != null) {
+                    icon = new ImageIcon(imageURL);
                 }
             }
             
             if (icon != null && icon.getIconWidth() > 0) {
                 // Scale the image to a larger size for better visibility
-                final java.awt.Image originalImage = icon.getImage();
-                // Larger size for better visibility
-                final int targetSize = 128;
+                java.awt.Image originalImage = icon.getImage();
+                int targetSize = 128; // Larger size for better visibility
                 java.awt.Image scaledImage = originalImage.getScaledInstance(
                     targetSize, targetSize, java.awt.Image.SCALE_SMOOTH);
                 application.setIconImage(scaledImage);
+            } else {
+                System.err.println("App icon not found or could not be loaded. Tried: " + String.join(", ", possiblePaths));
             }
-            else {
-                System.err.println("App icon not found or could not be loaded. Tried: "
-                        + String.join(", ", possiblePaths));
-            }
-        }
-        catch (Exception error) {
+        } catch (Exception e) {
             // Icon not found, continue without it
-            System.err.println("Could not load app icon: " + error.getMessage());
+            System.err.println("Could not load app icon: " + e.getMessage());
         }
         
         application.add(cardPanel);
