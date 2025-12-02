@@ -25,6 +25,7 @@ public class WatchlistOutputData {
      * @param symbols     list of stock symbols in the watchlist
      * @param prices      mapping of symbols to their prices
      * @param performance mapping of symbols to their performance
+     * @param message     the message received from server
      */
     public WatchlistOutputData(String username, String password,
                                List<String> symbols,
@@ -39,10 +40,27 @@ public class WatchlistOutputData {
         this.message = message;
     }
 
-    public String getUsername() { return username; }
-    public String getPassword() { return password; }
-    public List<String> getSymbols() { return symbols; }
-    public Map<String, BigDecimal> getPrices() { return prices; }
-    public Map<String, BigDecimal> getPerformance() { return performance; }
-    public String getMessage() { return message; }
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public List<String> getSymbols() {
+        return symbols;
+    }
+
+    public Map<String, BigDecimal> getPrices() {
+        return prices;
+    }
+
+    public Map<String, BigDecimal> getPerformance() {
+        return performance;
+    }
+
+    public String getMessage() {
+        return message;
+    }
 }

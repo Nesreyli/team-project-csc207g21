@@ -3,6 +3,7 @@ package view;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
@@ -16,10 +17,7 @@ import interface_adapter.news.NewsViewModel;
 import interface_adapter.portfolio.PortfolioController;
 import interface_adapter.watchlist.WatchlistController;
 import interface_adapter.watchlist.WatchlistViewModel;
-
-import static view.theme.StyledButton.createOutlineButton;
-import static view.theme.StyledButton.createPrimaryButton;
-import static view.theme.UITheme.*;
+import view.theme.*;
 
 /**
  * LoggedInView represents the main dashboard screen after a user logs in.
@@ -52,51 +50,58 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
     private NewsController newsController;
     private LeaderboardController leaderboardController;
     private LoggedInController loggedInController;
+
     /**
      * Constructs the LoggedInView with required ViewModels.
+     * @param loggedInViewModel The LoggedInViewModel that provides log in updates.
+     * @param newsViewModel The NewsViewModel that provides news updates.
+     * @param watchlistViewModel The WatchlistViewModel that provides watchlist updates.
      */
-    public LoggedInView(LoggedInViewModel vm, NewsViewModel nvm, WatchlistViewModel wvm) {
-        this.loggedInViewModel = vm;
-        this.newsViewModel = nvm;
-        this.watchlistViewModel = wvm;
+
+    public LoggedInView(LoggedInViewModel loggedInViewModel,
+                        NewsViewModel newsViewModel,
+                        WatchlistViewModel watchlistViewModel) {
+        this.loggedInViewModel = loggedInViewModel;
+        this.newsViewModel = newsViewModel;
+        this.watchlistViewModel = watchlistViewModel;
 
         this.loggedInViewModel.addPropertyChangeListener(this);
 
-        setBackground(BG);
+        setBackground(UiTheme.BG);
         setLayout(new GridBagLayout());
 
-        initUI();
+        initUi();
     }
 
     /**
      * Initializes and lays out all UI components inside the dashboard card.
      */
-    private void initUI() {
+    private void initUi() {
 
-        GridBagConstraints gbc = new GridBagConstraints();
+        final GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
 
-        JPanel card = new JPanel();
+        final JPanel card = new JPanel();
         card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
-        card.setBackground(CARD_BG);
+        card.setBackground(UiTheme.CARD_BG);
         card.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(220, 220, 220), 1),
                 new EmptyBorder(30, 40, 30, 40)
         ));
 
-        JLabel title = new JLabel("Welcome Back,");
+        final JLabel title = new JLabel("Welcome Back,");
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
-        title.setFont(new Font(FONT_NAME, Font.BOLD, 16));
-        title.setForeground(TEXT_DARK);
+        title.setFont(new Font(UiTheme.FONT_NAME, Font.BOLD, 16));
+        title.setForeground(UiTheme.TEXT_DARK);
 
         usernameLabel = new JLabel();
         usernameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        usernameLabel.setFont(new Font(FONT_NAME, Font.BOLD, 28));
-        usernameLabel.setForeground(TEXT_DARK);
+        usernameLabel.setFont(new Font(UiTheme.FONT_NAME, Font.BOLD, 28));
+        usernameLabel.setForeground(UiTheme.TEXT_DARK);
 
-        JPanel header = new JPanel();
+        final JPanel header = new JPanel();
         header.setLayout(new BoxLayout(header, BoxLayout.Y_AXIS));
-        header.setBackground(CARD_BG);
+        header.setBackground(UiTheme.CARD_BG);
         header.setAlignmentX(Component.CENTER_ALIGNMENT);
         header.add(title);
         header.add(Box.createVerticalStrut(5));
@@ -105,14 +110,14 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
 
         card.add(Box.createVerticalStrut(25));
 
-        JPanel navPanel = new JPanel(new GridLayout(2, 3, 10, 10));
-        navPanel.setBackground(CARD_BG);
+        final JPanel navPanel = new JPanel(new GridLayout(2, 3, 10, 10));
+        navPanel.setBackground(UiTheme.CARD_BG);
 
-        portfolioButton = createPrimaryButton("Portfolio");
-        watchlistButton = createPrimaryButton("Watchlist");
-        stockSearchButton = createPrimaryButton("Stock Search");
-        leaderboardButton = createPrimaryButton("Leaderboard");
-        logoutButton = createOutlineButton("Logout");
+        portfolioButton = StyledButton.createPrimaryButton("Portfolio");
+        watchlistButton = StyledButton.createPrimaryButton("Watchlist");
+        stockSearchButton = StyledButton.createPrimaryButton("Stock Search");
+        leaderboardButton = StyledButton.createPrimaryButton("Leaderboard");
+        logoutButton = StyledButton.createOutlineButton("Logout");
 
         navPanel.add(portfolioButton);
         navPanel.add(watchlistButton);
@@ -125,9 +130,9 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
 
         card.add(Box.createVerticalStrut(30));
 
-        JLabel newsLabel = new JLabel("📰 Latest Market News");
-        newsLabel.setFont(new Font(FONT_NAME, Font.BOLD, 18));
-        newsLabel.setForeground(TEXT_DARK);
+        final JLabel newsLabel = new JLabel("📰 Latest Market News");
+        newsLabel.setFont(new Font(UiTheme.FONT_NAME, Font.BOLD, 18));
+        newsLabel.setForeground(UiTheme.TEXT_DARK);
 
         newsPanel = new NewsPanel(newsViewModel);
         newsPanel.setMinimumSize(new Dimension(400, 200));
@@ -138,9 +143,9 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
         card.add(newsPanel);
         card.add(Box.createVerticalStrut(20));
 
-        JLabel watchlistLabel = new JLabel("📋 Your Watchlist");
-        watchlistLabel.setFont(new Font(FONT_NAME, Font.BOLD, 18));
-        watchlistLabel.setForeground(TEXT_DARK);
+        final JLabel watchlistLabel = new JLabel("📋 Your Watchlist");
+        watchlistLabel.setFont(new Font(UiTheme.FONT_NAME, Font.BOLD, 18));
+        watchlistLabel.setForeground(UiTheme.TEXT_DARK);
 
         watchlistPanel = new WatchlistPreviewPanel(watchlistViewModel);
         watchlistPanel.setMinimumSize(new Dimension(400, 200));
@@ -162,19 +167,18 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
         logoutButton.addActionListener(e -> logoutController.execute());
 
         portfolioButton.addActionListener(e -> {
-            LoggedInState s = loggedInViewModel.getState();
-            portfolioController.portExecute(s.getUsername(), s.getPassword());
+            final LoggedInState state = loggedInViewModel.getState();
+            portfolioController.portExecute(state.getUsername(), state.getPassword());
         });
 
         watchlistButton.addActionListener(e -> {
-            LoggedInState s = loggedInViewModel.getState();
-            watchlistController.openWatchlist(s.getUsername(), s.getPassword());
+            final LoggedInState state = loggedInViewModel.getState();
+            watchlistController.openWatchlist(state.getUsername(), state.getPassword());
         });
 
         stockSearchButton.addActionListener(e -> {
             loggedInController.switchToSearch();
         });
-
 
         leaderboardButton.addActionListener(e -> leaderboardController.execute());
     }
@@ -186,21 +190,43 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().equals("state")) {
-            LoggedInState s = (LoggedInState) evt.getNewValue();
-            usernameLabel.setText(s.getUsername());
+            final LoggedInState state = (LoggedInState) evt.getNewValue();
+            usernameLabel.setText(state.getUsername());
 
             newsController.execute();
-            watchlistController.fetchSilently(s.getUsername(), s.getPassword());
+            watchlistController.fetchSilently(state.getUsername(), state.getPassword());
         }
     }
 
-    public String getViewName() { return viewName; }
-    public void setPortfolioController(PortfolioController c) { portfolioController = c; }
-    public void setWatchlistController(WatchlistController c) { watchlistController = c; }
-    public void setLogoutController(LogoutController c) { logoutController = c; }
-    public void setNewsController(NewsController c) { newsController = c; }
-    public void setLoggedInController(LoggedInController c) { loggedInController = c; }
-    public void setLeaderboardController(LeaderboardController c) { leaderboardController = c; }
+    public String getViewName() {
+        return viewName;
+    }
 
-    public WatchlistPreviewPanel getWatchlistPreviewPanel() { return watchlistPanel; }
+    public void setPortfolioController(PortfolioController portfolioController) {
+        this.portfolioController = portfolioController;
+    }
+
+    public void setWatchlistController(WatchlistController watchlistController) {
+        this.watchlistController = watchlistController;
+    }
+
+    public void setLogoutController(LogoutController logoutController) {
+        this.logoutController = logoutController;
+    }
+
+    public void setNewsController(NewsController newsController) {
+        this.newsController = newsController;
+    }
+
+    public void setLoggedInController(LoggedInController loggedInController) {
+        this.loggedInController = loggedInController;
+    }
+
+    public void setLeaderboardController(LeaderboardController leaderboardController) {
+        this.leaderboardController = leaderboardController;
+    }
+
+    public WatchlistPreviewPanel getWatchlistPreviewPanel() {
+        return watchlistPanel;
+    }
 }

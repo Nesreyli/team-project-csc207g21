@@ -1,12 +1,13 @@
 package use_case.remove_watchlist;
 
-import entity.WatchlistEntry;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import entity.WatchlistEntry;
+
 /**
- * Factory class responsible for creating RemoveFromWatchlistOutputData
+ * Factory class responsible for creating RemoveFromWatchlistOutputData.
  */
 
 public class RemoveFromWatchlistOutputDataFactory {
@@ -19,9 +20,11 @@ public class RemoveFromWatchlistOutputDataFactory {
      * @return a populated RemoveFromWatchlistOutputData object
      */
     public static RemoveFromWatchlistOutputData create(String removedSymbol, List<WatchlistEntry> entries) {
-        if (entries == null) entries = new ArrayList<>();
+        if (entries == null) {
+            entries = new ArrayList<>();
+        }
 
-        List<String> updatedSymbols = entries.stream()
+        final List<String> updatedSymbols = entries.stream()
                 .map(WatchlistEntry::getSymbol)
                 .collect(Collectors.toList());
 

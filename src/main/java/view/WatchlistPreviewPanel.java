@@ -3,15 +3,17 @@ package view;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+
 import javax.swing.*;
 
+import interface_adapter.watchlist.WatchlistController;
 import interface_adapter.watchlist.WatchlistState;
 import interface_adapter.watchlist.WatchlistViewModel;
-import interface_adapter.watchlist.WatchlistController;
+import view.theme.StyledButton;
+import view.theme.StyledButton.*;
 import view.theme.StyledCardPanel;
-
-import static view.theme.StyledButton.createOutlineButton;
-import static view.theme.UITheme.FONT_NAME;
+import view.theme.UiTheme;
+import view.theme.UiTheme.*;
 
 public class WatchlistPreviewPanel extends StyledCardPanel implements PropertyChangeListener {
 
@@ -24,24 +26,24 @@ public class WatchlistPreviewPanel extends StyledCardPanel implements PropertyCh
         this.watchlistViewModel = watchlistViewModel;
         watchlistViewModel.addPropertyChangeListener(this);
 
-        JLabel header = new JLabel("Your Watchlist");
-        header.setFont(new Font(FONT_NAME, Font.BOLD, 18));
+        final JLabel header = new JLabel("Your Watchlist");
+        header.setFont(new Font(UiTheme.FONT_NAME, Font.BOLD, 18));
         header.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         rowPanel = new JPanel();
         rowPanel.setLayout(new BoxLayout(rowPanel, BoxLayout.X_AXIS));
         rowPanel.setBackground(Color.WHITE);
 
-        JScrollPane scroll = new JScrollPane(rowPanel);
+        final JScrollPane scroll = new JScrollPane(rowPanel);
         scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         scroll.setBorder(null);
 
-        JButton moreButton = createOutlineButton("View Full Watchlist");
+        final JButton moreButton = StyledButton.createOutlineButton("View Full Watchlist");
         moreButton.setAlignmentX(Component.LEFT_ALIGNMENT);
         moreButton.addActionListener(e -> {
-            WatchlistState s = this.watchlistViewModel.getState();
+            final WatchlistState state = this.watchlistViewModel.getState();
             if (watchlistController != null) {
-                watchlistController.openWatchlist(s.getUsername(), s.getPassword());
+                watchlistController.openWatchlist(state.getUsername(), state.getPassword());
             }
         });
 
@@ -54,36 +56,39 @@ public class WatchlistPreviewPanel extends StyledCardPanel implements PropertyCh
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        WatchlistState s = (WatchlistState) evt.getNewValue();
+        final WatchlistState state = (WatchlistState) evt.getNewValue();
         rowPanel.removeAll();
 
-        if (s.getSymbols() == null || s.getSymbols().isEmpty()) {
+        if (state.getSymbols() == null || state.getSymbols().isEmpty()) {
             rowPanel.add(new JLabel("No items in your watchlist."));
-        } else {
-            for (String symbol : s.getSymbols()) {
+        }
+        else {
+            for (String symbol : state.getSymbols()) {
 
-                JPanel box = new JPanel();
+                final JPanel box = new JPanel();
                 box.setLayout(new BoxLayout(box, BoxLayout.Y_AXIS));
                 box.setBackground(Color.WHITE);
                 box.setBorder(BorderFactory.createCompoundBorder(
-                        BorderFactory.createLineBorder(new Color(220,220,220),1),
-                        BorderFactory.createEmptyBorder(8,12,8,12)
+                        BorderFactory.createLineBorder(new Color(220, 220, 220), 1),
+                        BorderFactory.createEmptyBorder(8, 12, 8, 12)
                 ));
 
-                JLabel symLabel = new JLabel(symbol);
-                symLabel.setFont(new Font(FONT_NAME, Font.BOLD, 14));
+                final JLabel symLabel = new JLabel(symbol);
+                symLabel.setFont(new Font(UiTheme.FONT_NAME, Font.BOLD, 14));
 
-                JLabel priceLabel = new JLabel("");
-                if (s.getPrices() != null && s.getPrices().containsKey(symbol)) {
-                    priceLabel.setText("Price: $" + s.getPrices().get(symbol));
+                final JLabel priceLabel = new JLabel("");
+                if (state.getPrices() != null && state.getPrices().containsKey(symbol)) {
+                    priceLabel.setText("Price: $" + state.getPrices().get(symbol));
                 }
-                priceLabel.setFont(new Font(FONT_NAME, Font.PLAIN, 12));
+                priceLabel.setFont(new Font(UiTheme.FONT_NAME, Font.PLAIN, 12));
 
-                JLabel perfLabel = new JLabel("");
-                if (s.getPerformance() != null && s.getPerformance().containsKey(symbol)) {
-                    var p = s.getPerformance().get(symbol);
-                    perfLabel.setText((p.doubleValue() >= 0 ? "▲ " : "▼ ") + p + "%");
-                    perfLabel.setForeground(p.doubleValue() >= 0 ? new Color(0, 153, 0) : Color.RED);
+                final JLabel perfLabel = new JLabel("");
+                if (state.getPerformance() != null && state.getPerformance().containsKey(symbol)) {
+                    final var performance = state.getPerformance().get(symbol);
+                    perfLabel.setText((performance.doubleValue() >= 0 ? "▲ " : "▼ ")
+                            + performance
+                            + "%");
+                    perfLabel.setForeground(performance.doubleValue() >= 0 ? new Color(0, 153, 0) : Color.RED);
                 }
 
                 box.add(symLabel);
@@ -98,7 +103,7 @@ public class WatchlistPreviewPanel extends StyledCardPanel implements PropertyCh
         rowPanel.repaint();
     }
 
-    public void setWatchlistController(WatchlistController c) {
-        this.watchlistController = c;
+    public void setWatchlistController(WatchlistController watchlistController) {
+        this.watchlistController = watchlistController;
     }
 }

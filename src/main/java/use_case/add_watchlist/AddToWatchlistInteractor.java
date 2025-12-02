@@ -1,6 +1,7 @@
 package use_case.add_watchlist;
 
 import java.util.List;
+
 import data_access.WatchlistAccessObject;
 import entity.WatchlistEntry;
 
@@ -42,7 +43,8 @@ public class AddToWatchlistInteractor implements AddToWatchlistInputBoundary {
 
             output.prepareAddToWatchlistSuccessView(out);
 
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             output.prepareAddToWatchlistFailView("Failed to add symbol: " + e.getMessage());
         }
     }

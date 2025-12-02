@@ -1,7 +1,8 @@
 package view.theme;
 
-import javax.swing.*;
 import java.awt.*;
+
+import javax.swing.*;
 
 /**
  * The Styled Card Panel for consistent card-like UI components.

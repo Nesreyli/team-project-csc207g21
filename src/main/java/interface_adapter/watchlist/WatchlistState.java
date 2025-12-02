@@ -16,6 +16,7 @@ public class WatchlistState {
     private String message;
 
     /**
+     * Fetches username.
      * @return the stored username
      */
     public String getUsername() {
@@ -23,6 +24,7 @@ public class WatchlistState {
     }
 
     /**
+     * Sets username.
      * @param username the username to store
      */
     public void setUsername(String username) {
@@ -30,6 +32,7 @@ public class WatchlistState {
     }
 
     /**
+     * Fetches password.
      * @return the stored password
      */
     public String getPassword() {
@@ -37,6 +40,7 @@ public class WatchlistState {
     }
 
     /**
+     * Sets password.
      * @param password the password to store
      */
     public void setPassword(String password) {
@@ -44,6 +48,7 @@ public class WatchlistState {
     }
 
     /**
+     * Fetches list of stock symbols.
      * @return the list of stock symbols
      */
     public List<String> getSymbols() {
@@ -51,6 +56,7 @@ public class WatchlistState {
     }
 
     /**
+     * Sets the list of stock symbols.
      * @param symbols the stock symbols to store
      */
     public void setSymbols(List<String> symbols) {
@@ -58,6 +64,7 @@ public class WatchlistState {
     }
 
     /**
+     * Fetches current prices of the symbols.
      * @return the map of stock prices
      */
     public Map<String, BigDecimal> getPrices() {
@@ -65,6 +72,7 @@ public class WatchlistState {
     }
 
     /**
+     * Sets the current prices of the symbols.
      * @param prices the stock prices to store
      */
     public void setPrices(Map<String, BigDecimal> prices) {
@@ -72,6 +80,7 @@ public class WatchlistState {
     }
 
     /**
+     * Fetches current performance of stock symbols.
      * @return the performance values
      */
     public Map<String, BigDecimal> getPerformance() {
@@ -79,6 +88,7 @@ public class WatchlistState {
     }
 
     /**
+     * Sets current performance of the stock symbols.
      * @param performance the performance values to store
      */
     public void setPerformance(Map<String, BigDecimal> performance) {
@@ -86,6 +96,7 @@ public class WatchlistState {
     }
 
     /**
+     * Fetches message from the server.
      * @return the stored message
      */
     public String getMessage() {
@@ -93,6 +104,7 @@ public class WatchlistState {
     }
 
     /**
+     * Sets the message sent to another function.
      * @param message the message to store
      */
     public void setMessage(String message) {

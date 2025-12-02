@@ -1,12 +1,5 @@
 package view;
 
-import interface_adapter.homebutton.HomeController;
-import interface_adapter.watchlist.WatchlistController;
-import interface_adapter.watchlist.WatchlistState;
-import interface_adapter.watchlist.WatchlistViewModel;
-
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
@@ -14,8 +7,17 @@ import java.beans.PropertyChangeListener;
 import java.math.BigDecimal;
 import java.util.List;
 
-import static view.theme.StyledButton.createOutlineButton;
-import static view.theme.UITheme.*;
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+
+import interface_adapter.homebutton.HomeController;
+import interface_adapter.watchlist.WatchlistController;
+import interface_adapter.watchlist.WatchlistState;
+import interface_adapter.watchlist.WatchlistViewModel;
+import view.theme.StyledButton;
+import view.theme.StyledButton.*;
+import view.theme.UiTheme;
+import view.theme.UiTheme.*;
 
 /**
  * WatchlistView displays the user's watchlist in a card-style layout.
@@ -38,40 +40,40 @@ public class WatchlistView extends JPanel implements PropertyChangeListener {
         this.watchlistViewModel = watchlistViewModel;
         this.watchlistViewModel.addPropertyChangeListener(this);
 
-        setBackground(BG);
+        setBackground(UiTheme.BG);
         setLayout(new GridBagLayout());
 
-        initUI();
+        initUi();
     }
 
-    private void initUI() {
-        GridBagConstraints gbc = new GridBagConstraints();
+    private void initUi() {
+        final GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(20, 20, 20, 20);
 
-        JPanel card = new JPanel();
+        final JPanel card = new JPanel();
         card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
-        card.setBackground(CARD_BG);
+        card.setBackground(UiTheme.CARD_BG);
         card.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(220, 220, 220), 1),
                 new EmptyBorder(30, 40, 30, 40)
         ));
 
-        JLabel title = new JLabel("📋 Your Watchlist");
-        title.setFont(new Font(FONT_NAME, Font.BOLD, 26));
-        title.setForeground(TEXT_DARK);
+        final JLabel title = new JLabel("📋 Your Watchlist");
+        title.setFont(new Font(UiTheme.FONT_NAME, Font.BOLD, 26));
+        title.setForeground(UiTheme.TEXT_DARK);
 
         notificationLabel = new JLabel("");
-        notificationLabel.setFont(new Font(FONT_NAME, Font.PLAIN, 14));
+        notificationLabel.setFont(new Font(UiTheme.FONT_NAME, Font.PLAIN, 14));
         notificationLabel.setForeground(new Color(50, 150, 50));
         notificationLabel.setVisible(false);
 
-        backButton = createOutlineButton("Back");
+        backButton = StyledButton.createOutlineButton("Back");
         backButton.setAlignmentX(Component.LEFT_ALIGNMENT);
         backButton.addActionListener(this::backClicked);
 
-        JPanel header = new JPanel();
+        final JPanel header = new JPanel();
         header.setLayout(new BoxLayout(header, BoxLayout.Y_AXIS));
-        header.setBackground(CARD_BG);
+        header.setBackground(UiTheme.CARD_BG);
         header.add(backButton);
         header.add(Box.createVerticalStrut(15));
         header.add(title);
@@ -83,9 +85,9 @@ public class WatchlistView extends JPanel implements PropertyChangeListener {
 
         symbolsPanel = new JPanel();
         symbolsPanel.setLayout(new BoxLayout(symbolsPanel, BoxLayout.Y_AXIS));
-        symbolsPanel.setBackground(CARD_BG);
+        symbolsPanel.setBackground(UiTheme.CARD_BG);
 
-        JScrollPane scrollPane = new JScrollPane(symbolsPanel);
+        final JScrollPane scrollPane = new JScrollPane(symbolsPanel);
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);
         scrollPane.setPreferredSize(new Dimension(500, 300));
@@ -98,7 +100,7 @@ public class WatchlistView extends JPanel implements PropertyChangeListener {
     }
 
     private void backClicked(ActionEvent evt) {
-        WatchlistState state = watchlistViewModel.getState();
+        final WatchlistState state = watchlistViewModel.getState();
         homeController.execute(state.getUsername(), state.getPassword());
         notificationLabel.setVisible(false);
         notificationLabel.setText("");
@@ -106,61 +108,67 @@ public class WatchlistView extends JPanel implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if (!evt.getPropertyName().equals("state")) return;
-        WatchlistState state = (WatchlistState) evt.getNewValue();
+        if (!evt.getPropertyName().equals("state")) {
+            return;
+        }
+        final WatchlistState state = (WatchlistState) evt.getNewValue();
         updateSymbols(state);
     }
 
     private void updateSymbols(WatchlistState state) {
         symbolsPanel.removeAll();
 
-        List<String> symbols = state.getSymbols();
+        final List<String> symbols = state.getSymbols();
         if (symbols == null || symbols.isEmpty()) {
-            JLabel empty = new JLabel("Your watchlist is empty.");
-            empty.setFont(new Font(FONT_NAME, Font.ITALIC, 16));
+            final JLabel empty = new JLabel("Your watchlist is empty.");
+            empty.setFont(new Font(UiTheme.FONT_NAME, Font.ITALIC, 16));
             symbolsPanel.add(empty);
-        } else {
+        }
+        else {
             for (String symbol : symbols) {
-                JPanel row = new JPanel(new GridBagLayout());
-                row.setBackground(CARD_BG);
+                final JPanel row = new JPanel(new GridBagLayout());
+                row.setBackground(UiTheme.CARD_BG);
                 row.setMaximumSize(new Dimension(Integer.MAX_VALUE, 45));
 
-                GridBagConstraints gbc = new GridBagConstraints();
+                final GridBagConstraints gbc = new GridBagConstraints();
                 gbc.insets = new Insets(0, 5, 0, 5);
                 gbc.gridy = 0;
                 gbc.fill = GridBagConstraints.HORIZONTAL;
 
                 gbc.gridx = 0;
                 gbc.weightx = 0.3;
-                JLabel symbolLabel = new JLabel(symbol);
-                symbolLabel.setFont(new Font(FONT_NAME, Font.BOLD, 15));
+                final JLabel symbolLabel = new JLabel(symbol);
+                symbolLabel.setFont(new Font(UiTheme.FONT_NAME, Font.BOLD, 15));
                 row.add(symbolLabel, gbc);
-
 
                 gbc.gridx = 1;
                 gbc.weightx = 0.2;
-                JLabel priceLabel = new JLabel("");
+                final JLabel priceLabel = new JLabel("");
                 if (state.getPrices() != null && state.getPrices().containsKey(symbol)) {
                     priceLabel.setText("Price: $" + state.getPrices().get(symbol));
                 }
-                priceLabel.setFont(new Font(FONT_NAME, Font.PLAIN, 14));
+                priceLabel.setFont(new Font(UiTheme.FONT_NAME, Font.PLAIN, 14));
                 row.add(priceLabel, gbc);
 
                 gbc.gridx = 2;
                 gbc.weightx = 0.2;
-                JLabel perfLabel = new JLabel("");
+                final JLabel perfLabel = new JLabel("");
                 if (state.getPerformance() != null && state.getPerformance().containsKey(symbol)) {
-                    BigDecimal p = state.getPerformance().get(symbol);
-                    perfLabel.setText(p + "%");
-                    if (p.compareTo(BigDecimal.ZERO) > 0) perfLabel.setForeground(new Color(0, 165, 0));
-                    else if (p.compareTo(BigDecimal.ZERO) < 0) perfLabel.setForeground(new Color(200, 0, 0));
+                    final BigDecimal performance = state.getPerformance().get(symbol);
+                    perfLabel.setText(performance + "%");
+                    if (performance.compareTo(BigDecimal.ZERO) > 0) {
+                        perfLabel.setForeground(new Color(0, 165, 0));
+                    }
+                    else if (performance.compareTo(BigDecimal.ZERO) < 0) {
+                        perfLabel.setForeground(new Color(200, 0, 0));
+                    }
                 }
-                perfLabel.setFont(new Font(FONT_NAME, Font.BOLD, 14));
+                perfLabel.setFont(new Font(UiTheme.FONT_NAME, Font.BOLD, 14));
                 row.add(perfLabel, gbc);
 
                 gbc.gridx = 3;
                 gbc.weightx = 0.1;
-                JButton removeButton = createOutlineButton("Remove");
+                final JButton removeButton = StyledButton.createOutlineButton("Remove");
                 removeButton.addActionListener(e -> {
                     watchlistController.remove(state.getUsername(), state.getPassword(), symbol);
                     notificationLabel.setText(symbol + " removed from watchlist");
@@ -177,7 +185,15 @@ public class WatchlistView extends JPanel implements PropertyChangeListener {
         symbolsPanel.repaint();
     }
 
-    public String getViewName() { return viewName; }
-    public void setHomeController(HomeController c) { homeController = c; }
-    public void setWatchlistController(WatchlistController c) { watchlistController = c; }
+    public String getViewName() {
+        return viewName;
+    }
+
+    public void setHomeController(HomeController homeController) {
+        this.homeController = homeController;
+    }
+
+    public void setWatchlistController(WatchlistController watchlistController) {
+        this.watchlistController = watchlistController;
+    }
 }

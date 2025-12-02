@@ -5,10 +5,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
 import entity.WatchlistEntry;
 
 /**
- * Factory class responsible for creating WatchlistOutputData
+ * Factory class responsible for creating WatchlistOutputData.
  */
 
 public class WatchlistOutputDataFactory {

@@ -1,18 +1,19 @@
 package view;
 
-import entity.News;
-import interface_adapter.news.NewsState;
-import interface_adapter.news.NewsViewModel;
-import view.theme.StyledButton;
-import view.theme.StyledCardPanel;
-
-import javax.swing.*;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.net.URI;
 
-import static view.theme.UITheme.*;
+import javax.swing.*;
+
+import entity.News;
+import interface_adapter.news.NewsState;
+import interface_adapter.news.NewsViewModel;
+import view.theme.StyledButton;
+import view.theme.StyledCardPanel;
+import view.theme.UiTheme;
+import view.theme.UiTheme.*;
 
 /**
  * NewsPanel displays a scrollable list of the latest market news articles.
@@ -28,25 +29,25 @@ public class NewsPanel extends StyledCardPanel implements PropertyChangeListener
     /**
      * Constructs a NewsPanel that listens to the provided NewsViewModel.
      *
-     * @param vm the NewsViewModel providing news updates
+     * @param newsViewModel the NewsViewModel providing news updates
      */
-    public NewsPanel(NewsViewModel vm) {
-        this.newsViewModel = vm;
-        vm.addPropertyChangeListener(this);
+    public NewsPanel(NewsViewModel newsViewModel) {
+        this.newsViewModel = newsViewModel;
+        newsViewModel.addPropertyChangeListener(this);
 
-        JLabel header = new JLabel("Latest Market News");
-        header.setFont(new Font(FONT_NAME, Font.BOLD, 18));
-        header.setForeground(TEXT_DARK);
+        final JLabel header = new JLabel("Latest Market News");
+        header.setFont(new Font(UiTheme.FONT_NAME, Font.BOLD, 18));
+        header.setForeground(UiTheme.TEXT_DARK);
         header.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         contentPanel = new JPanel();
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
-        contentPanel.setBackground(CARD_BG);
+        contentPanel.setBackground(UiTheme.CARD_BG);
 
-        JScrollPane scroll = new JScrollPane(contentPanel);
+        final JScrollPane scroll = new JScrollPane(contentPanel);
         scroll.setBorder(null);
 
-        this.setBackground(BG);
+        this.setBackground(UiTheme.BG);
         this.add(header);
         this.add(Box.createRigidArea(new Dimension(0, 10)));
         this.add(scroll);
@@ -60,43 +61,45 @@ public class NewsPanel extends StyledCardPanel implements PropertyChangeListener
      */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        NewsState state = (NewsState) evt.getNewValue();
+        final NewsState state = (NewsState) evt.getNewValue();
         contentPanel.removeAll();
 
         for (News news : state.getNews()) {
-            JPanel card = new JPanel();
+            final JPanel card = new JPanel();
             card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
-            card.setBackground(CARD_BG);
+            card.setBackground(UiTheme.CARD_BG);
             card.setBorder(BorderFactory.createCompoundBorder(
-                    BorderFactory.createLineBorder(BG, 1),
+                    BorderFactory.createLineBorder(UiTheme.BG, 1),
                     BorderFactory.createEmptyBorder(10, 14, 10, 14)
             ));
 
-            JLabel title = new JLabel("<html><b>" + news.getTitle() + "</b></html>");
-            title.setFont(new Font(FONT_NAME, Font.BOLD, 14));
-            title.setForeground(TEXT_DARK);
+            final JLabel title = new JLabel("<html><b>" + news.getTitle() + "</b></html>");
+            title.setFont(new Font(UiTheme.FONT_NAME, Font.BOLD, 14));
+            title.setForeground(UiTheme.TEXT_DARK);
             title.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-            JTextArea body = new JTextArea(news.getContent());
+            final JTextArea body = new JTextArea(news.getContent());
             body.setLineWrap(true);
             body.setWrapStyleWord(true);
             body.setEditable(false);
-            body.setFont(new Font(FONT_NAME, Font.PLAIN, 13));
-            body.setBackground(CARD_BG);
-            body.setForeground(TEXT_DARK);
+            body.setFont(new Font(UiTheme.FONT_NAME, Font.PLAIN, 13));
+            body.setBackground(UiTheme.CARD_BG);
+            body.setForeground(UiTheme.TEXT_DARK);
             body.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-            JButton readButton = StyledButton.createOutlineButton("Read Article");
+            final JButton readButton = StyledButton.createOutlineButton("Read Article");
             readButton.setAlignmentX(Component.LEFT_ALIGNMENT);
             readButton.addActionListener(e -> {
                 try {
                     Desktop.getDesktop().browse(new URI(news.getLink()));
-                } catch (Exception ignored) {}
+                }
+                catch (Exception ignored) {
+                }
             });
 
-            JLabel dateLabel = new JLabel(news.getDate());
-            dateLabel.setFont(new Font(FONT_NAME, Font.ITALIC, 11));
-            dateLabel.setForeground(TEXT_DARK.darker());
+            final JLabel dateLabel = new JLabel(news.getDate());
+            dateLabel.setFont(new Font(UiTheme.FONT_NAME, Font.ITALIC, 11));
+            dateLabel.setForeground(UiTheme.TEXT_DARK.darker());
             dateLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
             card.add(title);

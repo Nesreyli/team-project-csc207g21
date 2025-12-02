@@ -2,6 +2,7 @@ package use_case.watchlist;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import entity.WatchlistEntry;
 
 /**
@@ -46,7 +47,8 @@ public class WatchlistInteractor implements WatchlistInputBoundary {
                     entries
             );
             output.prepareWatchlistSuccessView(outputData);
-        } catch (Exception error) {
+        }
+        catch (Exception error) {
             output.prepareWatchlistFailView("Server error: " + error.getMessage());
         }
     }
