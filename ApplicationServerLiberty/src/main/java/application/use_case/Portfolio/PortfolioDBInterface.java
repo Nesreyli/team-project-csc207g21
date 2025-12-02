@@ -10,5 +10,5 @@ public interface PortfolioDBInterface {
     OrderTicket buyStock(String symbol, int amount, int id);
     OrderTicket sellStock(String symbol, int amount, int id);
 
-    public Portfolio getPortfolio(int user_id);
+    Portfolio getPortfolio(int user_id);
 }

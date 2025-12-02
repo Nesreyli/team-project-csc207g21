@@ -28,7 +28,7 @@ public class PriceAccessObject implements PriceAccessInterface {
     private static final String USERNAME = "username";
     private static final String PASSWORD = "password";
     private static final String MESSAGE = "message";
-    private static final String URL = "http://localhost:4848/rest";
+    private static final String URL = "http://localhost:8080/rest";
 
     public PriceAccessObject(){
     }

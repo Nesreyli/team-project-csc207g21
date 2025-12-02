@@ -15,7 +15,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class SearchAccessObject {
-    private static final String url = "http://localhost:4848/rest";
+    private static final String url = "http://localhost:8080/rest";
     private static final String CONTENT_TYPE_JSON = "application/json";
     private static final int SUCCESS_CODE = 200;
 

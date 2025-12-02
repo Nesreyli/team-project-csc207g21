@@ -13,14 +13,26 @@ public class BuySellInputData {
         this.isBuy = isBuy;
     }
 
+    /**
+     * Getter.
+     * @return priceState
+     */
     public PriceState getPriceState() {
         return priceState;
     }
 
+    /**
+     * Getter.
+     * @return amount
+     */
     public Integer getAmount() {
         return amount;
     }
 
+    /**
+     * Getter.
+     * @return isBuy
+     */
     public Boolean getIsBuy() {
         return isBuy;
     }

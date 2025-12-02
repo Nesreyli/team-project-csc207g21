@@ -15,6 +15,11 @@ public class AddToWatchlistPresenter implements AddToWatchlistOutputBoundary {
         this.watchlistVM = watchlistVM;
     }
 
+    /**
+     * success view
+     * @param outputData the data containing the information needed to display
+     *                   the success response to the user
+     */
     @Override
     public void prepareAddToWatchlistSuccessView(AddToWatchlistOutputData outputData) {
         addVM.getState().setLastAddedSymbol(outputData.getSymbol());
@@ -25,6 +30,10 @@ public class AddToWatchlistPresenter implements AddToWatchlistOutputBoundary {
         watchlistVM.firePropertyChange();
     }
 
+    /**
+     * fail view
+     * @param errorMessage a message describing why the operation failed
+     */
     @Override
     public void prepareAddToWatchlistFailView(String errorMessage) {
         addVM.getState().setLastAddedSymbol(null);

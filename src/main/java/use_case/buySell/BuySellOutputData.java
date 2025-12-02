@@ -17,22 +17,42 @@ public class BuySellOutputData {
         this.totalPrice = totalPrice;
     }
 
+    /**
+     * Getter.
+     * @return order
+     */
     public Character getOrder() {
         return order;
     }
 
+    /**
+     * Getter.
+     * @return symbol
+     */
     public String getSymbol() {
         return symbol;
     }
 
+    /**
+     * Getter.
+     * @return amount
+     */
     public Integer getAmount() {
         return amount;
     }
 
+    /**
+     * Getter.
+     * @return price
+     */
     public BigDecimal getPrice() {
         return price;
     }
 
+    /**
+     * Getter.
+     * @return totalPrice
+     */
     public BigDecimal getTotalPrice() {
         return totalPrice;
     }

@@ -30,7 +30,7 @@ public class PortfolioAccessObject implements PortfolioAccessInterface {
     private static final String USERNAME = "username";
     private static final String PASSWORD = "password";
     private static final String MESSAGE = "message";
-    private final String url = "http://localhost:4848/rest";
+    private final String url = "http://localhost:8080/rest";
     private String currentUsername;
 
 

@@ -13,14 +13,26 @@ public class AddToWatchlistOutputData {
         this.symbols = symbols;
     }
 
+    /**
+     * Getter.
+     * @return message
+     */
     public String getMessage() {
         return message;
     }
 
+    /**
+     * Getter.
+     * @return symbol
+     */
     public String getSymbol() {
         return symbol;
     }
 
+    /**
+     * Getter.
+     * @return updated symbols
+     */
     public List<String> getUpdatedSymbols() {
         return symbols;
     }

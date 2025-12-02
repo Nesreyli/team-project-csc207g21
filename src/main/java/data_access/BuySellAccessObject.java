@@ -15,8 +15,15 @@ public class BuySellAccessObject implements BuySellAccessInterface {
     private static final int SUCCESS_CODE = 200;
     private static final String CONTENT_TYPE_JSON = "application/json";
     private static final String MESSAGE = "message";
-    private final String url = " http://localhost:4848/rest";
+    private final String url = " http://localhost:8080/rest";
 
+    /**
+     * Sends a buy/sell order to backend then parses result
+     * @param priceState the current price information needed to evaluate the order
+     * @param amount     the number of shares to buy or sell
+     * @param isBuy      true for a buy order, false for a sell order
+     * @return containing either receipt or error message
+     */
     public Response setStockData(PriceState priceState, Integer amount, Boolean isBuy) {
         String symbol = priceState.getSymbol();
         String username =  priceState.getUsername();

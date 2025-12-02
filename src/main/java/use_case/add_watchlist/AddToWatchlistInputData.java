@@ -11,14 +11,26 @@ public class AddToWatchlistInputData {
         this.symbol = symbol;
     }
 
+    /**
+     * Getter.
+     * @return username
+     */
     public String getUsername() {
         return username;
     }
 
+    /**
+     * Getter.
+     * @return password
+     */
     public String getPassword() {
         return password;
     }
 
+    /**
+     * Getter.
+     * @return symbol
+     */
     public String getSymbol() {
         return symbol;
     }

@@ -16,6 +16,10 @@ public class AddToWatchlistInteractor implements AddToWatchlistInputBoundary {
         this.output = output;
     }
 
+    /**
+     * Attempts to add the specified symbol to user's watchlist
+     * @param inputData the data required to attempt adding a symbol to the user's watchlist
+     */
     @Override
     public void execute(AddToWatchlistInputData inputData) {
         try {

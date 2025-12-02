@@ -12,6 +12,12 @@ public class BuyInteractor {
     UserDatabaseInterface userDB;
     @Inject
     PortfolioDBInterface portfolioDB;
+
+    /**
+     * execute market buy
+     * @param buyInput buy input
+     * @return error codes
+     */
     public OutputDataBuy executeMarketBuy(MarketBuyInput buyInput){
         int userID = -1;
         int amount = 0;

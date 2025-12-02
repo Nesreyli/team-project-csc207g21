@@ -13,6 +13,10 @@ public class BuySellPresenter implements BuySellOutputBoundary {
         this.viewMan = viewMan;
     }
 
+    /**
+     * Presents success view.
+     * @param buySellOd the output data containing details of the completed transaction
+     */
     @Override
     public void prepareSuccessView(BuySellOutputData buySellOd) {
         BuySellState bsState = buySellViewModel.getState();

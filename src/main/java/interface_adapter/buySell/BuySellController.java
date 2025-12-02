@@ -12,6 +12,12 @@ public class BuySellController {
         this.BSInteractor = BSInteractor;
     }
 
+    /**
+     * executes buy/sell
+     * @param priceState price state
+     * @param amount amount
+     * @param isBuy buy identifier
+     */
     public void execute(PriceState priceState, Integer amount, Boolean isBuy) {
         final BuySellInputData BSInputData = new BuySellInputData(priceState, amount, isBuy);
         BSInteractor.execute(BSInputData);

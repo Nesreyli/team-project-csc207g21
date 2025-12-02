@@ -12,7 +12,7 @@ public class getPriceInteractor {
     @Inject
     StockDatabaseInterface stockDB;
 
-    public OutputDataPrice executePrice(PricesInput symbols) throws RuntimeException{
+    public OutputDataPrice executePrice(PricesInput symbols){
         ArrayList<Price> prices;
         ArrayList<Price> openPrices;
         try{
