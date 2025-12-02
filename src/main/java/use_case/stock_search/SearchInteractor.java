@@ -16,11 +16,6 @@ public class SearchInteractor implements SearchInputBoundary {
     @Override
     public void executeSearch(SearchInputData input) {
         final String query = input.getQuery();
-
-        if (query == null || query.isEmpty()) {
-            searchOutputBoundary.prepareFailView("Search Query cannot be Empty");
-        }
-
         try {
             final Map<String, Stock_Search> results = searchAccessInterface.searchStocks(query);
 
