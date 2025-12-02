@@ -86,6 +86,7 @@ import use_case.stock_price.StockPriceInteractor;
 import use_case.stock_search.SearchInputBoundary;
 import use_case.stock_search.SearchInteractor;
 import use_case.stock_search.SearchOutputBoundary;
+import use_case.stock_search.StockSearchAccessInterface;
 import use_case.watchlist.WatchlistInputBoundary;
 import use_case.watchlist.WatchlistInteractor;
 import use_case.watchlist.WatchlistOutputBoundary;
@@ -101,7 +102,7 @@ public class AppBuilder {
     private final UserDataAccessObject userDataAccessObject = new UserDataAccessObject(userFactory);
     private final PortfolioAccessObject portfolioAccessObject = new PortfolioAccessObject();
     private final NewsAccessObject newsAccessObject = new NewsAccessObject();
-    private final SearchAccessObject searchDataAccess = new SearchAccessObject();
+    private final StockSearchAccessInterface searchDataAccess = new SearchAccessObject();  // Change type
     private final PriceAccessObject priceAccessObject = new PriceAccessObject();
     private final WatchlistAccessObject watchlistAccessObject = new WatchlistAccessObject();
     private final LeaderboardAccessObject leaderboardAccessObject = new LeaderboardAccessObject();
