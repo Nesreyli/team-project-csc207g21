@@ -16,7 +16,7 @@ import okhttp3.Response;
 import use_case.stock_search.StockSearchAccessInterface;
 
 public class SearchAccessObject implements StockSearchAccessInterface {
-    private static final String url = "http://localhost:4848/rest";
+    private static final String url = "http://100.67.4.80:4848/rest";
     private static final String CONTENT_TYPE_JSON = "application/json";
     private static final int SUCCESS_CODE = 200;
 
