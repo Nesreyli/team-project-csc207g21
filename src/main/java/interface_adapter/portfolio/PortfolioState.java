@@ -23,6 +23,10 @@ public class PortfolioState {
 
     private Map<String, BigDecimal> stockPerformance;
 
+    private String mostValue;
+
+    private String bestPerf;
+
     public PortfolioState(PortfolioState copy) {
         username = copy.username;
         password = copy.password;
@@ -97,5 +101,25 @@ public class PortfolioState {
 
     public String getPassword() {
         return password;
+    }
+
+    public String getBestPerf() {
+        return bestPerf;
+    }
+
+    public void setBestPerf(String bestPerf) {
+        this.bestPerf = bestPerf;
+    }
+
+    public String getMostValue() {
+        return mostValue;
+    }
+
+    public void setMostValue(String mostValue) {
+        this.mostValue = mostValue;
+    }
+
+    public void setStockPerformance(Map<String, BigDecimal> stockPerformance) {
+        this.stockPerformance = stockPerformance;
     }
 }

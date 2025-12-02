@@ -58,18 +58,9 @@ public class SearchView extends JPanel implements  ActionListener, PropertyChang
         loadallButton = new JButton(SearchViewModel.LOAD_ALL_BUTTON_LABEL);
         loadallButton.addActionListener(this);
 
-<<<<<<< Updated upstream
-        final String[] columnNames = {"Symbol", "Company", "Price (CAD)", "Country"};
-=======
-        // Top Panel with Back Button and Title
-        final JPanel topPanel = createTopPanel();
-
-        // Search Panel with styled input
-        final JPanel searchPanel = createSearchPanel();
-
         // Initialize table
         final String[] columnNames = {"Symbol", "Company", "Price (USD)", "Country"};
->>>>>>> Stashed changes
+
         tableModel = new DefaultTableModel(columnNames, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {

@@ -38,7 +38,8 @@ public class PortfolioInteractor implements PortfolioInputBoundary {
                 Map<String, Price> prices = getPrices(response);
                 if (prices != null) {
                     final PortfolioOutputData portOutputData =
-                            PortfolioOutputDataFactory.create((Portfolio) response.getEntity(), prices);
+                            PortfolioOutputDataFactory.create((Portfolio) response.getEntity(),
+                                    prices);
                     portfolioOutput.preparePortSuccessView(portOutputData);
                     break;
                 }
