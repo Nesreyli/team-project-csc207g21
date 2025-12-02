@@ -23,7 +23,7 @@
 
 ## About
 
-**Panic Trade** is a desktop stock trading simulation application built with Java Swing. The application allows users to create accounts, search for stocks, manage portfolios, track watchlists, view market news, and compete on a leaderboard based on portfolio performance. The application follows Clean Architecture principles, ensuring separation of concerns and maintainability.
+**Panic Trade** is a stock trading simulation application built with the help of Java Swing. Users can create an account, search for stocks, manage portfolios, track watchlists, view market news, and compete on our very own leaderboard based on portfolio performance. We built it to follow Clean Architecture principles, ensuring separation of concerns and maintainability.
 
 ---
 
@@ -120,19 +120,21 @@ src/main/java/
    mvn exec:java -Dexec.mainClass="app.Main"
    ```
    
-   Or run directly from your IDE by executing `app.Main`.
+   Or run directly from your IDE by running `app.Main`.
 
-### First Time Setup
+### Setup
 
 1. Launch the application
 2. Click "Create Account" to sign up
 3. Enter a username and password (minimum 5 characters)
 4. Log in with your credentials
-5. Start exploring stocks and building your portfolio!
+5. Start exploring stocks and build your portfolio!
 
 ---
 
 ## User Stories
+
+This section outlines all of our user stories.
 
 ### Authentication
 - **Sign Up**: Users can create a new account with a username and password
@@ -222,7 +224,7 @@ team-project-csc207g21/
 
 ## Technologies Used
 
-- **Java**: Core programming language
+- **Java**: Core language
 - **Java Swing**: GUI framework
 - **Maven**: Dependency management and build tool
 - **JUnit**: Unit testing framework
@@ -231,9 +233,7 @@ team-project-csc207g21/
 
 ---
 
-## Screenshots
-
-_Add screenshots of your application here to demonstrate functionality_
+## Previews
 
 ### Login Screen
 ![Login View](screenshots/login.png)
@@ -243,6 +243,15 @@ _Add screenshots of your application here to demonstrate functionality_
 
 ### Leaderboard
 ![Leaderboard View](screenshots/leaderboard.png)
+
+### Watchlist
+![Login View](screenshots/login.png)
+
+### Stock Search
+![Login View](screenshots/login.png)
+
+### News
+![Login View](screenshots/login.png)
 
 ---
 
