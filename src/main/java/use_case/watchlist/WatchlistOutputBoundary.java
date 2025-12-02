@@ -16,4 +16,6 @@ public interface WatchlistOutputBoundary {
      * @param errorMessage a message explaining why the operation failed
      */
     void prepareWatchlistFailView(String errorMessage);
+
+    void switchToWatchlistView();
 }

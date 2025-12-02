@@ -4,21 +4,22 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
 import entity.WatchlistEntry;
 
 /**
- * The Output Data Factory for the Watchlist Use Case.
+ * Factory class responsible for creating WatchlistOutputData
  */
 
 public class WatchlistOutputDataFactory {
+
     /**
-     * Creates a {@link WatchlistOutputData} object based on the provided user
-     * credentials and watchlist entries.
+     * Creates a WatchlistOutputData object based on the user's credentials
+     * and their watchlist entries.
+     *
      * @param username the username of the user
      * @param password the password of the user
-     * @param entries  the list of WatchlistEntry entities representing the user's watchlist
-     * @return a populated WatchlistOutputData containing symbols, prices, and performance
+     * @param entries  the list of WatchlistEntry entities representing the watchlist
+     * @return a populated WatchlistOutputData object
      */
     public static WatchlistOutputData create(String username, String password, List<WatchlistEntry> entries) {
         final List<String> symbols = entries.stream()
