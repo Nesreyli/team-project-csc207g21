@@ -15,6 +15,7 @@ public class WatchlistOutputData {
     private final List<String> symbols;
     private final Map<String, BigDecimal> prices;
     private final Map<String, BigDecimal> performance;
+    private final String message;
 
     /**
      * Constructs a WatchlistOutputData object.
@@ -28,12 +29,14 @@ public class WatchlistOutputData {
     public WatchlistOutputData(String username, String password,
                                List<String> symbols,
                                Map<String, BigDecimal> prices,
-                               Map<String, BigDecimal> performance) {
+                               Map<String, BigDecimal> performance,
+                               String message) {
         this.username = username;
         this.password = password;
         this.symbols = symbols;
         this.prices = prices;
         this.performance = performance;
+        this.message = message;
     }
 
     public String getUsername() { return username; }
@@ -41,4 +44,5 @@ public class WatchlistOutputData {
     public List<String> getSymbols() { return symbols; }
     public Map<String, BigDecimal> getPrices() { return prices; }
     public Map<String, BigDecimal> getPerformance() { return performance; }
+    public String getMessage() { return message; }
 }

@@ -23,22 +23,22 @@ public class WatchlistPresenter implements WatchlistOutputBoundary {
 
     @Override
     public void prepareWatchlistSuccessView(WatchlistOutputData data) {
-        WatchlistState newState = watchlistViewModel.getState();
-        newState.setUsername(data.getUsername());
-        newState.setPassword(data.getPassword());
-        newState.setSymbols(data.getSymbols());
-        newState.setPrices(data.getPrices());
-        newState.setPerformance(data.getPerformance());
+        WatchlistState state = watchlistViewModel.getState();
+        state.setUsername(data.getUsername());
+        state.setPassword(data.getPassword());
+        state.setSymbols(data.getSymbols());
+        state.setPrices(data.getPrices());
+        state.setPerformance(data.getPerformance());
+        state.setMessage("200");
 
-        watchlistViewModel.setState(newState);
         watchlistViewModel.firePropertyChange();
     }
 
     @Override
     public void prepareWatchlistFailView(String error) {
-        final LoggedInState loginState = loggedInViewModel.getState();
-        loginState.setLoggedInError(error);
-        loggedInViewModel.firePropertyChange();
+        WatchlistState state = watchlistViewModel.getState();
+        state.setMessage(error);
+        watchlistViewModel.firePropertyChange();
     }
 
     @Override

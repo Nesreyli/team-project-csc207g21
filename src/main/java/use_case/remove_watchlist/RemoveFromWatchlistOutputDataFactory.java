@@ -25,6 +25,6 @@ public class RemoveFromWatchlistOutputDataFactory {
                 .map(WatchlistEntry::getSymbol)
                 .collect(Collectors.toList());
 
-        return new RemoveFromWatchlistOutputData("Successfully removed", removedSymbol, updatedSymbols);
+        return new RemoveFromWatchlistOutputData("200", removedSymbol, updatedSymbols);
     }
 }
