@@ -15,7 +15,7 @@ public class BuySellAccessObject implements BuySellAccessInterface {
     private static final int SUCCESS_CODE = 200;
     private static final String CONTENT_TYPE_JSON = "application/json";
     private static final String MESSAGE = "message";
-    private final String url = " http://localhost:4848/rest";
+    private final String url = "http://100.67.4.80:4848/rest";
 
     public Response setStockData(PriceState priceState, Integer amount, Boolean isBuy) {
         final String symbol = priceState.getSymbol();

@@ -30,7 +30,7 @@ public class PortfolioAccessObject implements PortfolioAccessInterface {
     private static final String USERNAME = "username";
     private static final String PASSWORD = "password";
     private static final String MESSAGE = "message";
-    private final String url = "http://localhost:4848/rest";
+    private final String url = "http://100.67.4.80:4848/rest";
     private String currentUsername;
 
 
@@ -53,9 +53,11 @@ public class PortfolioAccessObject implements PortfolioAccessInterface {
                 JSONObject holdings = responseBody.getJSONObject("holdings");
                 BigDecimal performance = responseBody.getBigDecimal("performance");
 
-                Portfolio port = new Portfolio.Builder().user(UserFactory.create(name, pass)).
-                        cash(cash).holdings(holdings.toMap()).value(value).performance(performance).
-                        build();
+                Portfolio port = new Portfolio.Builder()
+                        .user(UserFactory.create(name, pass))
+                        .cash(cash).holdings(holdings.toMap())
+                        .value(value).performance(performance)
+                        .build();
 
                 return entity.ResponseFactory.create(SUCCESS_CODE, port);
             }
