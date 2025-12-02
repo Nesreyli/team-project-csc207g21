@@ -31,6 +31,8 @@ public class PortfolioPresenter implements PortfolioOutputBoundary {
         portfolioState.setCash(response.getCash().toString() + " USD");
         portfolioState.setValue(response.getValue().toString() + " USD");
         portfolioState.setHoldings(response.getHoldings());
+        portfolioState.setPrices(response.getPrices());
+        portfolioState.setStockPerformances(response.getStockPerformance());
         this.portViewModel.firePropertyChange();
 
         // and clear everything from the LoginViewModel's state

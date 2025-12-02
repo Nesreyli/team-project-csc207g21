@@ -3,6 +3,7 @@ package app;
 import java.awt.*;
 import javax.swing.*;
 import data_access.*;
+import entity.Portfolio;
 import entity.UserFactory;
 import interface_adapter.Stock_Search.SearchController;
 import interface_adapter.Stock_Search.SearchPresenter;
@@ -245,7 +246,7 @@ public class AppBuilder {
         final PortfolioOutputBoundary portfolioOutputBoundary = new PortfolioPresenter(viewManagerModel,
                 portViewModel, loggedInViewModel);
         final PortfolioInputBoundary portfolioInputBoundary = new PortfolioInteractor(portfolioAccessObject,
-                portfolioOutputBoundary);
+                priceAccessObject, portfolioOutputBoundary);
         final PortfolioController portfolioController = new PortfolioController(portfolioInputBoundary);
         loggedInView.setPortfolioController(portfolioController);
         return this;
@@ -309,6 +310,7 @@ public class AppBuilder {
         final PriceInputBoundary priceInputBoundary = new StockPriceInteractor(priceAccessObject, priceOutputBoundary);
         final PriceController priceController = new PriceController(priceInputBoundary);
         searchView.setPriceController(priceController);
+        portView.setPriceController(priceController);
         return this;
     }
 

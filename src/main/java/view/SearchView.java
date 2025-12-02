@@ -58,7 +58,8 @@ public class SearchView extends JPanel implements  ActionListener, PropertyChang
         final JPanel searchPanel = createSearchPanel();
 
         // Initialize table
-        final String[] columnNames = {"Symbol", "Company", "Price (CAD)", "Country"};
+        final String[] columnNames = {"Symbol", "Company", "Price (USD)", "Country"};
+
         tableModel = new DefaultTableModel(columnNames, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
