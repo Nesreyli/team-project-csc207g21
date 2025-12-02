@@ -148,8 +148,9 @@ public class AppBuilder {
      */
     public AppBuilder addLoggedInView() {
         newsViewModel = new NewsViewModel();
+        watchlistViewModel = new WatchlistViewModel();
         loggedInViewModel = new LoggedInViewModel();
-        loggedInView = new LoggedInView(loggedInViewModel, newsViewModel);
+        loggedInView = new LoggedInView(loggedInViewModel, newsViewModel, watchlistViewModel);
         cardPanel.add(loggedInView, loggedInView.getViewName());
         return this;
     }
