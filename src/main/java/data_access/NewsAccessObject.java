@@ -1,27 +1,20 @@
 package data_access;
 
-import entity.News;
-import use_case.news.NewsAccessInterface;
-import okhttp3.*;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-//import use_case.change_password.ChangePasswordUserDataAccessInterface;
-//import use_case.login.LoginUserDataAccessInterface;
-//import use_case.logout.LogoutUserDataAccessInterface;
-//import use_case.signup.SignupUserDataAccessInterface;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.*;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import entity.News;
+import use_case.news.NewsAccessInterface;
+
 /**
  * The DAO for user data.
  */
-/*implements SignupUserDataAccessInterface,
-LoginUserDataAccessInterface,
-ChangePasswordUserDataAccessInterface,
-LogoutUserDataAccessInterface*/
 
 public class NewsAccessObject implements NewsAccessInterface {
     private static final int SUCCESS_CODE = 200;
@@ -34,8 +27,7 @@ public class NewsAccessObject implements NewsAccessInterface {
     private final String url = "http://localhost:4848/rest";
     private String currentUsername;
 
-
-    public entity.Response getNews(){
+    public entity.Response getNews() {
         // Make an API call to get the user object.
         final OkHttpClient client = new OkHttpClient().newBuilder().build();
         final Request request = new Request.Builder()
@@ -46,11 +38,11 @@ public class NewsAccessObject implements NewsAccessInterface {
             final Response response = client.newCall(request).execute();
             final JSONObject responseBody = new JSONObject(response.body().string());
             if (responseBody.getInt(MESSAGE) == SUCCESS_CODE) {
-                JSONArray jsonArray = responseBody.getJSONArray("articles");
-                List<News> newsList = new ArrayList<>();
-                for(Object object: jsonArray){
-                    JSONObject jsonObject = (JSONObject) object;
-                    News news = new News().setAuthor(jsonObject.getString("author"))
+                final JSONArray jsonArray = responseBody.getJSONArray("articles");
+                final List<News> newsList = new ArrayList<>();
+                for (Object object: jsonArray) {
+                    final JSONObject jsonObject = (JSONObject) object;
+                    final News news = new News().setAuthor(jsonObject.getString("author"))
                             .setContent(jsonObject.getString("content"))
                             .setImage(jsonObject.getString("image"))
                             .setTitle(jsonObject.getString("title"))

@@ -9,7 +9,10 @@ public class NewsController {
         this.newsInputBoundary = newsInputBoundary;
     }
 
-    public void execute(){
+    /**
+     * Triggers the execution of the news retrieval use case.
+     */
+    public void execute() {
         newsInputBoundary.execute();
     }
 }

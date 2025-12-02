@@ -10,22 +10,27 @@ import java.util.*;
 public class Leaderboard {
     private Map<Integer, List<Object>> leaderboard = new HashMap<>();
 
-    public Leaderboard(){};
+    public Leaderboard() {
 
-    public Leaderboard(Map<Integer, String> users, Map<String, Long> value){
-        for(Integer num: users.keySet()){
-            String username = users.get(num);
+    }
+
+    public Leaderboard(Map<Integer, String> users, Map<String, Long> value) {
+        for (Integer num: users.keySet()) {
+            final String username = users.get(num);
             if (username == null || username.isEmpty()) {
-                continue; // Skip entries with null or empty usernames
+                // Skip entries with null or empty usernames
+                continue;
             }
-            List<Object> ranking = new ArrayList<>();
+            final List<Object> ranking = new ArrayList<>();
             ranking.add(username);
-            Long portfolioValue = value.get(username);
+            final Long portfolioValue = value.get(username);
             if (portfolioValue != null) {
                 ranking.add(new BigDecimal(portfolioValue).divide(new BigDecimal(100000), 5,
                         RoundingMode.UNNECESSARY));
-            } else {
-                ranking.add(BigDecimal.ZERO); // Default to 0 if valuation is missing
+            }
+            else {
+                // Default to 0 if valuation is missing
+                ranking.add(BigDecimal.ZERO);
             }
             leaderboard.put(num, ranking);
         }

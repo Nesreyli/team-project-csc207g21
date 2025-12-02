@@ -18,20 +18,21 @@ public class BuySellAccessObject implements BuySellAccessInterface {
     private final String url = " http://localhost:4848/rest";
 
     public Response setStockData(PriceState priceState, Integer amount, Boolean isBuy) {
-        String symbol = priceState.getSymbol();
-        String username =  priceState.getUsername();
-        String password = priceState.getPassword();
+        final String symbol = priceState.getSymbol();
+        final String username =  priceState.getUsername();
+        final String password = priceState.getPassword();
 
-        Character order;
-        String outSymbol;
-        Integer outAmount;
-        BigDecimal price;
-        BigDecimal totalPrice;
+        final Character order;
+        final String outSymbol;
+        final Integer outAmount;
+        final BigDecimal price;
+        final BigDecimal totalPrice;
+        final String apiUrl;
 
-        String apiUrl;
         if (isBuy) {
             apiUrl = "/buy/marketorder/?symbol=%s&amount=%s&username=%s&password=%s";
-        } else {
+        }
+        else {
             apiUrl = "/sell/marketorder/?symbol=%s&amount=%s&username=%s&password=%s";
         }
 
@@ -55,12 +56,14 @@ public class BuySellAccessObject implements BuySellAccessInterface {
                 outAmount = buyResponseBody.getInt("amount");
                 price = buyResponseBody.getBigDecimal("price");
                 totalPrice = buyResponseBody.getBigDecimal("totalPrice");
-            } else {
+            }
+            else {
                 // Error in buy request
                 return ResponseFactory.create(buyResponseBody.getInt(MESSAGE), null);
             }
 
-        } catch (IOException | JSONException ex) {
+        }
+        catch (IOException | JSONException ex) {
             throw new RuntimeException(ex);
         }
 

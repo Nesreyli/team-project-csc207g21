@@ -2,6 +2,9 @@ package use_case.buySell;
 
 import java.math.BigDecimal;
 
+/**
+ * The Output Data for the Login Use Case.
+ */
 public class BuySellOutputData {
     private final Character order;
     private final String symbol;

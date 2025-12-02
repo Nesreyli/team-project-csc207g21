@@ -1,8 +1,8 @@
 package application.use_case.Sell;
 
-import jakarta.enterprise.context.RequestScoped;
-
 import java.math.BigDecimal;
+
+import jakarta.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class OutputDataSell {
@@ -13,18 +13,22 @@ public class OutputDataSell {
     private BigDecimal price;
     private BigDecimal totalPrice;
 
-    public OutputDataSell(){}
-    public OutputDataSell(String m){
-        this(m,null,null, null,null,null);
+    public OutputDataSell() {
+
     }
-    public OutputDataSell(String m, Character o, String s, Integer n,
-                         BigDecimal p, BigDecimal tp){
-        message = m;
-        order = o;
-        symbol = s;
-        amount = n;
-        price = p;
-        totalPrice = tp;
+
+    public OutputDataSell(String message) {
+        this(message, null, null, null, null, null);
+    }
+
+    public OutputDataSell(String mess, Character ord, String sym, Integer num,
+                         BigDecimal pri, BigDecimal totalpri) {
+        message = mess;
+        order = ord;
+        symbol = sym;
+        amount = num;
+        price = pri;
+        totalPrice = totalpri;
     }
 
     public String getMessage() {

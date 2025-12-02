@@ -5,5 +5,5 @@ import application.entities.NewsArticle;
 import java.util.List;
 
 public interface NewsDBInterface {
-    public List<NewsArticle> fetchNews();
+    List<NewsArticle> fetchNews();
 }
