@@ -84,24 +84,22 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
                 new EmptyBorder(30, 40, 30, 40)
         ));
 
-        JLabel title = new JLabel("Welcome Back");
-        title.setFont(new Font(FONT_NAME, Font.BOLD, 28));
+        JLabel title = new JLabel("Welcome Back,");
+        title.setAlignmentX(Component.CENTER_ALIGNMENT);
+        title.setFont(new Font(FONT_NAME, Font.BOLD, 16));
         title.setForeground(TEXT_DARK);
 
-        JLabel subtitle = new JLabel("Logged in as:");
-        subtitle.setFont(new Font(FONT_NAME, Font.PLAIN, 14));
-        subtitle.setForeground(new Color(120, 120, 120));
-
         usernameLabel = new JLabel();
-        usernameLabel.setFont(new Font(FONT_NAME, Font.BOLD, 16));
+        usernameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        usernameLabel.setFont(new Font(FONT_NAME, Font.BOLD, 28));
         usernameLabel.setForeground(TEXT_DARK);
 
         JPanel header = new JPanel();
         header.setLayout(new BoxLayout(header, BoxLayout.Y_AXIS));
         header.setBackground(CARD_BG);
+        header.setAlignmentX(Component.CENTER_ALIGNMENT);
         header.add(title);
         header.add(Box.createVerticalStrut(5));
-        header.add(subtitle);
         header.add(usernameLabel);
         card.add(header);
 

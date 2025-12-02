@@ -1,6 +1,7 @@
 package use_case.watchlist;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -22,6 +23,10 @@ public class WatchlistOutputDataFactory {
      * @return a populated WatchlistOutputData object
      */
     public static WatchlistOutputData create(String username, String password, List<WatchlistEntry> entries) {
+        if (entries == null) {
+            entries = Collections.emptyList();
+        }
+
         final List<String> symbols = entries.stream()
                 .map(WatchlistEntry::getSymbol)
                 .collect(Collectors.toList());
@@ -34,6 +39,6 @@ public class WatchlistOutputDataFactory {
                 .filter(entry -> entry.getPerformance() != null)
                 .collect(Collectors.toMap(WatchlistEntry::getSymbol, WatchlistEntry::getPerformance));
 
-        return new WatchlistOutputData(username, password, symbols, prices, performance);
+        return new WatchlistOutputData(username, password, symbols, prices, performance, "200");
     }
 }
