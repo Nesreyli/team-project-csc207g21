@@ -32,7 +32,7 @@ public class BuySellInteractor implements BuySellInputBoundary {
                 buySellOb.prepareSuccessView(buySellOutputData);
                 break;
             case 400:
-                buySellOb.prepareFailView("Inadequate balance/shares");
+                buySellOb.prepareFailView("You don't have enough funds/shares!");
                 break;
             case 500:
                 buySellOb.prepareFailView("Server Error");
