@@ -37,9 +37,6 @@ public class PortfolioView extends JPanel implements ActionListener, PropertyCha
     private final JLabel best;
     private final JLabel most;
     private PriceController priceController;
-
-
-
     private HomeController homeController;
 
     public PortfolioView(PortfolioViewModel portfolioViewModel) {
@@ -122,6 +119,8 @@ public class PortfolioView extends JPanel implements ActionListener, PropertyCha
         c.fill = GridBagConstraints.BOTH;
         c.gridx = 0;
         c.gridy = 0;
+        c.weightx = 1.0;
+        c.weighty = 1.0;
         c.gridheight = 2;
         c.gridwidth = 1;
         c.anchor = GridBagConstraints.FIRST_LINE_START;
@@ -129,6 +128,8 @@ public class PortfolioView extends JPanel implements ActionListener, PropertyCha
         c.fill = GridBagConstraints.BOTH;
         c.gridx = 1;
         c.gridy = 0;
+        c.weightx = 1.0;
+        c.weighty = 1.0;
         c.gridheight = 3;
         c.gridwidth = 2;
         c.anchor = GridBagConstraints.PAGE_START;
@@ -180,7 +181,7 @@ public class PortfolioView extends JPanel implements ActionListener, PropertyCha
             tableModel.setRowCount(0);
             for (String symbol: positions.keySet()) {
                 final Object[] row = {
-                        " " + symbol, " " + positions.get(symbol),
+                        symbol, " " + positions.get(symbol),
                         " " + prices.get(symbol).setScale(2, RoundingMode.CEILING),
                         " " + performace.get(symbol).setScale(2, RoundingMode.CEILING),
                         " " + prices.get(symbol).multiply(new BigDecimal((int) positions.get(symbol)))
@@ -268,34 +269,6 @@ public class PortfolioView extends JPanel implements ActionListener, PropertyCha
                 return c;
             }
         });
-
-        // Click handler for table
-        resultsTable.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                final int row = resultsTable.rowAtPoint(e.getPoint());
-                final int column = resultsTable.columnAtPoint(e.getPoint());
-
-                if (row >= 0 && column >= 0) {
-                    final String symbol = (String) resultsTable.getValueAt(row, 0);
-                    priceController.executePrice(symbol);
-                }
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                resultsTable.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                resultsTable.setCursor(Cursor.getDefaultCursor());
-            }
-        });
-
-        // Enable sorting
-        final TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(tableModel);
-        resultsTable.setRowSorter(sorter);
     }
 
     public String getViewName() {
