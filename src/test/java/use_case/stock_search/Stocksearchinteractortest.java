@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Test class for SearchInteractor with 100% line coverage.
  * Uses manual test doubles instead of Mockito.
  */
-class SearchInteractorTest {
+class Stocksearchinteractortest {
 
     private TestSearchAccessObject testSearchAccessObject;
     private TestSearchOutputBoundary testOutputBoundary;
