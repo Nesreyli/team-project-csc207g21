@@ -125,6 +125,8 @@ public class PortfolioView extends JPanel implements ActionListener, PropertyCha
                 final JPanel owning = new JPanel();
                 owning.add(new JLabel(symbol));
                 owning.add(new JLabel(positions.get(symbol).toString()));
+                owning.add(new JLabel(state.getPrices().get(symbol).toString()));
+                owning.add(new JLabel(state.getStockPerformance().get(symbol).toString()));
                 owning.setBackground(Color.LIGHT_GRAY);
                 holdings.add(owning);
             }

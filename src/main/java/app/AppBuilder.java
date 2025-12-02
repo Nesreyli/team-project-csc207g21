@@ -271,7 +271,7 @@ public class AppBuilder {
         final PortfolioOutputBoundary portfolioOutputBoundary = new PortfolioPresenter(viewManagerModel,
                 portViewModel, loggedInViewModel);
         final PortfolioInputBoundary portfolioInputBoundary = new PortfolioInteractor(portfolioAccessObject,
-                portfolioOutputBoundary);
+                priceAccessObject, portfolioOutputBoundary);
         final PortfolioController portfolioController = new PortfolioController(portfolioInputBoundary);
         loggedInView.setPortfolioController(portfolioController);
         return this;
