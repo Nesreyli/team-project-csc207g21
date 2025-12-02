@@ -1,12 +1,13 @@
 package use_case.add_watchlist;
 
-import entity.WatchlistEntry;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import entity.WatchlistEntry;
+
 /**
- * Factory class responsible for creating AddToWatchlistOutputData
+ * Factory class responsible for creating AddToWatchlistOutputData.
  */
 
 public class AddToWatchlistOutputDataFactory {
@@ -19,9 +20,11 @@ public class AddToWatchlistOutputDataFactory {
      * @return a populated AddToWatchlistOutputData object
      */
     public static AddToWatchlistOutputData create(String addedSymbol, List<WatchlistEntry> entries) {
-        if (entries == null) entries = new ArrayList<>();
+        if (entries == null) {
+            entries = new ArrayList<>();
+        }
 
-        List<String> updatedSymbols = entries.stream()
+        final List<String> updatedSymbols = entries.stream()
                 .map(WatchlistEntry::getSymbol)
                 .collect(Collectors.toList());
 

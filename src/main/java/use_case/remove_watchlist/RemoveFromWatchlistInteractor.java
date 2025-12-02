@@ -1,6 +1,7 @@
 package use_case.remove_watchlist;
 
 import java.util.List;
+
 import entity.WatchlistEntry;
 import use_case.watchlist.WatchlistAccessInterface;
 
@@ -37,15 +38,16 @@ public class RemoveFromWatchlistInteractor implements RemoveFromWatchlistInputBo
             watchlistAccess.removeFromWatchlist(
                     inputData.getUsername(), inputData.getPassword(), inputData.getSymbol());
 
-            List<WatchlistEntry> entries = watchlistAccess.getWatchlist(
+            final List<WatchlistEntry> entries = watchlistAccess.getWatchlist(
                     inputData.getUsername(), inputData.getPassword());
 
-            RemoveFromWatchlistOutputData outputData = RemoveFromWatchlistOutputDataFactory.create(
+            final RemoveFromWatchlistOutputData outputData = RemoveFromWatchlistOutputDataFactory.create(
                     inputData.getSymbol(), entries);
 
             output.prepareRemoveFromWatchlistSuccessView(outputData);
 
-        } catch (Exception error) {
+        }
+        catch (Exception error) {
             output.prepareRemoveFromWatchlistFailView(
                     "Failed to remove symbol: " + error.getMessage());
         }

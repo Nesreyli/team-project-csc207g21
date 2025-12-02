@@ -17,5 +17,8 @@ public interface WatchlistOutputBoundary {
      */
     void prepareWatchlistFailView(String errorMessage);
 
+    /**
+     * Switches the view to WatchlistView.
+     */
     void switchToWatchlistView();
 }

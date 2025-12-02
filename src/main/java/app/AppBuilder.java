@@ -1,7 +1,9 @@
 package app;
 
 import java.awt.*;
+
 import javax.swing.*;
+
 import data_access.*;
 import entity.Portfolio;
 import entity.UserFactory;
@@ -440,7 +442,7 @@ public class AppBuilder {
         // Set application icon
         try {
             ImageIcon icon = null;
-            String[] possiblePaths = {
+            final String[] possiblePaths = {
                 "src/image/panictraderpic.png",
                 "image/panictraderpic.png"
             };
@@ -471,14 +473,16 @@ public class AppBuilder {
             if (icon != null && icon.getIconWidth() > 0) {
                 // Scale the image to a larger size for better visibility
                 java.awt.Image originalImage = icon.getImage();
-                int targetSize = 128; // Larger size for better visibility
-                java.awt.Image scaledImage = originalImage.getScaledInstance(
+                final int targetSize = 128; // Larger size for better visibility
+                final java.awt.Image scaledImage = originalImage.getScaledInstance(
                     targetSize, targetSize, java.awt.Image.SCALE_SMOOTH);
                 application.setIconImage(scaledImage);
-            } else {
+            }
+            else {
                 System.err.println("App icon not found or could not be loaded. Tried: " + String.join(", ", possiblePaths));
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             // Icon not found, continue without it
             System.err.println("Could not load app icon: " + e.getMessage());
         }
