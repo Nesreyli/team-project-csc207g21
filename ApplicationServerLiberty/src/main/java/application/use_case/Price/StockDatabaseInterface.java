@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public interface StockDatabaseInterface {
     Price checkOrder(PricesInput symbols);
 
-    ArrayList<Price> checkPrice(PricesInput symbols) throws RuntimeException;
+    ArrayList<Price> checkPrice(PricesInput symbols);
 
-    public ArrayList<Price> checkOpen(PricesInput symbols);
+    ArrayList<Price> checkOpen(PricesInput symbols);
 }

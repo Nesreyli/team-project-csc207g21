@@ -19,6 +19,10 @@ public class HomePresenter implements HomeOutputBoundary {
         this.loggedViewModel = loggedInViewModel;
     }
 
+    /**
+     * Prepares previous view.
+     * @param output the data required to display the previous view correctly
+     */
     @Override
     public void preparePreviousView(HomeOutputData output) {
 

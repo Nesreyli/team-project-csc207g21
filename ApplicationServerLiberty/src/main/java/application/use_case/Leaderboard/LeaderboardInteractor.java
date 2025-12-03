@@ -6,12 +6,13 @@ import jakarta.inject.Inject;
 @ApplicationScoped
 public class LeaderboardInteractor {
     @Inject
-    LeaderboardDBInterface leaderboardDB;
+    LeaderboardDBInterface leaderboardDb;
 
-    public OutputLeaderboard executeLeaderboard(){
-        try{
-            return new OutputLeaderboard("200", leaderboardDB.getLeaderboard().getLeaderboard());
-        } catch (RuntimeException e) {
+    public OutputLeaderboard executeLeaderboard() {
+        try {
+            return new OutputLeaderboard("200", leaderboardDb.getLeaderboard().getLeaderboard());
+        }
+        catch (RuntimeException error) {
             return new OutputLeaderboard("500", null);
         }
     }

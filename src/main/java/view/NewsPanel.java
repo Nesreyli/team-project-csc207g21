@@ -1,101 +1,120 @@
 package view;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.net.URI;
 
 import javax.swing.*;
-import javax.swing.border.*;
-
-import org.jetbrains.annotations.NotNull;
 
 import entity.News;
 import interface_adapter.news.NewsState;
 import interface_adapter.news.NewsViewModel;
+import view.theme.StyledButton;
+import view.theme.StyledCardPanel;
+import view.theme.UiTheme;
+import view.theme.UiTheme.*;
 
-public class NewsPanel extends JPanel implements PropertyChangeListener {
-    private final JPanel newsPanel;
-    private NewsViewModel newsViewModel;
-    private JTextArea newsTextArea;
-    private Color bright = new Color(214, 216, 220);
-    private Color dark = new Color(43, 45, 48);
+/**
+ * NewsPanel displays a scrollable list of the latest market news articles.
+ * Each article is shown as a styled card with title, content preview,
+ * publication date, and a button to open the full article in the browser.
+ * Listens to updates from the NewsViewModel.
+ */
+public class NewsPanel extends StyledCardPanel implements PropertyChangeListener {
 
+    private final JPanel contentPanel;
+    private final NewsViewModel newsViewModel;
+
+    /**
+     * Constructs a NewsPanel that listens to the provided NewsViewModel.
+     *
+     * @param newsViewModel the NewsViewModel providing news updates
+     */
     public NewsPanel(NewsViewModel newsViewModel) {
         this.newsViewModel = newsViewModel;
         newsViewModel.addPropertyChangeListener(this);
 
-        newsPanel = new JPanel();
-        newsPanel.setLayout(new BoxLayout(newsPanel, BoxLayout.Y_AXIS));
-        setLayout(new BorderLayout());
-        final var title = BorderFactory.createTitledBorder("Latest News");
-        title.setTitleColor(bright);
-        setBorder(title);
-        final JScrollPane newsScroll = new JScrollPane(newsPanel);
-        this.add(newsScroll);
-        this.setBackground(dark);
-        this.setForeground(bright);
-        newsScroll.setBackground(dark);
+        final JLabel header = new JLabel("Latest Market News");
+        header.setFont(new Font(UiTheme.FONT_NAME, Font.BOLD, 18));
+        header.setForeground(UiTheme.TEXT_DARK);
+        header.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        contentPanel = new JPanel();
+        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
+        contentPanel.setBackground(UiTheme.CARD_BG);
+
+        final JScrollPane scroll = new JScrollPane(contentPanel);
+        scroll.setBorder(null);
+
+        this.setBackground(UiTheme.BG);
+        this.add(header);
+        this.add(Box.createRigidArea(new Dimension(0, 10)));
+        this.add(scroll);
     }
 
+    /**
+     * Responds to changes in the NewsViewModel by rebuilding the list
+     * of news article cards.
+     *
+     * @param evt the PropertyChangeEvent containing the new NewsState
+     */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        final NewsState newsState = (NewsState) evt.getNewValue();
-        newsPanel.removeAll();
-        for (News news: newsState.getNews()) {
-            final JPanel panel = new JPanel();
-            panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-            final JTextArea title = new JTextArea(news.getTitle());
-            title.setFont(new Font("Arial", Font.BOLD, 13));
-            title.setLocation(title.getLocation().x, title.getLocation().y - 20);
-            title.setForeground(bright);
-            final JTextArea content = new JTextArea(news.getContent());
-            content.setLineWrap(true);
-            content.setForeground(bright);
+        final NewsState state = (NewsState) evt.getNewValue();
+        contentPanel.removeAll();
 
-            final JButton url = addOpenButton(news);
-            url.setPreferredSize(new Dimension(20, 14));
-            final JTextArea date = new JTextArea(news.getDate());
-            date.setFont(new Font("Arial", Font.ITALIC, 9));
-            final JPanel datePanel = new JPanel();
-            datePanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-            url.setOpaque(true);
-            url.setBackground(bright);
-            url.setForeground(dark);
-            datePanel.add(url);
-            date.setForeground(bright);
-            date.setBackground(dark);
-            datePanel.add(date);
+        for (News news : state.getNews()) {
+            final JPanel card = new JPanel();
+            card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
+            card.setBackground(UiTheme.CARD_BG);
+            card.setBorder(BorderFactory.createCompoundBorder(
+                    BorderFactory.createLineBorder(UiTheme.BG, 1),
+                    BorderFactory.createEmptyBorder(10, 14, 10, 14)
+            ));
 
-            title.setBackground(dark);
-            content.setBackground(dark);
-            datePanel.setBackground(dark);
+            final JLabel title = new JLabel("<html><b>" + news.getTitle() + "</b></html>");
+            title.setFont(new Font(UiTheme.FONT_NAME, Font.BOLD, 14));
+            title.setForeground(UiTheme.TEXT_DARK);
+            title.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-            panel.add(title);
-            panel.add(content);
-            panel.add(datePanel);
-            panel.setBorder(new BevelBorder(0));
+            final JTextArea body = new JTextArea(news.getContent());
+            body.setLineWrap(true);
+            body.setWrapStyleWord(true);
+            body.setEditable(false);
+            body.setFont(new Font(UiTheme.FONT_NAME, Font.PLAIN, 13));
+            body.setBackground(UiTheme.CARD_BG);
+            body.setForeground(UiTheme.TEXT_DARK);
+            body.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-            panel.setBackground(dark);
-            newsPanel.add(panel);
-        }
-    }
-
-    @NotNull
-    private static JButton addOpenButton(News news) {
-        final JButton url = new JButton("...");
-        url.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+            final JButton readButton = StyledButton.createOutlineButton("Read Article");
+            readButton.setAlignmentX(Component.LEFT_ALIGNMENT);
+            readButton.addActionListener(e -> {
                 try {
                     Desktop.getDesktop().browse(new URI(news.getLink()));
                 }
-                catch (Exception ex) {
+                catch (Exception ignored) {
                 }
-            }
-        });
-        return url;
+            });
+
+            final JLabel dateLabel = new JLabel(news.getDate());
+            dateLabel.setFont(new Font(UiTheme.FONT_NAME, Font.ITALIC, 11));
+            dateLabel.setForeground(UiTheme.TEXT_DARK.darker());
+            dateLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+            card.add(title);
+            card.add(Box.createRigidArea(new Dimension(0, 5)));
+            card.add(body);
+            card.add(Box.createRigidArea(new Dimension(0, 10)));
+            card.add(readButton);
+            card.add(Box.createRigidArea(new Dimension(0, 5)));
+            card.add(dateLabel);
+
+            contentPanel.add(card);
+            contentPanel.add(Box.createRigidArea(new Dimension(0, 12)));
+        }
+
+        contentPanel.revalidate();
+        contentPanel.repaint();
     }
 }

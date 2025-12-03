@@ -6,13 +6,14 @@ import application.entities.Price;
 
 import java.util.ArrayList;
 
-//implement where it checks if symbol is valid
+// implement where it checks if symbol is valid
 @Singleton
 public class getPriceInteractor {
     @Inject
-    StockDatabaseInterface stockDB;
+    StockDatabaseInterface stockDb;
 
-    public OutputDataPrice executePrice(PricesInput symbols) throws RuntimeException{
+<<<<<<< HEAD
+    public OutputDataPrice executePrice(PricesInput symbols){
         ArrayList<Price> prices;
         ArrayList<Price> openPrices;
         try{
@@ -20,9 +21,20 @@ public class getPriceInteractor {
             openPrices = stockDB.checkOpen(symbols);
             assert(prices.size() == openPrices.size());
         }catch(Price.IllegalPrice e){
+=======
+    public OutputDataPrice executePrice(PricesInput symbols) throws RuntimeException {
+        final ArrayList<Price> prices;
+        final ArrayList<Price> openPrices;
+        try {
+            prices = stockDb.checkPrice(symbols);
+            openPrices = stockDb.checkOpen(symbols);
+            assert prices.size() == openPrices.size();
+        }
+        catch (Price.IllegalPrice error) {
+>>>>>>> origin/main
             return new OutputDataPrice("500");
         }
-        catch (RuntimeException e) {
+        catch (RuntimeException error) {
             return new OutputDataPrice("400");
         }
         return new OutputDataPrice("200", prices, openPrices);

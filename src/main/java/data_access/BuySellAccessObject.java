@@ -15,23 +15,35 @@ public class BuySellAccessObject implements BuySellAccessInterface {
     private static final int SUCCESS_CODE = 200;
     private static final String CONTENT_TYPE_JSON = "application/json";
     private static final String MESSAGE = "message";
-    private final String url = " http://localhost:4848/rest";
+<<<<<<< HEAD
+    private final String url = " http://localhost:8080/rest";
+=======
+    private final String url = "http://100.67.4.80:4848/rest";
+>>>>>>> origin/main
 
+    /**
+     * Sends a buy/sell order to backend then parses result
+     * @param priceState the current price information needed to evaluate the order
+     * @param amount     the number of shares to buy or sell
+     * @param isBuy      true for a buy order, false for a sell order
+     * @return containing either receipt or error message
+     */
     public Response setStockData(PriceState priceState, Integer amount, Boolean isBuy) {
-        String symbol = priceState.getSymbol();
-        String username =  priceState.getUsername();
-        String password = priceState.getPassword();
+        final String symbol = priceState.getSymbol();
+        final String username =  priceState.getUsername();
+        final String password = priceState.getPassword();
 
-        Character order;
-        String outSymbol;
-        Integer outAmount;
-        BigDecimal price;
-        BigDecimal totalPrice;
+        final Character order;
+        final String outSymbol;
+        final Integer outAmount;
+        final BigDecimal price;
+        final BigDecimal totalPrice;
+        final String apiUrl;
 
-        String apiUrl;
         if (isBuy) {
             apiUrl = "/buy/marketorder/?symbol=%s&amount=%s&username=%s&password=%s";
-        } else {
+        }
+        else {
             apiUrl = "/sell/marketorder/?symbol=%s&amount=%s&username=%s&password=%s";
         }
 
@@ -55,12 +67,14 @@ public class BuySellAccessObject implements BuySellAccessInterface {
                 outAmount = buyResponseBody.getInt("amount");
                 price = buyResponseBody.getBigDecimal("price");
                 totalPrice = buyResponseBody.getBigDecimal("totalPrice");
-            } else {
+            }
+            else {
                 // Error in buy request
                 return ResponseFactory.create(buyResponseBody.getInt(MESSAGE), null);
             }
 
-        } catch (IOException | JSONException ex) {
+        }
+        catch (IOException | JSONException ex) {
             throw new RuntimeException(ex);
         }
 

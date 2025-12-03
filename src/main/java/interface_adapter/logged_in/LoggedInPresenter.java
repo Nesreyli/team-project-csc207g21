@@ -12,16 +12,16 @@ public class LoggedInPresenter implements LoggedInOutputBoundary {
 
     public LoggedInPresenter(LoggedInViewModel loggedInViewModel,
                              ViewManagerModel viewManagerModel,
-                             SearchViewModel searchViewModel){
+                             SearchViewModel searchViewModel) {
         this.loggedInViewModel = loggedInViewModel;
         this.viewManagerModel = viewManagerModel;
         this.searchViewModel = searchViewModel;
     }
 
     public void switchToSearch() {
-        LoggedInState loggedInState = loggedInViewModel.getState();
+        final LoggedInState loggedInState = loggedInViewModel.getState();
 
-        SearchState searchState = searchViewModel.getState();
+        final SearchState searchState = searchViewModel.getState();
         searchState.setUsername(loggedInState.getUsername());
         searchState.setPassword(loggedInState.getPassword());
 

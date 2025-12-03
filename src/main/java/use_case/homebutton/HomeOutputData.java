@@ -9,10 +9,18 @@ public class HomeOutputData {
         password = pass;
     }
 
+    /**
+     * Getter.
+     * @return username
+     */
     public String getUsername() {
         return username;
     }
 
+    /**
+     * Getter.
+     * @return password/
+     */
     public String getPassword() {
         return password;
     }

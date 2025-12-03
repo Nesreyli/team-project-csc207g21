@@ -10,6 +10,12 @@ public class AddToWatchlistController {
         this.inputBoundary = inputBoundary;
     }
 
+    /**
+     * adds to watch list
+     * @param username username
+     * @param password password
+     * @param symbol symbol
+     */
     public void add(String username, String password, String symbol) {
         AddToWatchlistInputData data = new AddToWatchlistInputData(username, password, symbol);
         inputBoundary.execute(data);

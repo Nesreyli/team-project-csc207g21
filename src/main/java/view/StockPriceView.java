@@ -11,11 +11,9 @@ import javax.swing.border.MatteBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import interface_adapter.add_watchlist.AddToWatchlistController;
 import interface_adapter.add_watchlist.AddToWatchlistViewModel;
 import interface_adapter.buySell.BuySellController;
 import interface_adapter.logged_in.LoggedInViewModel;
-import interface_adapter.remove_watchlist.RemoveFromWatchlistController;
 import interface_adapter.remove_watchlist.RemoveFromWatchlistViewModel;
 import interface_adapter.stock_price.PriceController;
 import interface_adapter.stock_price.PriceState;
@@ -28,10 +26,6 @@ public class StockPriceView extends JFrame implements PropertyChangeListener {
     private PriceViewModel priceViewModel;
     private PriceController priceController;
     private WatchlistController watchlistController;
-    private AddToWatchlistViewModel addToWatchlistViewModel;
-    private AddToWatchlistController addToWatchlistController;
-    private RemoveFromWatchlistViewModel removeFromWatchlistViewModel;
-    private RemoveFromWatchlistController removeFromWatchlistController;
     private WatchlistViewModel watchlistViewModel;
     private LoggedInViewModel loggedInViewModel;
 
@@ -53,23 +47,13 @@ public class StockPriceView extends JFrame implements PropertyChangeListener {
 
     public StockPriceView(
             PriceViewModel priceViewModel,
-            AddToWatchlistViewModel addVM,
-            AddToWatchlistController addCtrl,
-            RemoveFromWatchlistViewModel removeVM,
-            RemoveFromWatchlistController removeCtrl,
-            WatchlistViewModel watchlistVM,
-            LoggedInViewModel loggedInVM,
-            WatchlistController watchlistController
+            WatchlistViewModel watchlistViewModel,
+            LoggedInViewModel loggedInViewModel
     ) {
         this.priceViewModel = priceViewModel;
         this.priceViewModel.addPropertyChangeListener(this);
-        this.addToWatchlistViewModel = addVM;
-        this.addToWatchlistController = addCtrl;
-        this.removeFromWatchlistViewModel = removeVM;
-        this.removeFromWatchlistController = removeCtrl;
-        this.watchlistViewModel = watchlistVM;
-        this.loggedInViewModel = loggedInVM;
-        this.watchlistController = watchlistController;
+        this.watchlistViewModel = watchlistViewModel;
+        this.loggedInViewModel = loggedInViewModel;
 
         symbol = new JLabel();
         company = new JLabel();
@@ -169,7 +153,7 @@ public class StockPriceView extends JFrame implements PropertyChangeListener {
         watchlistButton.setBorder(new MatteBorder(2, 2, 2, 2, new Color(90, 90, 90)));
         watchlistButton.setFocusPainted(false);
         watchlistButton.setFont(new Font("Arial", Font.BOLD, 14));
-        watchlistButton.setPreferredSize(new Dimension(160, 40));
+        watchlistButton.setPreferredSize(new Dimension(200, 40));
         watchlistButton.addActionListener(event -> toggleWatchlist());
 
         final JButton closeButton = new JButton("Close");
@@ -197,11 +181,11 @@ public class StockPriceView extends JFrame implements PropertyChangeListener {
         final String password = priceViewModel.getState().getPassword();
 
         if (isInWatchlist(symbol)) {
-            removeFromWatchlistController.remove(username, password, symbol);
+            watchlistController.remove(username, password, symbol);
             JOptionPane.showMessageDialog(this, "Removed " + symbol + " from watchlist");
         }
         else {
-            addToWatchlistController.add(username, password, symbol);
+            watchlistController.add(username, password, symbol);
             JOptionPane.showMessageDialog(this, "Added " + symbol + " to watchlist");
         }
 
@@ -230,32 +214,37 @@ public class StockPriceView extends JFrame implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if (evt.getPropertyName().equals("state")) {
+
+        if (evt.getSource() == priceViewModel &&
+                evt.getPropertyName().equals("state")) {
+
+            PriceState ps = (PriceState) evt.getNewValue();
+
             this.setVisible(true);
-            final PriceState priceState = (PriceState) evt.getNewValue();
+            symbol.setText(ps.getSymbol());
+            company.setText(ps.getCompany());
+            country.setText(ps.getCountry());
+            companyValue.setText(ps.getCompany());
+            symbolValue.setText(ps.getSymbol());
+            price.setText(ps.getPrice().toString());
+            ytdPrice.setText("YTD Open: " + ps.getYtdPrice());
 
-            symbol.setText(priceState.getSymbol());
-            company.setText(priceState.getCompany());
-            country.setText(priceState.getCountry());
-            companyValue.setText(priceState.getCompany());
-            symbolValue.setText(priceState.getSymbol());
-            price.setText(priceState.getPrice().toString());
-            ytdPrice.setText("YTD Open: " + priceState.getYtdPrice());
-
-            final String perfText = priceState.getYtdPerformance();
+            String perfText = ps.getYtdPerformance();
             ytdPerformance.setText(perfText);
+
             try {
-                final double perfValue = Double.parseDouble(perfText.replace("%", "").trim());
-                ytdPerformance.setForeground(perfValue >= 0 ? new Color(76, 175, 80)
-                        : new Color(244, 67, 54));
-            }
-            catch (Exception error) {
+                double val = Double.parseDouble(perfText.replace("%", "").trim());
+                ytdPerformance.setForeground(val >= 0
+                        ? new Color(76,175,80)
+                        : new Color(244,67,54));
+            } catch (Exception ignored) {
                 ytdPerformance.setForeground(Color.BLACK);
             }
-
-            updateWatchlistButton(priceState.getSymbol());
+            watchlistController.fetchSilently(ps.getUsername(), ps.getPassword());
+            updateWatchlistButton(ps.getSymbol());
         }
     }
+
 
     public String getViewName() {
         return viewName;
@@ -532,5 +521,8 @@ public class StockPriceView extends JFrame implements PropertyChangeListener {
 
         sellDialog.add(mainPanel);
         sellDialog.setVisible(true);
+    }
+    public void setWatchlistController(WatchlistController controller) {
+        this.watchlistController = controller;
     }
 }

@@ -1,4 +1,5 @@
 package application.use_case.news;
+
 import application.entities.NewsArticle;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -10,10 +11,11 @@ public class NewsFeedInteractor {
     private NewsDBInterface newsApi;
 
     public OutputNews execute() {
-        List<NewsArticle> articles;
-        try{
+        final List<NewsArticle> articles;
+        try {
             articles = newsApi.fetchNews();
-        } catch (Exception e) {
+        }
+        catch (Exception error) {
             return new OutputNews(400);
         }
         return new OutputNews(200, articles);
