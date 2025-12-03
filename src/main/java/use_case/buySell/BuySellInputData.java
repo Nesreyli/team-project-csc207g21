@@ -2,6 +2,9 @@ package use_case.buySell;
 
 import interface_adapter.stock_price.PriceState;
 
+/**
+ * The Input Data for the Buy/Sell Use Case.
+ */
 public class BuySellInputData {
     private final PriceState priceState;
     private final Integer amount;

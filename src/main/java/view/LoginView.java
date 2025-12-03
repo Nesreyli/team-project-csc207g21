@@ -21,20 +21,14 @@ import interface_adapter.login.LoginViewModel;
  */
 
 public class LoginView extends JPanel implements ActionListener, PropertyChangeListener {
-
-    private final String viewName = "log in";
-    private final LoginViewModel loginViewModel;
-
     private final JTextField usernameField = new JTextField(20);
     private final JPasswordField passwordField = new JPasswordField(20);
     private final JLabel errorLabel = new JLabel();
     private final JButton logIn;
     private LoginController loginController;
-    private final JButton signup;
 
     public LoginView(LoginViewModel loginViewModel) {
-        this.loginViewModel = loginViewModel;
-        this.loginViewModel.addPropertyChangeListener(this);
+        loginViewModel.addPropertyChangeListener(this);
 
         // Set layout and background
         this.setLayout(new GridBagLayout());
@@ -58,8 +52,55 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         logoPanel.setBackground(Color.WHITE);
         logoPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 
-        final JLabel logoLabel = new JLabel("📈");
-        logoLabel.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 48));
+        JLabel logoLabel = null;
+        try {
+            // Try to load the logo image
+            ImageIcon logoIcon = null;
+            String[] possiblePaths = {
+                "src/image/panictraderpic.png",
+                "image/panictraderpic.png"
+            };
+            
+            for (String path : possiblePaths) {
+                java.io.File iconFile = new java.io.File(path);
+                if (iconFile.exists() && iconFile.isFile()) {
+                    logoIcon = new ImageIcon(iconFile.getAbsolutePath());
+                    if (logoIcon.getIconWidth() > 0) {
+                        break;
+                    }
+                    logoIcon = null;
+                }
+            }
+            
+            // Try as resource if file path didn't work
+            if (logoIcon == null) {
+                java.net.URL imageURL = LoginView.class.getResource("/image/panictraderpic.png");
+                if (imageURL == null) {
+                    imageURL = LoginView.class.getClassLoader().getResource("image/panictraderpic.png");
+                }
+                if (imageURL != null) {
+                    logoIcon = new ImageIcon(imageURL);
+                }
+            }
+            
+            if (logoIcon != null && logoIcon.getIconWidth() > 0) {
+                // Scale the image to a reasonable size for the logo area
+                java.awt.Image originalImage = logoIcon.getImage();
+                int targetSize = 80; // Size for logo display
+                java.awt.Image scaledImage = originalImage.getScaledInstance(
+                    targetSize, targetSize, java.awt.Image.SCALE_SMOOTH);
+                logoIcon = new ImageIcon(scaledImage);
+                logoLabel = new JLabel(logoIcon);
+            }
+        } catch (Exception e) {
+            // If image loading fails, fall back to emoji
+            logoLabel = new JLabel("📈");
+            logoLabel.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 48));
+        }
+        if (logoLabel == null) {
+            logoLabel = new JLabel("📈");
+            logoLabel.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 48));
+        }
         logoPanel.add(logoLabel);
 
         // Title
@@ -124,7 +165,8 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         dividerGbc.fill = GridBagConstraints.HORIZONTAL;
         dividerPanel.add(separator2, dividerGbc);
 
-        signup = createStyledButton("Create Account", new Color(226, 234, 234), new Color(0, 123, 255));
+        JButton signup = createStyledButton("Create Account", new Color(226, 234, 234),
+                new Color(0, 123, 255));
         signup.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(0, 123, 255), 2),
                 new EmptyBorder(12, 0, 12, 0)
@@ -339,7 +381,7 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
     }
 
     public String getViewName() {
-        return viewName;
+        return "log in";
     }
 
     public void setLoginController(LoginController loginController) {

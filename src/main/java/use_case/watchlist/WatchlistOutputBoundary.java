@@ -1,5 +1,9 @@
 package use_case.watchlist;
 
+/**
+ * The Output Boundary for the Watchlist Use Case.
+ */
+
 public interface WatchlistOutputBoundary {
     /**
      * Prepares the view for a successful retrieval of the watchlist.
@@ -12,4 +16,9 @@ public interface WatchlistOutputBoundary {
      * @param errorMessage a message explaining why the operation failed
      */
     void prepareWatchlistFailView(String errorMessage);
+
+    /**
+     * Switches the view to WatchlistView.
+     */
+    void switchToWatchlistView();
 }

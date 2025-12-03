@@ -1,5 +1,6 @@
 package interface_adapter.portfolio;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 /**
@@ -18,16 +19,40 @@ public class PortfolioState {
 
     private Map<String, Object> holdings;
 
-//    public PortfolioState(PortfolioState copy) {
-//        username = copy.username;
-//        password = copy.password;
-//        value = copy.value;
-//        performance = copy.performance;
-//        cash = copy.cash;
-//    }
+    private Map<String, BigDecimal> prices;
+
+    private Map<String, BigDecimal> stockPerformance;
+
+    private String mostValue;
+
+    private String bestPerf;
+
+    public PortfolioState(PortfolioState copy) {
+        username = copy.username;
+        password = copy.password;
+        value = copy.value;
+        performance = copy.performance;
+        cash = copy.cash;
+    }
 
     // Because of the previous copy constructor, the default constructor must be explicit.
     public PortfolioState() {
+    }
+
+    public Map<String, BigDecimal> getPrices() {
+        return prices;
+    }
+
+    public void setPrices(Map<String, BigDecimal> prices) {
+        this.prices = prices;
+    }
+
+    public Map<String, BigDecimal> getStockPerformance() {
+        return stockPerformance;
+    }
+
+    public void setStockPerformances(Map<String, BigDecimal> stockPerformance) {
+        this.stockPerformance = stockPerformance;
     }
 
     public String getUsername() {
@@ -76,5 +101,25 @@ public class PortfolioState {
 
     public String getPassword() {
         return password;
+    }
+
+    public String getBestPerf() {
+        return bestPerf;
+    }
+
+    public void setBestPerf(String bestPerf) {
+        this.bestPerf = bestPerf;
+    }
+
+    public String getMostValue() {
+        return mostValue;
+    }
+
+    public void setMostValue(String mostValue) {
+        this.mostValue = mostValue;
+    }
+
+    public void setStockPerformance(Map<String, BigDecimal> stockPerformance) {
+        this.stockPerformance = stockPerformance;
     }
 }

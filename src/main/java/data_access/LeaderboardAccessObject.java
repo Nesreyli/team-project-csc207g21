@@ -1,24 +1,29 @@
 package data_access;
 
-import entity.Response;
-import entity.ResponseFactory;
-import use_case.leaderboard.LeaderboardAccessInterface;
-import okhttp3.*;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.*;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import entity.Response;
+import entity.ResponseFactory;
+import use_case.leaderboard.LeaderboardAccessInterface;
+
 public class LeaderboardAccessObject implements LeaderboardAccessInterface {
     private static final int SUCCESS_CODE = 200;
     private static final String CONTENT_TYPE_JSON = "application/json";
     private static final String MESSAGE = "message";
+<<<<<<< HEAD
     private final String url = "http://localhost:8080/rest";
+=======
+    private final String url = "http://100.67.4.80:4848/rest";
+>>>>>>> origin/main
 
     public Response getLeaderboard() {
         final OkHttpClient client = new OkHttpClient().newBuilder().build();
@@ -30,41 +35,47 @@ public class LeaderboardAccessObject implements LeaderboardAccessInterface {
             final okhttp3.Response httpResponse = client.newCall(request).execute();
             final JSONObject responseBody = new JSONObject(httpResponse.body().string());
             if (responseBody.getInt(MESSAGE) == SUCCESS_CODE) {
-                JSONObject leaderboardJson = responseBody.getJSONObject("leaderboard");
-                Map<Integer, List<Object>> leaderboard = new HashMap<>();
+                final JSONObject leaderboardJson = responseBody.getJSONObject("leaderboard");
+                final Map<Integer, List<Object>> leaderboard = new HashMap<>();
                 
                 // Parse the leaderboard JSON object
                 for (String key : leaderboardJson.keySet()) {
                     try {
-                        Integer rank = Integer.parseInt(key);
-                        JSONArray userData = leaderboardJson.getJSONArray(key);
+                        final Integer rank = Integer.parseInt(key);
+                        final JSONArray userData = leaderboardJson.getJSONArray(key);
                         if (userData != null && userData.length() >= 2) {
-                            List<Object> userInfo = new ArrayList<>();
+                            final List<Object> userInfo = new ArrayList<>();
                             for (int i = 0; i < userData.length(); i++) {
-                                Object value = userData.get(i);
+                                final Object value = userData.get(i);
                                 // Handle null values
-                                if (value == null || (value instanceof String && ((String) value).isEmpty())) {
+                                if (value == null || value instanceof String && ((String) value).isEmpty()) {
                                     userInfo.add("");
-                                } else {
+                                }
+                                else {
                                     userInfo.add(value);
                                 }
                             }
                             // Only add if we have valid data
-                            if (!userInfo.isEmpty() && userInfo.get(0) != null && !userInfo.get(0).toString().isEmpty()) {
+                            if (!userInfo.isEmpty() && userInfo.get(0) != null && !userInfo.get(0)
+                                    .toString().isEmpty()) {
                                 leaderboard.put(rank, userInfo);
                             }
                         }
-                    } catch (NumberFormatException | JSONException e) {
+                    }
+                    catch (NumberFormatException | JSONException error) {
                         // Skip invalid entries
-                        System.err.println("Error parsing leaderboard entry for key " + key + ": " + e.getMessage());
+                        System.err.println("Error parsing leaderboard entry for key " + key + ": "
+                                + error.getMessage());
                     }
                 }
                 
                 return ResponseFactory.create(SUCCESS_CODE, leaderboard);
-            } else {
+            }
+            else {
                 return ResponseFactory.create(responseBody.getInt(MESSAGE), null);
             }
-        } catch (IOException | JSONException ex) {
+        }
+        catch (IOException | JSONException ex) {
             throw new RuntimeException(ex);
         }
     }

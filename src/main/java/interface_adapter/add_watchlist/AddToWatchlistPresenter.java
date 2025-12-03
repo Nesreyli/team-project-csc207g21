@@ -5,14 +5,18 @@ import interface_adapter.watchlist.WatchlistViewModel;
 import use_case.add_watchlist.AddToWatchlistOutputBoundary;
 import use_case.add_watchlist.AddToWatchlistOutputData;
 
+/**
+ * The Presenter for the Add to Watchlist Use Case.
+ */
+
 public class AddToWatchlistPresenter implements AddToWatchlistOutputBoundary {
 
-    private final AddToWatchlistViewModel addVM;
-    private final WatchlistViewModel watchlistVM;
+    private final AddToWatchlistViewModel addToWatchlistViewModel;
+    private final WatchlistViewModel watchlistViewModel;
 
-    public AddToWatchlistPresenter(AddToWatchlistViewModel addVM, WatchlistViewModel watchlistVM) {
-        this.addVM = addVM;
-        this.watchlistVM = watchlistVM;
+    public AddToWatchlistPresenter(AddToWatchlistViewModel addToWatchlistViewModel, WatchlistViewModel watchlistViewModel) {
+        this.addToWatchlistViewModel = addToWatchlistViewModel;
+        this.watchlistViewModel = watchlistViewModel;
     }
 
     /**
@@ -22,12 +26,13 @@ public class AddToWatchlistPresenter implements AddToWatchlistOutputBoundary {
      */
     @Override
     public void prepareAddToWatchlistSuccessView(AddToWatchlistOutputData outputData) {
-        addVM.getState().setLastAddedSymbol(outputData.getSymbol());
-        addVM.getState().setLastMessage(outputData.getMessage());
-        addVM.firePropertyChange();
-        WatchlistState watchlistState = watchlistVM.getState();
+        addToWatchlistViewModel.getState().setLastAddedSymbol(outputData.getSymbol());
+        addToWatchlistViewModel.getState().setLastMessage(outputData.getMessage());
+        addToWatchlistViewModel.firePropertyChange();
+
+        final WatchlistState watchlistState = watchlistViewModel.getState();
         watchlistState.setSymbols(outputData.getUpdatedSymbols());
-        watchlistVM.firePropertyChange();
+        watchlistViewModel.firePropertyChange();
     }
 
     /**
@@ -36,8 +41,8 @@ public class AddToWatchlistPresenter implements AddToWatchlistOutputBoundary {
      */
     @Override
     public void prepareAddToWatchlistFailView(String errorMessage) {
-        addVM.getState().setLastAddedSymbol(null);
-        addVM.getState().setLastMessage(errorMessage);
-        addVM.firePropertyChange();
+        addToWatchlistViewModel.getState().setLastAddedSymbol(null);
+        addToWatchlistViewModel.getState().setLastMessage(errorMessage);
+        addToWatchlistViewModel.firePropertyChange();
     }
 }
