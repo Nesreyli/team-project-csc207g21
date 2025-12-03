@@ -11,6 +11,9 @@ import use_case.news.NewsOutputData;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Unit tests for news feed
+ */
 public class NewsInteractorTest {
     static class NewsAccess implements NewsAccessInterface {
         private final Response response;
