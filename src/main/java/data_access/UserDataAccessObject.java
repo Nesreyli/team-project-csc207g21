@@ -29,11 +29,8 @@ public class UserDataAccessObject implements LogInAccessInterface, SignupDataAcc
     private static final String USERNAME = "username";
     private static final String PASSWORD = "password";
     private static final String MESSAGE = "message";
-<<<<<<< HEAD
-    private static final String URL = "http://localhost:8080/rest";
-=======
-    private static final String URL = "http://100.67.4.80:4848/rest";
->>>>>>> origin/main
+    private static final String URL = "http://localhost:4848/rest";
+
     private final UserFactory userFactory;
 
     private String currentUsername;

@@ -15,11 +15,8 @@ public class BuySellAccessObject implements BuySellAccessInterface {
     private static final int SUCCESS_CODE = 200;
     private static final String CONTENT_TYPE_JSON = "application/json";
     private static final String MESSAGE = "message";
-<<<<<<< HEAD
-    private final String url = " http://localhost:8080/rest";
-=======
-    private final String url = "http://100.67.4.80:4848/rest";
->>>>>>> origin/main
+    private final String url = " http://localhost:4848/rest";
+
 
     /**
      * Sends a buy/sell order to backend then parses result

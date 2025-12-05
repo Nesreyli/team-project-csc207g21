@@ -19,11 +19,8 @@ public class LeaderboardAccessObject implements LeaderboardAccessInterface {
     private static final int SUCCESS_CODE = 200;
     private static final String CONTENT_TYPE_JSON = "application/json";
     private static final String MESSAGE = "message";
-<<<<<<< HEAD
-    private final String url = "http://localhost:8080/rest";
-=======
-    private final String url = "http://100.67.4.80:4848/rest";
->>>>>>> origin/main
+    private final String url = "http://localhost:4848/rest";
+
 
     public Response getLeaderboard() {
         final OkHttpClient client = new OkHttpClient().newBuilder().build();

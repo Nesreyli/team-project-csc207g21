@@ -24,11 +24,7 @@ public class NewsAccessObject implements NewsAccessInterface {
     private static final String USERNAME = "username";
     private static final String PASSWORD = "password";
     private static final String MESSAGE = "message";
-<<<<<<< HEAD
-    private final String url = "http://localhost:8080/rest";
-=======
-    private final String url = "http://100.67.4.80:4848/rest";
->>>>>>> origin/main
+    private final String url = "http://localhost:4848/rest";
     private String currentUsername;
 
     public entity.Response getNews() {

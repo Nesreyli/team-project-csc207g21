@@ -12,26 +12,14 @@ public class getPriceInteractor {
     @Inject
     StockDatabaseInterface stockDb;
 
-<<<<<<< HEAD
     public OutputDataPrice executePrice(PricesInput symbols){
         ArrayList<Price> prices;
         ArrayList<Price> openPrices;
         try{
-            prices = stockDB.checkPrice(symbols);
-            openPrices = stockDB.checkOpen(symbols);
-            assert(prices.size() == openPrices.size());
-        }catch(Price.IllegalPrice e){
-=======
-    public OutputDataPrice executePrice(PricesInput symbols) throws RuntimeException {
-        final ArrayList<Price> prices;
-        final ArrayList<Price> openPrices;
-        try {
             prices = stockDb.checkPrice(symbols);
             openPrices = stockDb.checkOpen(symbols);
-            assert prices.size() == openPrices.size();
-        }
-        catch (Price.IllegalPrice error) {
->>>>>>> origin/main
+            assert(prices.size() == openPrices.size());
+        } catch(Price.IllegalPrice e){
             return new OutputDataPrice("500");
         }
         catch (RuntimeException error) {

@@ -71,13 +71,6 @@ public class BuySellReceipt {
          * @return this
          */
         public BuySellReceipt.Builder order(Character order){
-=======
-         * Sets whether the transaction is a buy or sell order.
-         * @param order a character representing the order type (e.g., 'B' for buy, 'S' for sell)
-         * @return this builder instance for method chaining
-         */
-        public BuySellReceipt.Builder order(Character order) {
->>>>>>> origin/main
             receipt.order = order;
             return this;
         }
@@ -89,13 +82,6 @@ public class BuySellReceipt {
          * @return this
          */
         public BuySellReceipt.Builder amount(Integer amount){
-=======
-         * Sets the number of units involved in the transaction.
-         * @param amount the quantity of the asset being bought or sold
-         * @return this builder instance for method chaining
-         */
-        public BuySellReceipt.Builder amount(Integer amount) {
->>>>>>> origin/main
             receipt.amount = amount;
             return this;
         }
@@ -107,13 +93,6 @@ public class BuySellReceipt {
          * @return this
          */
         public BuySellReceipt.Builder symbol(String symbol){
-=======
-         * Sets the trading symbol associated with the transaction.
-         * @param symbol the asset's ticker symbol (e.g., "AAPL", "TSLA")
-         * @return this builder instance for method chaining
-         */
-        public BuySellReceipt.Builder symbol(String symbol) {
->>>>>>> origin/main
             receipt.symbol = symbol;
             return this;
         }
@@ -125,14 +104,6 @@ public class BuySellReceipt {
          * @return this
          */
         public BuySellReceipt.Builder price(BigDecimal price){
-=======
-         * Sets the price per unit for the transaction.
-         *
-         * @param price the price of one unit as a BigDecimal
-         * @return this builder instance for method chaining
-         */
-        public BuySellReceipt.Builder price(BigDecimal price) {
->>>>>>> origin/main
             receipt.price = price;
             return this;
         }
@@ -144,13 +115,6 @@ public class BuySellReceipt {
          * @return this
          */
         public BuySellReceipt.Builder totalPrice(BigDecimal totalPrice){
-=======
-         * Sets the total price of the transaction.
-         * @param totalPrice the total transaction cost as a BigDecimal
-         * @return this builder instance for method chaining
-         */
-        public BuySellReceipt.Builder totalPrice(BigDecimal totalPrice) {
->>>>>>> origin/main
             receipt.totalPrice = totalPrice;
             return this;
         }
